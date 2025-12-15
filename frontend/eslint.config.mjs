@@ -6,6 +6,7 @@ import jsxA11y from 'eslint-plugin-jsx-a11y';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import tsParser from '@typescript-eslint/parser';
 import tseslint from 'typescript-eslint';
+import prettierConfig from 'eslint-config-prettier';
 
 export default defineConfig([
     globalIgnores(['dist', 'node_modules', 'public']),
@@ -33,6 +34,7 @@ export default defineConfig([
             tseslint.configs.stylisticTypeChecked,
             reactPlugin.configs.flat.recommended, // this is the new Flat Config way for React
             jsxA11y.flatConfigs.recommended,
+            prettierConfig,
         ],
         settings: {
             react: {
