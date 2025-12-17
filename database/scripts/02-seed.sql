@@ -254,7 +254,7 @@ INSERT INTO orders (order_reference, total_amount, currency, status, customer_em
 
 -- Order 2: Bulk order for an office (Jane Smith)
 INSERT INTO orders (order_reference, total_amount, currency, status, customer_email, customer_first_name, customer_last_name, shipping_address_line1, shipping_city, shipping_zip, shipping_country) VALUES 
-('MMC-1002', 290.00, 'RON', 'SHIPPED', 'jane.smith@corporatemail.com', 'Jane', 'Smith', 'Bulevardul Unirii 10', 'Bucharest', '030000', 'Romania');
+('MMC-1002', 270.00, 'RON', 'SHIPPED', 'jane.smith@corporatemail.com', 'Jane', 'Smith', 'Bulevardul Unirii 10', 'Bucharest', '030000', 'Romania');
 
 -- Order 3: Espresso lover (Bob Brown) - Still pending
 INSERT INTO orders (order_reference, total_amount, currency, status, customer_email, customer_first_name, customer_last_name, shipping_address_line1, shipping_city, shipping_zip, shipping_country) VALUES 

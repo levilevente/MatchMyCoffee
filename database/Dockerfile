@@ -1,6 +1,6 @@
 FROM postgres:18-alpine
 
-LABEL description "PostgreSQL database for MatchMyCoffee project with pre-loaded schema and data"
+LABEL description="PostgreSQL database for MatchMyCoffee project with pre-loaded schema and data"
 
 COPY ./scripts/ /docker-entrypoint-initdb.d/
 
