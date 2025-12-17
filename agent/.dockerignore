@@ -51,8 +51,6 @@ MANIFEST
 Thumbs.db
 
 # Development Tools
-.pylintrc
-pylintrc
 .mypy_cache/
 .pytest_cache/
 .coverage
