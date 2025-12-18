@@ -1,0 +1,20 @@
+{
+  "blogposts": {
+    "title": "Blog Posts"
+  },
+  "blogpost": {
+    "title": "Blog Post"
+  },
+  "cart": {
+    "title": "Shopping Cart"
+  },
+  "favorites": {
+    "title": "Favorites"
+  },
+  "home": {
+    "title": "Welcome to Our Store"
+  },
+  "product": {
+    "title": "Product Details"
+  }
+}

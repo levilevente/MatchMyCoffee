@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
 
+import NavigationBar from './components/NavigationBar.tsx';
 import BlogPostPage from './pages/BlogPostPage.tsx';
 import BlogPostsPage from './pages/BlogPostsPage.tsx';
 import CartPage from './pages/CartPage.tsx';
@@ -11,6 +12,7 @@ function Root() {
     return (
         <div>
             <BrowserRouter>
+                <NavigationBar />
                 <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/product/:productId" element={<ProductPage />} />
