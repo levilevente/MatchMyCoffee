@@ -1,6 +1,6 @@
-import type { ProductType } from '../types/ProductsType.ts';
+import type {ProductBrewingMethod, ProductDetail, ProductOrigin, ProductSummary, ProductTaste} from "../types/ProductsType.ts";
 
-export const PRODUCTS: ProductType[] = [
+const RAW_PRODUCTS = [
     {
         name: 'Ethiopian Yirgacheffe',
         id: 1,
@@ -1367,3 +1367,96 @@ export const PRODUCTS: ProductType[] = [
         updated_at: '2024-03-05T10:00:00Z',
     },
 ];
+
+const getMockOrigins = (name: string, isBlend: boolean): ProductOrigin[] => {
+    if (isBlend) {
+        return [
+            { id: 1, region: 'South America', continent: 'South America', percentage: 60 },
+            { id: 2, region: 'Africa', continent: 'Africa', percentage: 40 }
+        ];
+    }
+
+    // Simple logic to guess origin from name
+    const region = name.split(' ')[0]; // e.g., "Ethiopian" from "Ethiopian Yirgacheffe"
+    return [{ id: 1, region: region, continent: 'Unknown', percentage: 100 }];
+};
+
+const getMockTastes = (description: string): ProductTaste[] => {
+    const tastes: ProductTaste[] = [];
+    const descLower = description.toLowerCase();
+
+    if (descLower.includes('chocolate') || descLower.includes('cocoa')) {
+        tastes.push({ name: 'Chocolate', category: { name: 'Sweet', colorCode: '#795548' } });
+    }
+    if (descLower.includes('berry') || descLower.includes('fruit') || descLower.includes('citrus')) {
+        tastes.push({ name: 'Fruity', category: { name: 'Fruity', colorCode: '#FF9800' } });
+    }
+    if (descLower.includes('floral') || descLower.includes('jasmine')) {
+        tastes.push({ name: 'Floral', category: { name: 'Floral', colorCode: '#E91E63' } });
+    }
+    if (descLower.includes('spice') || descLower.includes('earthy')) {
+        tastes.push({ name: 'Spicy', category: { name: 'Spicy', colorCode: '#8D6E63' } });
+    }
+
+    // Default if no matches
+    if (tastes.length === 0) {
+        tastes.push({ name: 'Balanced', category: { name: 'Classic', colorCode: '#607D8B' } });
+    }
+    return tastes;
+};
+
+const getMockBrewing = (roast: number): ProductBrewingMethod[] => {
+    const methods = [];
+    if (roast <= 2) {
+        methods.push({ id: 1, name: 'Pour Over', iconUrl: null, isOptimal: true, description: 'Best for bright flavors' });
+    } else if (roast >= 4) {
+        methods.push({ id: 2, name: 'Espresso', iconUrl: null, isOptimal: true, description: 'Best for rich body' });
+    } else {
+        methods.push({ id: 3, name: 'Drip Coffee', iconUrl: null, isOptimal: true, description: 'Great for everyday brewing' });
+    }
+    return methods;
+};
+
+export const PRODUCT_DETAIL: ProductDetail[] = RAW_PRODUCTS.map((product) => {
+    return {
+        id: product.id,
+        name: product.name,
+        description: product.description,
+        stock: product.stock,
+        isActive: product.is_active,
+        price: product.price,
+        imageUrl: product.image_url || 'https://www.zozocafe.ro/userfiles/f73e7d77-ff3b-4c52-9475-e668bd626300/products/361737637_big.jpg',
+        isBlend: product.is_blend,
+
+        specifications: {
+            roastLevel: product.roast_level,
+            acidityScore: product.acidity_score || 3,
+        },
+
+        origins: getMockOrigins(product.name, product.is_blend),
+
+        tastes: getMockTastes(product.description),
+
+        averageRating: parseFloat((3.5 + Math.random() * 1.5).toFixed(1)),
+        reviewCount: Math.floor(Math.random() * 200 + 10),
+
+        brewingMethods: getMockBrewing(product.roast_level)
+    };
+});
+
+export const ALL_PRODUCT_SUMMARY: ProductSummary[] = PRODUCT_DETAIL.map((detail) => ({
+    id: detail.id,
+    name: detail.name,
+    price: detail.price,
+    imageUrl: detail.imageUrl,
+    isBlend: detail.isBlend,
+
+    specifications: {
+        roastLevel: detail.specifications.roastLevel,
+    },
+
+    tastes: detail.tastes.map(t => ({ name: t.name, colorCode: t.category.colorCode })),
+
+    averageRating: detail.averageRating,
+    reviewCount: detail.reviewCount
+}));

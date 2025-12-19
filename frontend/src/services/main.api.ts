@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-import type { ProductType } from '../types/ProductsType.ts';
-import { PRODUCTS } from '../utils/DummyProducts.ts';
+import type { ProductSummary, ProductDetail } from '../types/ProductsType.ts';
+import {ALL_PRODUCT_SUMMARY, PRODUCT_DETAIL} from "../utils/DummyProducts.ts";
 
 export const nasaEpicApi = axios.create({
     baseURL: `https://localhost:8080/`,
@@ -11,6 +11,10 @@ export const nasaEpicApi = axios.create({
     },
 });
 
-export function getCoffees(): ProductType[] {
-    return PRODUCTS;
+export function getCoffees(): ProductSummary[] {
+    return ALL_PRODUCT_SUMMARY;
+}
+
+export function getCoffeeById(id: number): ProductDetail {
+    return PRODUCT_DETAIL.find((product) => product.id === id) as ProductDetail;
 }

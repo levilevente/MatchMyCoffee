@@ -1,34 +1,36 @@
-import { Button, Card } from 'react-bootstrap';
-import { FaHeart } from 'react-icons/fa';
-import { FaCartShopping } from 'react-icons/fa6';
-import { Link } from 'react-router-dom';
+import {Button, Card} from 'react-bootstrap';
+import {FaHeart} from 'react-icons/fa';
+import {FaCartShopping} from 'react-icons/fa6';
+import {Link} from 'react-router-dom';
 
-import type { ProductType } from '../../types/ProductsType.ts';
+import type {ProductSummary} from '../../types/ProductsType.ts';
 
 interface ProductTypeProps {
-    data: ProductType;
+    data: ProductSummary;
 }
 
 function ProductCard(props: ProductTypeProps) {
-    const { data } = props;
+    const {data} = props;
 
     return (
-        <Card style={{ width: '18rem' }}>
+        <Card style={{width: '18rem'}}>
             <Card.Body>
                 <Link
                     to={`/products/${data.id}`}
-                    className="stretched-link text-decoration-none text-reset"
+                    className="text-decoration-none text-reset"
                     aria-label={`View details for ${data.name}`}
                 >
-                    <Card.Img variant="top" src={data.image_url} />
+                    <Card.Img variant="top" src={data.imageUrl}/>
                     <Card.Title>{data.name}</Card.Title>
-                    <Card.Text>{data.description}</Card.Text>
+                    <Card.Text>{data.price}</Card.Text>
+                    <Card.Text>{data.averageRating}</Card.Text>
+                    <Card.Text>{data.reviewCount}</Card.Text>
                 </Link>
                 <Button variant="none">
-                    <FaCartShopping />
+                    <FaCartShopping/>
                 </Button>
                 <Button variant="none">
-                    <FaHeart />
+                    <FaHeart/>
                 </Button>
             </Card.Body>
         </Card>
