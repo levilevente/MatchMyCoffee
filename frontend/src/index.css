@@ -1,10 +1,10 @@
 :root {
-    --color-primary: #4B2C20;
-    --color-secondary: #C49B66;
-    --color-bg-main: #F9F7F5;
-    --color-bg-alt: #F0EBE3;
-    --color-text-main: #2D2424;
-    --color-text-light: #F9F7F5;
+    --color-primary: #4b2c20;
+    --color-secondary: #c49b66;
+    --color-bg-main: #f9f7f5;
+    --color-bg-alt: #f0ebe3;
+    --color-text-main: #2d2424;
+    --color-text-light: #f9f7f5;
 
     /* --- Fonts --- */
     --font-heading: Copperplate, 'Copperplate Gothic Light', fantasy;

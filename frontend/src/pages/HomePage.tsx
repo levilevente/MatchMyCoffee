@@ -1,8 +1,23 @@
+import { useState } from 'react';
+
+import ProductCard from '../components/homepage/ProductCard.tsx';
+import { getCoffees } from '../services/main.api.ts';
+import type { ProductType } from '../types/ProductsType.ts';
+import style from './HomePage.module.css';
+
 function HomePage() {
+    const [products, setProducts] = useState<ProductType[]>([]);
+
+    useState(() => {
+        const fetchedProducts = getCoffees();
+        setProducts(fetchedProducts);
+    });
+
     return (
-        <div>
-            <h1>Welcome to the Home Page</h1>
-            <p>This is the main landing page of the application.</p>
+        <div className={style.homePage}>
+            {products.map((product) => (
+                <ProductCard key={product.id} data={product} />
+            ))}
         </div>
     );
 }
