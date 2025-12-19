@@ -4,6 +4,7 @@ import {FaCartShopping} from 'react-icons/fa6';
 import {Link} from 'react-router-dom';
 
 import type {ProductSummary} from '../../types/ProductsType.ts';
+import StarRating from "./../StarRating.tsx";
 
 interface ProductTypeProps {
     data: ProductSummary;
@@ -22,9 +23,10 @@ function ProductCard(props: ProductTypeProps) {
                 >
                     <Card.Img variant="top" src={data.imageUrl}/>
                     <Card.Title>{data.name}</Card.Title>
-                    <Card.Text>{data.price}</Card.Text>
-                    <Card.Text>{data.averageRating}</Card.Text>
-                    <Card.Text>{data.reviewCount}</Card.Text>
+                    <Card.Text>{data.price} $</Card.Text>
+                    <Card.Text>
+                        <StarRating rating={data.averageRating} showCount={data.reviewCount}/>
+                    </Card.Text>
                 </Link>
                 <Button variant="none">
                     <FaCartShopping/>
