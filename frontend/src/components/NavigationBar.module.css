@@ -1,8 +1,22 @@
 .navbarStyle {
     position: relative;
     height: 90px;
-    background-color: #000;
-    color: #fff;
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+}
+
+.logoStyle {
+    width: 65px;
+    height: 65px;
+    flex-shrink: 0;
+}
+
+.brandCentered {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    padding: 0;
 }
 
 .navStyle {
@@ -10,11 +24,22 @@
 }
 
 .navLinkStyle {
-    color: #fff;
+    color: var(--color-text-light);
     font-size: 18px;
     font-weight: 500;
+    font-family: var(--font-heading), 'serif';
 }
 
+.searchForm {
+    margin-right: auto;
+    max-width: 130px;
+    width: 100%;
+    position: relative;
+}
+
+/* --------------------------------------------------------- */
+/*     MOBILE NAV FIX (Screen width < 992px)                 */
+/* --------------------------------------------------------- */
 @media (max-width: 992px) {
     .gridContainer {
         display: grid;

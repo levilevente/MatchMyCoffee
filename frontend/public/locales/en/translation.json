@@ -16,5 +16,22 @@
   },
   "product": {
     "title": "Product Details"
+  },
+  "title": "Match My Coffee",
+  "description": "Find your perfect coffee match based on your preferences and taste!",
+  "copyright": "© 2026 Match My Coffee. All rights reserved.",
+  "footer": {
+    "home": "Home",
+    "explore": "Explore",
+    "blog": "Blog",
+    "aboutUs": "About Us",
+    "contact": "Contact",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "helpCenter": "Help Center",
+    "followUs": "Follow Us",
+    "facebook": "Facebook",
+    "twitter": "Twitter",
+    "instagram": "Instagram"
   }
 }
