@@ -15,7 +15,17 @@
     "title": "Welcome to Our Store"
   },
   "product": {
-    "title": "Product Details"
+    "title": "Product Details",
+    "specifications": "Specifications",
+    "value": "Value",
+    "brand": "Brand",
+    "flavorNotes": "Flavor Notes",
+    "roastLevel": "Roast Level",
+    "origin": "Origin",
+    "acidity": "Acidity",
+    "tastes": "Tastes",
+    "brewingMethods": "Brewing Methods",
+    "brewingInstructions": "Brewing Instructions"
   },
   "title": "Match My Coffee",
   "description": "Find your perfect coffee match based on your preferences and taste!",

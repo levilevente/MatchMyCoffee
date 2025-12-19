@@ -1,4 +1,10 @@
-import type {ProductBrewingMethod, ProductDetail, ProductOrigin, ProductSummary, ProductTaste} from "../types/ProductsType.ts";
+import type {
+    ProductBrewingMethod,
+    ProductDetail,
+    ProductOrigin,
+    ProductSummary,
+    ProductTaste,
+} from '../types/ProductsType.ts';
 
 const RAW_PRODUCTS = [
     {
@@ -1372,7 +1378,7 @@ const getMockOrigins = (name: string, isBlend: boolean): ProductOrigin[] => {
     if (isBlend) {
         return [
             { id: 1, region: 'South America', continent: 'South America', percentage: 60 },
-            { id: 2, region: 'Africa', continent: 'Africa', percentage: 40 }
+            { id: 2, region: 'Africa', continent: 'Africa', percentage: 40 },
         ];
     }
 
@@ -1408,11 +1414,23 @@ const getMockTastes = (description: string): ProductTaste[] => {
 const getMockBrewing = (roast: number): ProductBrewingMethod[] => {
     const methods = [];
     if (roast <= 2) {
-        methods.push({ id: 1, name: 'Pour Over', iconUrl: null, isOptimal: true, description: 'Best for bright flavors' });
+        methods.push({
+            id: 1,
+            name: 'Pour Over',
+            iconUrl: null,
+            isOptimal: true,
+            description: 'Best for bright flavors',
+        });
     } else if (roast >= 4) {
         methods.push({ id: 2, name: 'Espresso', iconUrl: null, isOptimal: true, description: 'Best for rich body' });
     } else {
-        methods.push({ id: 3, name: 'Drip Coffee', iconUrl: null, isOptimal: true, description: 'Great for everyday brewing' });
+        methods.push({
+            id: 3,
+            name: 'Drip Coffee',
+            iconUrl: null,
+            isOptimal: true,
+            description: 'Great for everyday brewing',
+        });
     }
     return methods;
 };
@@ -1425,12 +1443,14 @@ export const PRODUCT_DETAIL: ProductDetail[] = RAW_PRODUCTS.map((product) => {
         stock: product.stock,
         isActive: product.is_active,
         price: product.price,
-        imageUrl: product.image_url || 'https://www.zozocafe.ro/userfiles/f73e7d77-ff3b-4c52-9475-e668bd626300/products/361737637_big.jpg',
+        imageUrl:
+            product.image_url ??
+            'https://www.zozocafe.ro/userfiles/f73e7d77-ff3b-4c52-9475-e668bd626300/products/361737637_big.jpg',
         isBlend: product.is_blend,
 
         specifications: {
             roastLevel: product.roast_level,
-            acidityScore: product.acidity_score || 3,
+            acidityScore: product.acidity_score ?? 3,
         },
 
         origins: getMockOrigins(product.name, product.is_blend),
@@ -1440,7 +1460,7 @@ export const PRODUCT_DETAIL: ProductDetail[] = RAW_PRODUCTS.map((product) => {
         averageRating: parseFloat((3.5 + Math.random() * 1.5).toFixed(1)),
         reviewCount: Math.floor(Math.random() * 200 + 10),
 
-        brewingMethods: getMockBrewing(product.roast_level)
+        brewingMethods: getMockBrewing(product.roast_level),
     };
 });
 
@@ -1455,8 +1475,8 @@ export const ALL_PRODUCT_SUMMARY: ProductSummary[] = PRODUCT_DETAIL.map((detail)
         roastLevel: detail.specifications.roastLevel,
     },
 
-    tastes: detail.tastes.map(t => ({ name: t.name, colorCode: t.category.colorCode })),
+    tastes: detail.tastes.map((t) => ({ name: t.name, colorCode: t.category.colorCode })),
 
     averageRating: detail.averageRating,
-    reviewCount: detail.reviewCount
+    reviewCount: detail.reviewCount,
 }));

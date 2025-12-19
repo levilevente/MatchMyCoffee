@@ -14,10 +14,12 @@ function HomePage() {
     });
 
     return (
-        <div className={style.homePage}>
-            {products.map((product) => (
-                <ProductCard key={product.id} data={product} />
-            ))}
+        <div className={style.container}>
+            <div className={style.homePage}>
+                {products.map((product) => (
+                    <ProductCard key={product.id} data={product} />
+                ))}
+            </div>
         </div>
     );
 }

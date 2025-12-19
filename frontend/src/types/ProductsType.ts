@@ -21,8 +21,8 @@ export interface ProductDetail extends ProductSummary {
     isActive: boolean;
 
     specifications: {
-        roastLevel: number
-        acidityScore: number
+        roastLevel: number;
+        acidityScore: number;
     };
 
     origins: ProductOrigin[];
@@ -56,5 +56,5 @@ export interface ProductTaste {
     category: {
         name: string;
         colorCode: string;
-    }
+    };
 }
