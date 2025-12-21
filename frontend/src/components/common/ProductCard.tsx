@@ -1,4 +1,5 @@
 import { Button, ButtonGroup, Card, Dropdown, DropdownButton } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { IoCloseSharp } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 
@@ -17,6 +18,7 @@ interface ProductTypeProps {
 function ProductCard(props: ProductTypeProps) {
     const { data, inCart } = props;
     const { currentQuantity, handleQuantityChange, removeFromCart } = useProductActions(data);
+    const { t } = useTranslation();
 
     const handleQuantitySelect = (eventKey: string | null) => {
         if (eventKey) {
@@ -56,7 +58,7 @@ function ProductCard(props: ProductTypeProps) {
                             key={'cart-count'}
                             id={`cart-count`}
                             variant={'none'}
-                            title={currentQuantity}
+                            title={`${t('product.quantity')}: ${currentQuantity}`}
                             onSelect={handleQuantitySelect}
                         >
                             {Array.from({ length: 10 }, (_, i) => i + 1).map((count) => (
