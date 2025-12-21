@@ -45,8 +45,12 @@ function ProductCard(props: ProductTypeProps) {
                     aria-label={`View details for ${data.name}`}
                 >
                     <Card.Img variant="top" src={data.imageUrl} className={style.image} />
-                    <Card.Title>{data.name}</Card.Title>
-                    <Card.Text>{data.price} $</Card.Text>
+                    <Card.Title>
+                        <h3>{data.name}</h3>
+                    </Card.Title>
+                    <Card.Text>
+                        <h3>{data.price} $</h3>
+                    </Card.Text>
                     <div>
                         <StarRating rating={data.averageRating} showCount={data.reviewCount} />
                     </div>

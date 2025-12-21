@@ -11,7 +11,7 @@ function FooterBar() {
                 <img src="/logo/logo.png" alt="App Logo" className={styles.logo} />
                 <h1>{t('title')}</h1>
                 <p>{t('description')}</p>
-                <p>{t('copyright')}</p>
+                <h3>{t('copyright')}</h3>
             </div>
             <div className={styles.secondDiv}>
                 <div>

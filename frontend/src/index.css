@@ -9,7 +9,8 @@
 
     /* --- Fonts --- */
     --font-heading: Copperplate, 'Copperplate Gothic Light', fantasy;
-    --font-body: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-secondary-heading: 'Baskerville', sans-serif;
+    --font-body: 'Gill Sans', sans-serif;
 
     /* --- Spacing --- */
     --spacing-sm: 8px;
@@ -23,9 +24,17 @@ html {
     width: 100%;
 }
 
+p,
+td {
+    font-size: 20px;
+    font-family: var(--font-body), 'sans-serif';
+    line-height: 1.6;
+}
+
 h2 {
     font-size: 38px;
     font-weight: bold;
+    font-family: var(--font-secondary-heading), 'sans-serif';
 }
 
 h1 {
@@ -35,10 +44,11 @@ h1 {
 }
 
 h3 {
-    font-size: 28px;
+    font-size: 20px;
     font-weight: bold;
     margin-top: 3.4rem;
     margin-bottom: 1rem;
+    font-family: var(--font-secondary-heading), 'sans-serif';
 }
 
 .page-container {

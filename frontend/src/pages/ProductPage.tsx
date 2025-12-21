@@ -97,7 +97,7 @@ function ProductPage() {
                             reviews.map((review) => (
                                 <div key={review.id} className={style.reviewCard}>
                                     <div className={style.reviewHeader}>
-                                        <h4>{review.authorName}</h4>
+                                        <p>{review.authorName}</p>
                                         <StarRating rating={review.rating} size={20} />
                                     </div>
                                     <p>{review.comment}</p>
