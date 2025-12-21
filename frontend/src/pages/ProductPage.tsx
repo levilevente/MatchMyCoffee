@@ -1,12 +1,12 @@
-import {Button, Image, Table} from 'react-bootstrap';
+import {Image, Table} from 'react-bootstrap';
 import {useTranslation} from 'react-i18next';
-import {FaHeart} from 'react-icons/fa';
-import {FaCartShopping} from 'react-icons/fa6';
 import {useParams} from 'react-router';
 
 import StarRating from '../components/StarRating.tsx';
 import {getCoffeeById} from '../services/main.api.ts';
 import style from './ProductPage.module.css';
+import AddToCartButton from "../components/AddToCartButton.tsx";
+import AddToFavoritesButton from "../components/AddToFavoritesButton.tsx";
 
 function ProductPage() {
     const {productId} = useParams();
@@ -36,12 +36,8 @@ function ProductPage() {
                     <div className={style.purchaseSection}>
                         <h3>{product.price} $</h3>
                         <div className={style.buttonContainer}>
-                            <Button variant="dark">
-                                <FaCartShopping/> Add to cart
-                            </Button>
-                            <Button variant="dark">
-                                <FaHeart/> Favorites
-                            </Button>
+                            <AddToCartButton product={product} variant={'with-text'}/>
+                            <AddToFavoritesButton product={product} variant={'with-text'}/>
                         </div>
                     </div>
 
