@@ -29,7 +29,14 @@
     "acidity": "Acidity",
     "tastes": "Tastes",
     "brewingMethods": "Brewing Methods",
-    "brewingInstructions": "Brewing Instructions"
+    "brewingInstructions": "Brewing Instructions",
+    "reviews": "Customer Reviews",
+    "description": "Description",
+    "specification": "Specification",
+    "addToCart": "Add to Cart",
+    "addedToCart": "Added to Cart",
+    "addToFavorites": "Add to Favorites",
+    "removeFromFavorites": "Remove from Favorites"
   },
   "title": "Match My Coffee",
   "description": "Find your perfect coffee match based on your preferences and taste!",

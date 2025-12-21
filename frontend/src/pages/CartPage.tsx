@@ -12,7 +12,7 @@ function CartPage() {
     if (carts.length === 0) {
         return <EmptyState title={t('cart.emptyTitleMessage')} subtitle={t('cart.emptySubtitleMessage')} />;
     } else {
-        return <ProductGrid products={carts} />;
+        return <ProductGrid products={carts} inCart={true}/>;
     }
 }
 

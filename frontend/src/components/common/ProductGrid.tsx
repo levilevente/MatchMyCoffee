@@ -4,14 +4,16 @@ import style from './ProductGrid.module.css';
 
 interface Props {
     products: ProductSummary[];
+    inCart?: boolean;
 }
 
-const ProductGrid = ({ products }: Props) => {
+const ProductGrid = (props: Props) => {
+    const {inCart, products} = props;
     return (
         <div className={style.container}>
             <div className={style.containerPage}>
                 {products.map((product) => (
-                    <ProductCard data={product} key={product.id} />
+                    <ProductCard data={product} key={product.id} inCart={inCart} />
                 ))}
             </div>
         </div>

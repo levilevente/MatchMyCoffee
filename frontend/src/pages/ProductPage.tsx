@@ -45,11 +45,11 @@ function ProductPage() {
             </div>
             <div className={style.detailsSection}>
                 <div className={style.description}>
-                    <h2>Description</h2>
+                    <h2>{t("product.description")}</h2>
                     <p>{product.description}</p>
                 </div>
                 <div className={style.specificationsSection}>
-                    <h2>Specifications</h2>
+                    <h2>{t("product.specification")}</h2>
                     <Table striped bordered hover>
                         <thead>
                             <tr>
@@ -92,8 +92,8 @@ function ProductPage() {
                 </div>
                 <section id={'reviews'}>
                     <div className={style.reviewsSection}>
-                        <h2>Reviews</h2>
-                        {reviews ? (
+                        <h2>{t("product.reviews")}</h2>
+                        {reviews.length !== 0 ? (
                             reviews.map((review) => (
                                 <div key={review.id} className={style.reviewCard}>
                                     <div className={style.reviewHeader}>

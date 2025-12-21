@@ -3,6 +3,7 @@ import { FaHeart } from 'react-icons/fa';
 
 import { useProductActions } from '../../hooks/useProductActions.ts';
 import type { ProductSummary } from '../../types/ProductsType.ts';
+import {useTranslation} from "react-i18next";
 
 interface AddToFavoritesButtonProps {
     product: ProductSummary;
@@ -11,13 +12,13 @@ interface AddToFavoritesButtonProps {
 
 function AddToFavoritesButton(props: AddToFavoritesButtonProps) {
     const { product, variant = 'icon-only' } = props;
-
     const { isInFavorites, handleAddToFavorites } = useProductActions(product);
+    const {t} = useTranslation();
 
     if (variant === 'with-text') {
         return (
             <Button variant={isInFavorites ? 'danger' : 'dark'} onClick={handleAddToFavorites}>
-                <FaHeart /> {isInFavorites ? 'Remove from favorites' : 'Add to favorites'}
+                <FaHeart /> {isInFavorites ? t("product.removeFromFavorites") : t("product.addToFavorites")}
             </Button>
         );
     }
