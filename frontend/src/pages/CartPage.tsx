@@ -6,13 +6,13 @@ import ProductGrid from '../components/common/ProductGrid.tsx';
 import { CartContext } from '../context/CartContext.tsx';
 
 function CartPage() {
-    const { carts } = useContext(CartContext);
+    const { cartItems } = useContext(CartContext);
     const { t } = useTranslation();
 
-    if (carts.length === 0) {
+    if (cartItems.length === 0) {
         return <EmptyState title={t('cart.emptyTitleMessage')} subtitle={t('cart.emptySubtitleMessage')} />;
     } else {
-        return <ProductGrid products={carts} inCart={true}/>;
+        return <ProductGrid products={cartItems} inCart />;
     }
 }
 

@@ -7,7 +7,7 @@ import type { ProductSummary } from '../types/ProductsType.ts';
 
 export const useProductActions = (product: ProductSummary) => {
     const { favorites, toggleFavorite } = useContext<FavoritesContextType>(FavoritesContext);
-    const { carts, toggleCart } = useContext<CartContextType>(CartContext);
+    const { cartItems, addToCart, removeFromCart, updateQuantity } = useContext<CartContextType>(CartContext);
 
     if (!product) {
         return {
@@ -19,14 +19,27 @@ export const useProductActions = (product: ProductSummary) => {
             handleAddToFavorites: () => {
                 /* intentional no-op */
             },
+            currentQuantity: 0,
+            handleQuantityChange: () => {
+                /* intentional no-op */
+            },
+            removeFromCart: () => {
+                /* intentional no-op */
+            },
         };
     }
 
-    const isInCart = carts.some((item: ProductSummary) => item.id === product.id);
+    const existingCartItem = cartItems.find((item) => item.product.id === product.id);
+    const isInCart = !!existingCartItem;
+    const currentQuantity = existingCartItem?.quantity ?? 0;
     const handleAddToCart = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
-        toggleCart(product);
+        if (isInCart) {
+            removeFromCart(product.id);
+        } else {
+            addToCart(product, 1);
+        }
     };
 
     const isFavorite = favorites.some((fav: ProductSummary) => fav.id === product.id);
@@ -36,10 +49,21 @@ export const useProductActions = (product: ProductSummary) => {
         toggleFavorite(product);
     };
 
+    const handleQuantityChange = (newQuantity: number) => {
+        if (newQuantity <= 0) {
+            removeFromCart(product.id);
+        } else {
+            updateQuantity(product.id, newQuantity);
+        }
+    };
+
     return {
         isInCart: isInCart,
         isInFavorites: isFavorite,
+        currentQuantity,
+        handleQuantityChange: handleQuantityChange,
         handleAddToCart: handleAddToCart,
         handleAddToFavorites: handleAddToFavorites,
+        removeFromCart: () => removeFromCart(product.id),
     };
 };
