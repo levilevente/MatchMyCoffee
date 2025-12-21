@@ -12,7 +12,7 @@ function FavoritesPage() {
     if (favorites.length === 0) {
         return <EmptyState title={t('favorites.emptyTitleMessage')} subtitle={t('favorites.emptySubtitleMessage')} />;
     } else {
-        return <ProductGrid products={favorites} />;
+        return <ProductGrid products={favorites} storageKey={'favoritesPage'} />;
     }
 }
 

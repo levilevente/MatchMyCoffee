@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import ProductCard from '../components/common/ProductCard.tsx';
+import ProductGrid from '../components/common/ProductGrid.tsx';
 import { getCoffees } from '../services/main.api.ts';
 import type { ProductSummary } from '../types/ProductsType.ts';
 import style from './HomePage.module.css';
@@ -15,11 +15,7 @@ function HomePage() {
 
     return (
         <div className={style.container}>
-            <div className={style.homePage}>
-                {products.map((product) => (
-                    <ProductCard key={product.id} data={product} />
-                ))}
-            </div>
+            <ProductGrid products={products} storageKey={'homePage'} />
         </div>
     );
 }

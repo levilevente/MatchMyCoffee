@@ -23,7 +23,7 @@ function CartPage() {
         return (
             <div className={style.container}>
                 <MainButton text={t('cart.finalizePurchase')} onClick={handleFinalizeOrder} />
-                <ProductGrid products={cartItems} inCart />
+                <ProductGrid products={cartItems} inCart storageKey={'cartPage'} />
             </div>
         );
     }
