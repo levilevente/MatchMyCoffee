@@ -1,7 +1,8 @@
-import {createContext, type ReactNode, useEffect, useState} from "react";
-import type {ProductSummary} from "../types/ProductsType.ts";
+import { createContext, type ReactNode, useEffect, useState } from 'react';
 
-interface FavoritesContextType {
+import type { ProductSummary } from '../types/ProductsType.ts';
+
+export interface FavoritesContextType {
     favorites: ProductSummary[];
     toggleFavorite: (product: ProductSummary) => void;
 }
@@ -9,6 +10,7 @@ interface FavoritesContextType {
 export const FavoritesContext = createContext<FavoritesContextType>({
     favorites: [],
     toggleFavorite: () => {
+        /* intentional no-op */
     },
 });
 
@@ -18,12 +20,21 @@ interface FavoritesProviderProps {
 
 export function FavoritesProvider({ children }: FavoritesProviderProps) {
     const [favorites, setFavorites] = useState<ProductSummary[]>(() => {
-        const saved = localStorage.getItem("my-coffee-favorites");
-        return saved ? JSON.parse(saved) : [];
+        const saved = localStorage.getItem('my-coffee-favorites');
+        if (!saved) return [];
+        try {
+            const parsed: unknown = JSON.parse(saved);
+            if (Array.isArray(parsed)) {
+                return parsed as ProductSummary[];
+            }
+        } catch {
+            return [];
+        }
+        return [];
     });
 
     useEffect(() => {
-        localStorage.setItem("my-coffee-favorites", JSON.stringify(favorites));
+        localStorage.setItem('my-coffee-favorites', JSON.stringify(favorites));
     }, [favorites]);
 
     const toggleFavorite = (product: ProductSummary) => {
@@ -35,11 +46,7 @@ export function FavoritesProvider({ children }: FavoritesProviderProps) {
                 return [...prevFavorites, product];
             }
         });
-    }
+    };
 
-    return (
-        <FavoritesContext.Provider value={{favorites, toggleFavorite}}>
-            {children}
-        </FavoritesContext.Provider>
-    );
+    return <FavoritesContext.Provider value={{ favorites, toggleFavorite }}>{children}</FavoritesContext.Provider>;
 }

@@ -1,35 +1,35 @@
-import {Card} from 'react-bootstrap';
-import {Link} from 'react-router-dom';
+import { Card } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
-import type {ProductSummary} from '../../types/ProductsType.ts';
-import StarRating from './../StarRating.tsx';
-import AddToCartButton from "../AddToCartButton.tsx";
-import AddToFavoritesButton from "../AddToFavoritesButton.tsx";
+import type { ProductSummary } from '../../types/ProductsType.ts';
+import AddToCartButton from '../common/AddToCartButton.tsx';
+import AddToFavoritesButton from '../common/AddToFavoritesButton.tsx';
+import StarRating from '../common/StarRating.tsx';
 
 interface ProductTypeProps {
     data: ProductSummary;
 }
 
 function ProductCard(props: ProductTypeProps) {
-    const {data} = props;
+    const { data } = props;
 
     return (
-        <Card style={{width: '18rem'}}>
+        <Card style={{ width: '18rem' }}>
             <Card.Body>
                 <Link
                     to={`/products/${data.id}`}
                     className="text-decoration-none text-reset"
                     aria-label={`View details for ${data.name}`}
                 >
-                    <Card.Img variant="top" src={data.imageUrl}/>
+                    <Card.Img variant="top" src={data.imageUrl} />
                     <Card.Title>{data.name}</Card.Title>
                     <Card.Text>{data.price} $</Card.Text>
                     <div>
-                        <StarRating rating={data.averageRating} showCount={data.reviewCount}/>
+                        <StarRating rating={data.averageRating} showCount={data.reviewCount} />
                     </div>
                 </Link>
-                <AddToCartButton product={data} variant={"icon-only"}/>
-                <AddToFavoritesButton product={data} variant={"icon-only"}/>
+                <AddToCartButton product={data} variant={'icon-only'} />
+                <AddToFavoritesButton product={data} variant={'icon-only'} />
             </Card.Body>
         </Card>
     );

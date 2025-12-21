@@ -1,34 +1,40 @@
-import React, {useContext} from "react";
-import {FavoritesContext} from "../context/FavoritesContext.tsx";
-import type {ProductSummary} from "../types/ProductsType.ts";
-import {CartContext} from "../context/CartContext.tsx";
+import type React from 'react';
+import { useContext } from 'react';
+
+import { CartContext, type CartContextType } from '../context/CartContext.tsx';
+import { FavoritesContext, type FavoritesContextType } from '../context/FavoritesContext.tsx';
+import type { ProductSummary } from '../types/ProductsType.ts';
 
 export const useProductActions = (product: ProductSummary) => {
-    const {favorites, toggleFavorite} = useContext<any>(FavoritesContext);
-    const {carts, toggleCart} = useContext<any>(CartContext);
+    const { favorites, toggleFavorite } = useContext<FavoritesContextType>(FavoritesContext);
+    const { carts, toggleCart } = useContext<CartContextType>(CartContext);
 
     if (!product) {
         return {
             isInCart: false,
             isInFavorites: false,
-            handleAddToCart: () => {},
-            handleAddToFavorites: () => {},
+            handleAddToCart: () => {
+                /* intentional no-op */
+            },
+            handleAddToFavorites: () => {
+                /* intentional no-op */
+            },
         };
     }
 
-    const isInCart = carts.some((item: any) => item.id === product.id);
+    const isInCart = carts.some((item: ProductSummary) => item.id === product.id);
     const handleAddToCart = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
         toggleCart(product);
     };
 
-    const isFavorite = favorites.some((fav: any) => fav.id === product.id);
+    const isFavorite = favorites.some((fav: ProductSummary) => fav.id === product.id);
     const handleAddToFavorites = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
         toggleFavorite(product);
-    }
+    };
 
     return {
         isInCart: isInCart,
@@ -36,4 +42,4 @@ export const useProductActions = (product: ProductSummary) => {
         handleAddToCart: handleAddToCart,
         handleAddToFavorites: handleAddToFavorites,
     };
-}
+};

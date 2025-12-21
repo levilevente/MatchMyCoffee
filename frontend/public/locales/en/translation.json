@@ -6,10 +6,14 @@
     "title": "Blog Post"
   },
   "cart": {
-    "title": "Shopping Cart"
+    "title": "Shopping Cart",
+    "emptyTitleMessage": "You haven't added any coffees to cart yet! ☕",
+    "emptySubtitleMessage": "Go back to the store to find your perfect brew."
   },
   "favorites": {
-    "title": "Favorites"
+    "title": "Favorites",
+    "emptyTitleMessage": "You haven't liked any coffees yet! ☕",
+    "emptySubtitleMessage": "Go back to the store to find your perfect brew."
   },
   "home": {
     "title": "Welcome to Our Store"

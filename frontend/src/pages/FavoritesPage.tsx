@@ -1,10 +1,19 @@
+import { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import EmptyState from '../components/common/EmptyState.tsx';
+import ProductGrid from '../components/common/ProductGrid.tsx';
+import { FavoritesContext } from '../context/FavoritesContext.tsx';
+
 function FavoritesPage() {
-    return (
-        <div>
-            <h1>Favorites Page</h1>
-            <p>This is the favorites page of the application.</p>
-        </div>
-    );
+    const { favorites } = useContext(FavoritesContext);
+    const { t } = useTranslation();
+
+    if (favorites.length === 0) {
+        return <EmptyState title={t('favorites.emptyTitleMessage')} subtitle={t('favorites.emptySubtitleMessage')} />;
+    } else {
+        return <ProductGrid products={favorites} />;
+    }
 }
 
 export default FavoritesPage;

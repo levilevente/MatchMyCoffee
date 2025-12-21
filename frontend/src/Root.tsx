@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
 
-import FooterBar from './components/FooterBar.tsx';
-import NavigationBar from './components/NavigationBar.tsx';
+import FooterBar from './components/layout/FooterBar.tsx';
+import NavigationBar from './components/layout/NavigationBar.tsx';
 import BlogPostPage from './pages/BlogPostPage.tsx';
 import BlogPostsPage from './pages/BlogPostsPage.tsx';
 import CartPage from './pages/CartPage.tsx';

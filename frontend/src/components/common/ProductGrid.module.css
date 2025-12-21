@@ -5,11 +5,11 @@
     width: 100%;
 }
 
-.homePage {
+.containerPage {
     margin-top: 50px;
     width: 70%;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
-    gap: 13px;
+    gap: 20px;
     justify-content: center;
 }
