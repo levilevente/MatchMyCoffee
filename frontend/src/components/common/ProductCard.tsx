@@ -51,7 +51,6 @@ function ProductCard(props: ProductTypeProps) {
                 </Link>
                 {inCart ? (
                     <>
-                        <AddToCartButton product={data} variant={'icon-only'} inCart={inCart} />
                         <DropdownButton
                             as={ButtonGroup}
                             key={'cart-count'}
