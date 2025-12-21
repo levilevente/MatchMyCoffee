@@ -5,12 +5,13 @@ import { useParams } from 'react-router';
 import AddToCartButton from '../components/common/AddToCartButton.tsx';
 import AddToFavoritesButton from '../components/common/AddToFavoritesButton.tsx';
 import StarRating from '../components/common/StarRating.tsx';
-import { getCoffeeById } from '../services/main.api.ts';
+import { getCoffeeById, getProductReviews } from '../services/main.api.ts';
 import style from './ProductPage.module.css';
 
 function ProductPage() {
     const { productId } = useParams();
     const product = getCoffeeById(productId ? parseInt(productId) : 0);
+    const reviews = getProductReviews(productId ? parseInt(productId) : 0);
 
     const { t } = useTranslation();
 
@@ -28,9 +29,9 @@ function ProductPage() {
                         </div>
                         <div className={style.ratingContainer}>
                             <StarRating rating={product.averageRating} size={30} />
-                            <h4>
+                            <a href={'#reviews'} className={style.reviewLink}>
                                 {product.averageRating} ({product.reviewCount} reviews)
-                            </h4>
+                            </a>
                         </div>
                     </div>
                     <div className={style.purchaseSection}>
@@ -42,13 +43,13 @@ function ProductPage() {
                     </div>
                 </div>
             </div>
-            <div className={style.specificationsSection}>
+            <div className={style.detailsSection}>
                 <div className={style.description}>
-                    <h3>Description</h3>
+                    <h2>Description</h2>
                     <p>{product.description}</p>
                 </div>
-                <div>
-                    <h3>Specifications</h3>
+                <div className={style.specificationsSection}>
+                    <h2>Specifications</h2>
                     <Table striped bordered hover>
                         <thead>
                             <tr>
@@ -89,6 +90,24 @@ function ProductPage() {
                         </tbody>
                     </Table>
                 </div>
+                <section id={'reviews'}>
+                    <div className={style.reviewsSection}>
+                        <h2>Reviews</h2>
+                        {reviews ? (
+                            reviews.map((review) => (
+                                <div key={review.id} className={style.reviewCard}>
+                                    <div className={style.reviewHeader}>
+                                        <h4>{review.authorName}</h4>
+                                        <StarRating rating={review.rating} size={20} />
+                                    </div>
+                                    <p>{review.comment}</p>
+                                </div>
+                            ))
+                        ) : (
+                            <p>No reviews available.</p>
+                        )}
+                    </div>
+                </section>
             </div>
         </div>
     );

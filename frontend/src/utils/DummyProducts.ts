@@ -5,6 +5,7 @@ import type {
     ProductSummary,
     ProductTaste,
 } from '../types/ProductsType.ts';
+import type { ReviewType } from '../types/ReviewType.ts';
 
 const RAW_PRODUCTS = [
     {
@@ -1411,6 +1412,23 @@ const getMockTastes = (description: string): ProductTaste[] => {
     return tastes;
 };
 
+const getMockImages = (productId: number): string => {
+    const images = [
+        'https://cafeo.ro/4261-large_default/kimbo-intenso-cafea-boabe-1kg.jpg',
+        'https://www.cafemagia.ro/images/produse/davidoff-cafe-espresso-57-1-kg-cafea-prajita-boabe-edit.jpg',
+        'https://lcdn.altex.ro/media/catalog/product/9/0/9000403895358_1_89b28c6f.jpg',
+        'https://deutschermarkt.ro/wp-content/uploads/2020/07/Cafea-boabe-Jacobs-Caffe-Crema-Classico-1Kg-1.jpg',
+        'https://c.cdnmp.net/947378707/p/m/5/kimbo-barista-espresso-napoli-cafea-boabe-1kg~24725.jpg',
+        'https://cdn.bestvalue.eu/media/cache/sylius_shop_product_original/borbone-cafea-cafea-boabe-espresso-intenso-1000-gr-112df136f053cec320d2ff00.jpg',
+        'https://imgproxy-retcat.assets.schwarz/7O4_IvbfKebQfgdGhZRdypQledrNr0v-mIroUBmb8ow/sm:1/w:1278/h:959/cz/M6Ly9wcm9kLWNhd/GFsb2ctbWVkaWEvcm8vMS9FQzZENDFDQTJCQkNGMTdBMERBQjMyMEY/2NjFDQTcxOUUwODU1QjUyMTU4NTY4MEY3ODhGRTEwRDIyQjU1NUZGLmpwZw.jpg',
+        'https://gomagcdn.ro/domains/coffeepoint.ro/files/product/large/doncafe-espresso-intense-cafea-boabe-1-kg-439710.webp',
+        'https://noircoffee.ro/cdn/shop/files/noir-ethiopia-1_2048x.jpg?v=1695807890',
+        'https://gomagcdn.ro/domains/cafea-premium.ro/files/product/medium/dallmayr-ethiopia-cafea-boabe-500g-copie-665376.webp',
+    ];
+
+    return images[productId % images.length];
+};
+
 const getMockBrewing = (roast: number): ProductBrewingMethod[] => {
     const methods = [];
     if (roast <= 2) {
@@ -1435,7 +1453,57 @@ const getMockBrewing = (roast: number): ProductBrewingMethod[] => {
     return methods;
 };
 
+const NAMES = [
+    'Alex Johnson',
+    'Sam Smith',
+    'Taylor Doe',
+    'Jordan Brown',
+    'Casey Lee',
+    'Jamie Wilson',
+    'Riley Miller',
+    'Morgan Davis',
+    'Drew Evans',
+    'Avery Clark',
+];
+
+const COMMENTS = [
+    "Absolutely delicious! Best coffee I've had in years.",
+    'A bit too bitter for my taste, but still good quality.',
+    'Fast delivery and great packaging. The aroma is amazing.',
+    'Perfect morning brew. Highly recommended!',
+    'It was okay, but I expected more given the price.',
+    'Smooth texture and rich flavor. Will buy again.',
+    'Not my favorite, a bit too acidic.',
+    'Five stars! The roast level is exactly as described.',
+    null,
+    'Bought this as a gift and they loved it!',
+];
+
+const getRandomDate = () => {
+    const start = new Date(2023, 0, 1);
+    const end = new Date();
+    const date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+    return date.toISOString();
+};
+
+export const MOCK_REVIEWS: ReviewType[] = Array.from({ length: Math.floor(Math.random() * 1000) }).map((_, index) => ({
+    id: index + 1,
+    productId: Math.floor(Math.random() * 100) + 1,
+    authorName: NAMES[Math.floor(Math.random() * NAMES.length)],
+    rating: Math.floor(Math.random() * 5) + 1,
+    comment: COMMENTS[Math.floor(Math.random() * COMMENTS.length)],
+    isApproved: Math.random() > 0.1,
+    createdAt: getRandomDate(),
+}));
+
 export const PRODUCT_DETAIL: ProductDetail[] = RAW_PRODUCTS.map((product) => {
+    const productReviews = MOCK_REVIEWS.filter((review) => review.productId === product.id);
+
+    const count = productReviews.length;
+
+    const totalStars = productReviews.reduce((sum, review) => sum + review.rating, 0);
+    const avg = count > 0 ? totalStars / count : 0;
+
     return {
         id: product.id,
         name: product.name,
@@ -1443,9 +1511,7 @@ export const PRODUCT_DETAIL: ProductDetail[] = RAW_PRODUCTS.map((product) => {
         stock: product.stock,
         isActive: product.is_active,
         price: product.price,
-        imageUrl:
-            product.image_url ??
-            'https://www.zozocafe.ro/userfiles/f73e7d77-ff3b-4c52-9475-e668bd626300/products/361737637_big.jpg',
+        imageUrl: getMockImages(product.id),
         isBlend: product.is_blend,
 
         specifications: {
@@ -1457,26 +1523,28 @@ export const PRODUCT_DETAIL: ProductDetail[] = RAW_PRODUCTS.map((product) => {
 
         tastes: getMockTastes(product.description),
 
-        averageRating: parseFloat((3.5 + Math.random() * 1.5).toFixed(1)),
-        reviewCount: Math.floor(Math.random() * 200 + 10),
+        averageRating: parseFloat(avg.toFixed(1)),
+        reviewCount: count,
 
         brewingMethods: getMockBrewing(product.roast_level),
     };
 });
 
-export const ALL_PRODUCT_SUMMARY: ProductSummary[] = PRODUCT_DETAIL.map((detail) => ({
-    id: detail.id,
-    name: detail.name,
-    price: detail.price,
-    imageUrl: detail.imageUrl,
-    isBlend: detail.isBlend,
+export const ALL_PRODUCT_SUMMARY: ProductSummary[] = PRODUCT_DETAIL.map((detail) => {
+    return {
+        id: detail.id,
+        name: detail.name,
+        price: detail.price,
+        imageUrl: detail.imageUrl,
+        isBlend: detail.isBlend,
 
-    specifications: {
-        roastLevel: detail.specifications.roastLevel,
-    },
+        specifications: {
+            roastLevel: detail.specifications.roastLevel,
+        },
 
-    tastes: detail.tastes.map((t) => ({ name: t.name, colorCode: t.category.colorCode })),
+        tastes: detail.tastes.map((t) => ({ name: t.name, colorCode: t.category.colorCode })),
 
-    averageRating: detail.averageRating,
-    reviewCount: detail.reviewCount,
-}));
+        averageRating: detail.averageRating,
+        reviewCount: detail.reviewCount,
+    };
+});

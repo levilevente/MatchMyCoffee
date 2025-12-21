@@ -5,6 +5,7 @@ import type { ProductSummary } from '../../types/ProductsType.ts';
 import AddToCartButton from '../common/AddToCartButton.tsx';
 import AddToFavoritesButton from '../common/AddToFavoritesButton.tsx';
 import StarRating from '../common/StarRating.tsx';
+import style from './ProductCard.module.css';
 
 interface ProductTypeProps {
     data: ProductSummary;
@@ -21,7 +22,7 @@ function ProductCard(props: ProductTypeProps) {
                     className="text-decoration-none text-reset"
                     aria-label={`View details for ${data.name}`}
                 >
-                    <Card.Img variant="top" src={data.imageUrl} />
+                    <Card.Img variant="top" src={data.imageUrl} className={style.image} />
                     <Card.Title>{data.name}</Card.Title>
                     <Card.Text>{data.price} $</Card.Text>
                     <div>

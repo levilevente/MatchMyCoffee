@@ -1,5 +1,5 @@
 import type { ProductSummary } from '../../types/ProductsType.ts';
-import ProductCard from '../homepage/ProductCard.tsx';
+import ProductCard from '../common/ProductCard.tsx';
 import style from './ProductGrid.module.css';
 
 interface Props {
