@@ -1,4 +1,4 @@
 package com.matchmycoffee.model.enums;
 
-public class OrderStatus {
+public enum OrderStatus {
 }
