@@ -1,3 +1,4 @@
+import type { BlogPostDetailedType, BlogPostType } from '../types/BlogPostType.ts';
 import type {
     ProductBrewingMethod,
     ProductDetail,
@@ -1548,3 +1549,127 @@ export const ALL_PRODUCT_SUMMARY: ProductSummary[] = PRODUCT_DETAIL.map((detail)
         reviewCount: detail.reviewCount,
     };
 });
+
+export const BLOG_POSTS: BlogPostDetailedType[] = [
+    {
+        id: 1,
+        title: 'The Art of the Pour-Over: How to Brew Better Coffee at Home',
+        authorRole: 'Head Barista',
+        publishedAt: '2024-03-10T09:00:00Z',
+        isPublished: true,
+        content: `
+            <div class="blog-content">
+                <p class="lead">Brewing coffee is more than just a morning routine; it's a ritual. If you want to elevate your cup, the pour-over method is the best place to start.</p>
+                
+                <h2>1. The Ratio Matters</h2>
+                <p>The golden rule for pour-over coffee is the <strong>1:16 ratio</strong>. That means for every 1 gram of coffee, you use 16 grams of water. For a standard mug, try 20g of coffee to 320g of water.</p>
+
+                <h2>2. The Bloom</h2>
+                <p>Don't just pour all the water at once! Pour just enough water to wet the grounds (about 40g) and let it sit for 30 seconds. You will see bubbles rising—this is CO2 escaping. We call this <em>the bloom</em>, and it ensures an even extraction.</p>
+                <img src="https://www.caffeebazzar.ro/cache/img/produse/1-15000/1560/Espressor-Astoria-Loft-Home-Barista_1000x1000.jpg" alt="Roast Levels Illustration" />
+
+                <h2>3. The Pour</h2>
+                <p>Pour the remaining water in slow, concentric circles, avoiding the edges of the filter. Keep the water level consistent. The total brew time should be between 2:30 and 3:00 minutes.</p>
+                
+                <blockquote>"Good coffee is an act of patience."</blockquote>
+            </div>
+        `,
+    },
+    {
+        id: 2,
+        title: 'Oat, Almond, or Dairy? Choosing the Right Milk for Your Latte',
+        authorRole: 'Marketing',
+        publishedAt: '2024-03-12T14:30:00Z',
+        isPublished: true,
+        content: `
+            <div class="blog-content">
+                <p>Gone are the days when whole milk was your only option. Today, the milk alternative market is booming, but how do you know which one pairs best with your espresso?</p>
+                <img src="https://www.caffeebazzar.ro/cache/img/produse/1-15000/1560/Espressor-Astoria-Loft-Home-Barista_1000x1000.jpg" alt="Roast Levels Illustration" />
+
+                <h3>Whole Milk (The Classic)</h3>
+                <p>If you love traditional latte art and a rich, creamy texture, whole dairy milk is still the king. The fat content allows for silky micro-foam that holds its shape perfectly.</p>
+
+                <h3>Oat Milk (The Modern Favorite)</h3>
+                <p>Oat milk has taken the coffee world by storm. It has a <strong>neutral flavor</strong> that doesn't overpower the coffee beans, and it steams surprisingly well. It's our top recommendation for a dairy-free cappuccino.</p>
+
+                <h3>Almond Milk (The Tricky One)</h3>
+                <p>Almond milk can be nutty and delicious, but be careful—it often separates (curdles) in highly acidic coffee due to temperature shock. Ask for a "barista blend" for the best results.</p>
+            </div>
+        `,
+    },
+    {
+        id: 3,
+        title: 'Why Your Grinder Is More Important Than Your Coffee Machine',
+        authorRole: 'Head Roaster',
+        publishedAt: '2024-03-15T08:00:00Z',
+        isPublished: true,
+        content: `
+            <div class="blog-content">
+                <p>Most beginners spend $500 on an espresso machine and $20 on a blade grinder. This is the biggest mistake you can make.</p>
+                
+                <h2>Consistency is Key</h2>
+                <p>A cheap blade grinder chops beans unevenly, resulting in "fines" (dust) and "boulders" (chunks). This leads to coffee that tastes both bitter <em>and</em> sour at the same time.</p>
+                <img src="https://www.caffeebazzar.ro/cache/img/produse/1-15000/1560/Espressor-Astoria-Loft-Home-Barista_1000x1000.jpg" alt="Roast Levels Illustration" />
+
+                <h2>Burr Grinders</h2>
+                <ul>
+                    <li><strong>Uniformity:</strong> They crush beans to a precise size.</li>
+                    <li><strong>Control:</strong> You can dial in the exact setting for French Press (coarse) or Espresso (fine).</li>
+                    <li><strong>Flavor:</strong> You extract the actual notes of the bean, not just generic "coffee" taste.</li>
+                </ul>
+                <p>If you have a budget for upgrades, <strong>upgrade your grinder first.</strong></p>
+            </div>
+        `,
+    },
+    {
+        id: 4,
+        title: 'Understanding Roast Levels: Light vs. Dark',
+        authorRole: 'Marketing',
+        publishedAt: '2024-03-18T10:15:00Z',
+        isPublished: true,
+        content: `
+            <div class="blog-content">
+                <p>Walk into a specialty shop and you'll see bags labeled "Light," "City," or "Vienna." What does it all mean?</p>
+
+                <h3>Light Roast</h3>
+                <p>Light brown in color with no oil on the surface. These beans retain the most caffeine and the original characteristics of the origin (fruity, floral, acidic notes).</p>
+
+                <h3>Medium Roast</h3>
+                <p>The crowd pleaser. Medium brown color with a balanced flavor, aroma, and acidity. This is what we use for our signature <em>House Blend</em>.</p>
+
+                <h3>Dark Roast</h3>
+                <p>Dark brown, often oily surface. The origin flavors are overtaken by the roasting process, resulting in smoky, chocolatey, or nutty flavors. Perfect for those who add milk and sugar.</p>
+                <img src="https://www.caffeebazzar.ro/cache/img/produse/1-15000/1560/Espressor-Astoria-Loft-Home-Barista_1000x1000.jpg" alt="Roast Levels Illustration" />
+
+            </div>
+        `,
+    },
+    {
+        id: 5,
+        title: 'Understanding Roast Levels: Light vs. Dark',
+        authorRole: 'Marketing',
+        publishedAt: '2024-03-18T10:15:00Z',
+        isPublished: false,
+        content: `
+            <div class="blog-content">
+                <p>Walk into a specialty shop and you'll see bags labeled "Light," "City," or "Vienna." What does it all mean?</p>
+
+                <h3>Light Roast</h3>
+                <p>Light brown in color with no oil on the surface. These beans retain the most caffeine and the original characteristics of the origin (fruity, floral, acidic notes).</p>
+
+                <h3>Medium Roast</h3>
+                <p>The crowd pleaser. Medium brown color with a balanced flavor, aroma, and acidity. This is what we use for our signature <em>House Blend</em>.</p>
+
+                <h3>Dark Roast</h3>
+                <p>Dark brown, often oily surface. The origin flavors are overtaken by the roasting process, resulting in smoky, chocolatey, or nutty flavors. Perfect for those who add milk and sugar.</p>
+            </div>
+        `,
+    },
+];
+
+export const ALL_BLOG_POSTS_SUMMARY: BlogPostType[] = BLOG_POSTS.map((post) => ({
+    id: post.id,
+    title: post.title,
+    publishedAt: post.publishedAt,
+    isPublished: post.isPublished,
+}));
