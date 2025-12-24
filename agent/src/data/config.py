@@ -1,4 +1,10 @@
 """
-If any configuration settings are needed for the agent module, 
-they can be defined here.
+Data module configuration.
 """
+
+from src.settings import settings, DBConfig
+
+
+def get_db_config() -> DBConfig:
+    """Get the database configuration."""
+    return settings.db

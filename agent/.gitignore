@@ -524,3 +524,7 @@ MigrationBackup/
 .ionide/
 
 # End of https://www.toptal.com/developers/gitignore/api/python,vs
+
+agent_workflow.png
+**/agent_workflow.png
+out/
