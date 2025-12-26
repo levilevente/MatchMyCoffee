@@ -2,7 +2,7 @@
 This module contains FastAPI endpoints for the agent module.
 """
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -33,7 +33,12 @@ app.add_middleware(
 
 _agent_workflow = create_agent_workflow()
 
-STREAMABLE_NODES = {"introduction", "ask_user_preferences", "ask_user_followup"}
+STREAMABLE_NODES = {
+    "introduction",
+    "ask_user_preferences",
+    "ask_user_followup",
+    "provide_coffee_match",
+}
 
 
 class ChatRequest(BaseModel):
@@ -51,11 +56,9 @@ def is_node_streamable(node_name: str, langgraph_path: list) -> bool:
     """Check if content from this node should be streamed to the client."""
     path_str = str(langgraph_path)
 
-    # Allow if node is directly in streamable set or appears in the path
     if node_name in STREAMABLE_NODES or any(n in path_str for n in STREAMABLE_NODES):
         return True
 
-    # Allow inner "model" node unless it's inside validation
     if node_name == "model" and "validate_user_responses" not in path_str:
         return True
 
@@ -63,8 +66,11 @@ def is_node_streamable(node_name: str, langgraph_path: list) -> bool:
 
 
 @app.get("/health")
-def health_check():
-    return {"status": "healthy"}
+def health_check(response: Response):
+    if _agent_workflow is None:
+        response.status_code = 503
+        return {"status": "unhealthy", "reason": "agent_workflow not loaded"}
+    return {"status": "healthy", "agent_workflow": "loaded"}
 
 
 @app.post("/chat")
@@ -102,6 +108,15 @@ async def chat(request: ChatRequest):
 
                 if send_thinking_status:
                     yield sse_event("status", request.thread_id, status="thinking")
+
+            # Check if the workflow reached the recommendation stage
+            state = await _agent_workflow.aget_state(config)
+            if (
+                state.values.get("user_profile")
+                and state.values["user_profile"].get("state", "").strip().lower()
+                == "ok"
+            ):
+                yield sse_event("recommendation_complete", request.thread_id)
 
             yield sse_event("done", request.thread_id)
 

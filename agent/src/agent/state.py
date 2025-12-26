@@ -7,11 +7,11 @@ from langgraph.graph.message import add_messages
 class UserProfile(TypedDict):
     state: str | None
     brewing_method: str | None
-    min_roast_level: int
-    max_roast_level: int
-    min_acidity: int
-    max_acidity: int
-    target_flavor_keywords: list[str]
+    min_roast_level: int | None
+    max_roast_level: int | None
+    min_acidity: int | None
+    max_acidity: int | None
+    target_flavor_keywords: list[str] | None
     prefer_single_origin: bool | None
 
 

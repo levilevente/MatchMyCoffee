@@ -45,6 +45,7 @@ def get_groq_llm() -> ChatGroq:
             max_tokens=None,
             max_retries=2,
             timeout=None,
+            reasoning_format="hidden",
         )
         logger.info("Groq LLM initialized successfully.")
         return llm

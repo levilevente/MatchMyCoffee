@@ -12,6 +12,7 @@ from .nodes import (
     ask_user_preferences,
     validate_user_responses,
     ask_user_followup,
+    provide_coffee_match,
 )
 
 logger = logging.getLogger(__name__)
@@ -32,6 +33,14 @@ def _route_after_ask(state: WorkflowState) -> str:
     return "validate_user_responses"
 
 
+def _route_after_validation(state: WorkflowState) -> str:
+    """Route based on whether user profile needs followup."""
+    profile_state = state.get("user_profile", {}).get("state", "")
+    if profile_state.strip().lower() == "ok":
+        return "provide_coffee_match"
+    return "ask_user_followup"
+
+
 def _build_graph() -> StateGraph:
     graph = StateGraph(WorkflowState)
 
@@ -39,12 +48,14 @@ def _build_graph() -> StateGraph:
     graph.add_node("ask_user_preferences", ask_user_preferences)
     graph.add_node("validate_user_responses", validate_user_responses)
     graph.add_node("ask_user_followup", ask_user_followup)
+    graph.add_node("provide_coffee_match", provide_coffee_match)
 
     graph.add_conditional_edges(START, _route_from_start)
     graph.add_edge("introduction", END)
     graph.add_conditional_edges("ask_user_preferences", _route_after_ask)
-    graph.add_edge("validate_user_responses", "ask_user_followup")
+    graph.add_conditional_edges("validate_user_responses", _route_after_validation)
     graph.add_edge("ask_user_followup", END)
+    graph.add_edge("provide_coffee_match", END)
 
     return graph
 

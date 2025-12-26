@@ -528,3 +528,4 @@ MigrationBackup/
 agent_workflow.png
 **/agent_workflow.png
 out/
+**/.DS_Store

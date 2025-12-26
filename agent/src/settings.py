@@ -56,6 +56,20 @@ class DBConfig(BaseSettings):
     username: str
     password: SecretStr
     database_name: str
+    find_coffee_match_query_path: FilePath = None
+    find_coffee_match_query: Optional[str] = None
+
+    @model_validator(mode="after")
+    def load_queries(self):
+        if self.find_coffee_match_query_path:
+            self.find_coffee_match_query = self.find_coffee_match_query_path.read_text(
+                encoding="utf-8"
+            ).strip()
+
+        if not self.find_coffee_match_query:
+            raise ValueError("find_coffee_match_query is required")
+
+        return self
 
 
 class UvicornConfig(BaseSettings):

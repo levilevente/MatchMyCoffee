@@ -12,7 +12,6 @@
 venv/
 env/
 ENV/
-.env/
 env.bak/
 venv.bak/
 __pycache__/
