@@ -21,7 +21,7 @@ This module serves as an **API for recommending coffee** by:
 
 The agent module follows a **clean architecture** pattern with clear separation of concerns:
 
-```
+```sh
 src/
 ├── api.py              # FastAPI routes and endpoint definitions
 ├── agent/              # LangGraph workflow components
@@ -89,12 +89,41 @@ src/
 
 The module is **Docker Compose ready** for seamless integration:
 
-```bash
-# Build the container
-docker build -t matchmycoffee-agent .
+### Build & Run Commands
 
+```bash
+# Build the Docker image
+docker build -t mmc-agent .
+
+# Run container with auto-remove (stops and removes when done)
+docker run --rm -p 8000:8000 --name mmc-agent-instance mmc-agent
+
+# Run container detached with auto-remove
+docker run -d --rm -p 8000:8000 --name mmc-agent-instance mmc-agent
+
+# Run with environment file
+docker run --rm -p 8000:8000 --env-file .env --name mmc-agent-instance mmc-agent
+
+# Stop the running container (auto-removed due to --rm flag)
+docker stop mmc-agent-instance
+```
+
+### Docker Compose Integration
+
+```bash
 # Run with docker-compose (from project root)
 docker-compose up agent
+
+# Run in detached mode
+docker-compose up -d agent
+```
+
+### Health Check
+
+The Docker container includes a built-in health check that monitors the `/health` endpoint every 30 seconds. You can check container health status with:
+
+```bash
+docker inspect --format='{{.State.Health.Status}}' mmc-agent-instance
 ```
 
 ## 🧰 Development Workflow
@@ -128,7 +157,7 @@ uv sync --group dev
 pylint --rcfile .pylintrc .
 
 # Start development server
-uvicorn src.api:app --reload --port 8001
+uvicorn src.api:app --reload --port 8000
 
 # Run tests (when implemented)
 pytest tests/
@@ -146,9 +175,12 @@ pytest tests/
 
 - **FastAPI** (≥0.124.4): Modern web framework for building APIs
 - **LangGraph** (≥1.0.5): Orchestration framework for LLM workflows
-- **AsyncPG** (≥0.31.0): Async PostgreSQL driver for Python
+- **LangChain Groq** (≥1.1.1): Groq LLM integration
+- **LangChain Google GenAI** (≥1.2.0): Google AI integration
+- **Psycopg** (≥3.3.2): PostgreSQL driver for Python
 - **Pydantic** (≥2.12.5): Data validation using Python type annotations
-- **python-dotenv** (≥1.2.1): Environment variable management
+- **Pydantic Settings** (≥2.12.0): Settings management with Pydantic
+- **Uvicorn** (≥0.38.0): ASGI server for FastAPI
 
 ### Development Dependencies
 
@@ -167,10 +199,28 @@ The module uses environment variables for configuration. See `.env.example` for 
 
 When running, the agent exposes the following endpoints:
 
-- `GET /health` - Health check endpoint
-- `POST /recommend` - Get coffee recommendations
-- `POST /analyze-taste` - Analyze user taste profile
-- `GET /docs` - Interactive API documentation (FastAPI auto-generated)
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/health` | GET | Health check endpoint - returns agent workflow status |
+| `/chat` | POST | SSE streaming chat endpoint for coffee recommendations |
+| `/docs` | GET | Interactive API documentation (FastAPI auto-generated) |
+
+### Chat Endpoint
+
+The `/chat` endpoint uses Server-Sent Events (SSE) for real-time streaming responses:
+
+```bash
+curl -X POST http://localhost:8000/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Hello", "thread_id": "user-123"}'
+```
+
+### Health Check
+
+```bash
+curl http://localhost:8000/health
+# Response: {"status": "healthy", "agent_workflow": "loaded"}
+```
 
 ## 🤝 Integration Points
 
