@@ -1,0 +1,58 @@
+
+name: AGENT CI
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'feature/**'
+      - 'bug/**'
+    paths:
+      - 'agent/**'
+  pull_request:
+    branches:
+      - main
+      - develop
+      - 'feature/**'
+      - 'bug/**'
+    paths:
+      - 'agent/**'
+
+jobs:
+  check:
+    name: Validation & Build
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./agent
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.13
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.13"
+
+    - name: Setup uv
+      uses: astral-sh/setup-uv@v7
+      with:
+        enable-cache: true
+        version: "0.9.18"
+        
+    - name: Install dependencies
+      run: uv sync --all-groups
+
+    - name: Lint with pylint
+      run: uv run pylint --rcfile .pylintrc src/
+
+    - name: Build package
+      run: uv build
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: matchmycoffee-agent-build
+        path: agent/dist/
