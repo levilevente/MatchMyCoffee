@@ -11,7 +11,7 @@ import {
     PRODUCT_DETAIL,
 } from '../utils/DummyProducts.ts';
 
-export const nasaEpicApi = axios.create({
+export const mainAPI = axios.create({
     baseURL: `https://localhost:8080/`,
     headers: {
         Accept: 'application/json',

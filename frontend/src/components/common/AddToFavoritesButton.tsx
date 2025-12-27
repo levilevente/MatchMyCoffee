@@ -30,6 +30,8 @@ function AddToFavoritesButton(props: AddToFavoritesButtonProps) {
             </Button>
         );
     }
+
+    return null;
 }
 
 export default AddToFavoritesButton;

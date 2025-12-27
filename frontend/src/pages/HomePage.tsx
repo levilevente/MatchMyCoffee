@@ -8,10 +8,10 @@ import style from './HomePage.module.css';
 function HomePage() {
     const [products, setProducts] = useState<ProductSummary[]>([]);
 
-    useState(() => {
+    if (products.length === 0) {
         const fetchedProducts = getCoffees();
         setProducts(fetchedProducts);
-    });
+    }
 
     return (
         <div className={style.container}>

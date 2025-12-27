@@ -39,6 +39,8 @@ function AddToCartButton(props: AddToCartButtonProps) {
             );
         }
     }
+
+    return null;
 }
 
 export default AddToCartButton;
