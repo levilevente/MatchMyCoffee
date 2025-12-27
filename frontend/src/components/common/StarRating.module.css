@@ -1,0 +1,37 @@
+.container {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stars {
+    display: flex;
+    gap: 2px;
+}
+
+.starFilled {
+    fill: var(--color-secondary);
+}
+
+.starHalf {
+    fill: url(#halfGradient);
+}
+
+.stopFilled {
+    stop-color: var(--color-secondary);
+}
+
+.stopEmpty {
+    stop-color: var(--color-outline);
+}
+
+.starEmpty {
+    fill: var(--color-outline);
+}
+
+.count {
+    font-family: var(--font-body), sans-serif;
+    font-size: 0.9rem;
+    color: var(--color-text-main);
+    font-weight: 500;
+}

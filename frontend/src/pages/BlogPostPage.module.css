@@ -1,0 +1,50 @@
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.subHeader {
+    font-size: 2.5em;
+    margin-bottom: 40px;
+    font-family: var(--font-heading), fantasy;
+    color: var(--color-primary);
+}
+
+.content {
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: var(--color-text-main);
+    margin-bottom: 20px;
+}
+
+img {
+    width: auto;
+    height: 400px;
+    margin: 20px 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 10px;
+    }
+
+    .subHeader {
+        font-size: 2em;
+        margin-bottom: 30px;
+    }
+
+    .content {
+        font-size: 1em;
+    }
+
+    img {
+        height: 250px;
+    }
+}

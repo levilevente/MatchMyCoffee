@@ -1,0 +1,38 @@
+.paginationContainer {
+    margin-top: 4rem;
+    display: flex;
+    justify-content: center;
+    padding: 1em 0;
+    width: 100%;
+    color: var(--color-text-main);
+}
+
+.paginationContainer :global(.page-link) {
+    color: var(--color-text-main);
+    background-color: var(--color-text-light);
+    border-color: var(--color-text-light);
+    border-radius: 0;
+}
+
+.paginationContainer :global(.page-link:hover) {
+    color: var(--color-text-main);
+    background-color: var(--color-secondary);
+    border-color: var(--color-text-light);
+    z-index: 2;
+}
+
+.paginationContainer :global(.page-item.active .page-link) {
+    background-color: var(--color-text-main) !important;
+    border-color: var(--color-text-main) !important;
+    color: var(--color-text-light) !important;
+}
+
+.paginationContainer :global(.page-item.disabled .page-link) {
+    color: #6c757d;
+    background-color: var(--color-text-light);
+    border-color: var(--color-text-light);
+}
+
+.paginationContainer :global(.page-link:focus) {
+    box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.25);
+}
