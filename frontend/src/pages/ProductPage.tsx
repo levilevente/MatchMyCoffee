@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Image, Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
@@ -5,13 +6,14 @@ import { useParams } from 'react-router';
 import AddToCartButton from '../components/common/AddToCartButton.tsx';
 import AddToFavoritesButton from '../components/common/AddToFavoritesButton.tsx';
 import StarRating from '../components/common/StarRating.tsx';
+import AddReview from '../components/product/AddReview.tsx';
 import { getCoffeeById, getProductReviews } from '../services/main.api.ts';
 import style from './ProductPage.module.css';
 
 function ProductPage() {
     const { productId } = useParams();
     const product = getCoffeeById(productId ? parseInt(productId) : 0);
-    const reviews = getProductReviews(productId ? parseInt(productId) : 0);
+    const [reviews, setReviews] = useState(getProductReviews(productId ? parseInt(productId) : 0));
 
     const { t } = useTranslation();
 
@@ -93,6 +95,7 @@ function ProductPage() {
                 <section id={'reviews'}>
                     <div className={style.reviewsSection}>
                         <h2>{t('product.reviews')}</h2>
+                        <AddReview setReviews={setReviews} productId={product.id} />
                         {reviews.length !== 0 ? (
                             reviews.map((review) => (
                                 <div key={review.id} className={style.reviewCard}>
