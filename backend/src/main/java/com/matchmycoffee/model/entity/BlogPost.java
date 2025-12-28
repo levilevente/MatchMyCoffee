@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -24,7 +26,7 @@ public class BlogPost extends BaseEntity {
     private String authorRole;
 
     @Column(name = "published_at", columnDefinition = "TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP")
-    private String publishedAt;
+    private LocalDateTime publishedAt;
 
     @Column(name = "is_published", columnDefinition = "BOOLEAN DEFAULT TRUE")
     private Boolean isPublished;

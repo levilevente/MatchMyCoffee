@@ -8,9 +8,9 @@ import lombok.ToString;
 @Entity
 @Getter
 @Setter
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = "id")
 @Table(name = "product_origins")
-public class ProductOrigin {
+public class ProductOrigin extends AbstractModel {
 
     @EmbeddedId
     private ProductOriginId id = new ProductOriginId();

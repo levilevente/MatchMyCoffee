@@ -5,8 +5,8 @@ import com.matchmycoffee.model.entity.Product;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public abstract class ProductMapper {
-    public abstract ProductSummaryResponse toProductSummaryResponse(
+public interface ProductMapper {
+    ProductSummaryResponse toProductSummaryResponse(
             Product product,
             Double averageRating,
             Integer reviewCount
