@@ -16,10 +16,6 @@ public interface ProductService {
 
     Page<Product> getAllProducts(Pageable pageable) throws BusinessException;
 
-    Page<Integer> getAllProductsReviewCount(Pageable pageable) throws BusinessException;
-
-    Page<Double> getAllProductsAverageRatings(Pageable pageable) throws BusinessException;
-
     Product createProduct(Product product);
 
     Product updateProduct(Long id, Product productDetails) throws ProductNotAvailableException;

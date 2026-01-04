@@ -44,4 +44,10 @@ public class Product extends BaseEntity {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
+
+    @Transient
+    private Long calculatedReviewCount;
+
+    @Transient
+    private Double calculatedAverageRating;
 }

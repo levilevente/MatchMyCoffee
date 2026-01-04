@@ -11,9 +11,6 @@ import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Slf4j
 @RestController
 @RequestMapping("/products")
@@ -35,27 +32,8 @@ public class ProductController {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
 
         Page<Product> productPage = productService.getAllProducts(pageable);
-        Page<Integer> productReviewCountPage = productService.getAllProductsReviewCount(pageable);
-        Page<Double> productAverageRatingsPage = productService.getAllProductsAverageRatings(pageable);
 
-        var products = productPage.getContent();
-        var reviewCounts = productReviewCountPage.getContent();
-        var averageRatings = productAverageRatingsPage.getContent();
-
-        List<ProductSummaryResponse> responseList = new ArrayList<>();
-
-        for (int i = 0; i < products.size(); i++) {
-            Integer count = (i < reviewCounts.size()) ? reviewCounts.get(i) : 0;
-            Double rating = (i < averageRatings.size()) ? averageRatings.get(i) : 0.0;
-
-            responseList.add(productMapper.toProductSummaryResponse(products.get(i), rating, count));
-        }
-
-        Page<ProductSummaryResponse> responsePage = new PageImpl<>(
-                responseList,
-                pageable,
-                productPage.getTotalElements()
-        );
+        Page<ProductSummaryResponse> responsePage = productPage.map(productMapper::toProductSummaryResponse);
 
         return ResponseEntity.ok(responsePage);
     }

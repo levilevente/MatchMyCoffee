@@ -1,9 +1,7 @@
 package com.matchmycoffee.service.impl;
 
 import com.matchmycoffee.model.entity.Product;
-import com.matchmycoffee.model.entity.Review;
 import com.matchmycoffee.repository.ProductRepository;
-import com.matchmycoffee.repository.ReviewRepository;
 import com.matchmycoffee.service.ProductService;
 import com.matchmycoffee.service.exception.BusinessException;
 import com.matchmycoffee.service.exception.ProductNotAvailableException;
@@ -14,11 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -27,9 +23,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductRepository productRepository;
-
-    @Autowired
-    private ReviewRepository reviewRepository;
 
     @Override
     public Product getProductById(Long id) throws ProductNotAvailableException {
@@ -55,7 +48,18 @@ public class ProductServiceImpl implements ProductService {
                 pageable.getPageNumber(),
                 pageable.getPageSize()
         );
-        return productRepository.findAll(pageable);
+
+        Page<Object[]> productDataPage = productRepository.findAllWithReviewStats(pageable);
+        return productDataPage.map(objects -> {
+            Product product = (Product) objects[0];
+            Long reviewCount = (Long) objects[1];
+            Double averageRating = (Double) objects[2];
+
+            product.setCalculatedReviewCount((long) (reviewCount != null ? reviewCount.intValue() : 0));
+            product.setCalculatedAverageRating((double) (averageRating != null ? averageRating.floatValue() : 0.0f));
+
+            return product;
+        });
     }
 
     @Override
@@ -112,55 +116,5 @@ public class ProductServiceImpl implements ProductService {
             log.error("Optimistic locking failure while deleting product with id: {}", id, e);
             throw new ServiceException("Error deleting product due to concurrent modification", e);
         }
-    }
-
-    @Override
-    public Page<Integer> getAllProductsReviewCount(Pageable pageable) throws BusinessException {
-        log.info(
-                "Fetching all products' review counts with pagination: page number {}, page size {}",
-                pageable.getPageNumber(),
-                pageable.getPageSize()
-        );
-        List<Product> products = productRepository.findAll(pageable).getContent();
-        List<Integer> reviewCounts = products.stream()
-                .map(product -> reviewRepository.findAllByProductId(product.getId()).size())
-                .toList();
-        for (int i = 0; i < products.size(); i++) {
-            log.info("Product ID: {}, Review Count: {}", products.get(i).getId(), reviewCounts.get(i));
-        }
-        return PageableExecutionUtils.getPage(
-                reviewCounts,
-                pageable,
-                productRepository::count
-        );
-    }
-
-    @Override
-    public Page<Double> getAllProductsAverageRatings(Pageable pageable) throws BusinessException {
-        log.info(
-                "Fetching all products' average ratings with pagination: page number {}, page size {}",
-                pageable.getPageNumber(),
-                pageable.getPageSize()
-        );
-        List<Product> products = productRepository.findAll(pageable).getContent();
-
-        List<Double> averageRatings = products.stream()
-                .map(product -> {
-                    if (product.getReviews() == null || product.getReviews().isEmpty()) {
-                        return 0.0;
-                    }
-                    double avg = product.getReviews().stream()
-                            .mapToInt(Review::getRating)
-                            .average()
-                            .orElse(0.0);
-                    return Math.round(avg * 100.0) / 100.0;
-                })
-                .toList();
-
-        return PageableExecutionUtils.getPage(
-                averageRatings,
-                pageable,
-                productRepository::count
-        );
     }
 }
