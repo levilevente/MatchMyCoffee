@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -28,7 +29,24 @@ public class ProductServiceImpl implements ProductService {
     public Product getProductById(Long id) throws ProductNotAvailableException {
         log.info("Getting product by id: {}", id);
         try {
-            return productRepository.getReferenceById(id);
+            Product product = productRepository.findByIdWithDetails(id)
+                    .orElseThrow(() -> {
+                        log.error("Product with id {} not found", id);
+                        return new ProductNotAvailableException("Product not found!");
+                    });
+
+            List<Object[]> statsList = productRepository.findProductStats(id);
+
+            if (!statsList.isEmpty()) {
+                Object[] row = statsList.get(0); // Unwrap the first row
+                Long count = (Long) row[0];
+                Double avg = (row[1] != null) ? (Double) row[1] : 0.0;
+
+                product.setCalculatedReviewCount(count);
+                product.setCalculatedAverageRating(avg);
+            }
+
+            return product;
         } catch (EntityNotFoundException e) {
             log.error("Product with id {} not found", id, e);
             throw new ProductNotAvailableException("Product not found!", e);
@@ -74,11 +92,6 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public Product updateProduct(Long id, Product productDetails) throws ProductNotAvailableException {
         try {
-            if (!productRepository.existsById(id)) {
-                log.error("Product with id {} not found for update", id);
-                throw new ProductNotAvailableException("Product not found!");
-            }
-
             Optional<Product> product = productRepository.findById(id);
 
             if (product.isEmpty()) {

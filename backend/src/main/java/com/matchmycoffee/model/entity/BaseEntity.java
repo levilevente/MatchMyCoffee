@@ -11,8 +11,8 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public abstract class BaseEntity extends AbstractModel {
 
-    @Column
     @Id
+    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 }

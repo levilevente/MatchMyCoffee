@@ -10,30 +10,71 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.time.Instant;
+
 @ControllerAdvice
 @Slf4j
 public class ValidationErrorHandler {
+    private ErrorResponse buildErrorResponse(HttpStatus status, String message) {
+        return new ErrorResponse(
+                Instant.now(),
+                status.value(),
+                status.getReasonPhrase(),
+                message
+        );
+    }
+
     @ExceptionHandler(BusinessException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
-    public final String handleBusinessException(BusinessException e) {
+    public final ErrorResponse handleBusinessException(BusinessException e) {
         log.error("Exception occurred", e);
-        return "An internal server error occurred.";
+        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An internal server error occurred.");
     }
 
     @ExceptionHandler(ServiceException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
-    public final String handleServiceException(ServiceException e) {
+    public final ErrorResponse handleServiceException(ServiceException e) {
         log.error("ServiceException occurred", e);
-        return "An internal server error occurred.";
+        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An internal server error occurred.");
     }
 
     @ExceptionHandler(ProductNotAvailableException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public final String handleProductNotAvailableException(ProductNotAvailableException e) {
+    public final ErrorResponse handleProductNotAvailableException(ProductNotAvailableException e) {
         log.debug("ProductNotAvailableException occurred", e);
-        return e.getMessage();
+        return buildErrorResponse(HttpStatus.NOT_FOUND, e.getMessage());
+    }
+
+    public static class ErrorResponse {
+        private final Instant timestamp;
+        private final int status;
+        private final String error;
+        private final String message;
+
+        public ErrorResponse(Instant timestamp, int status, String error, String message) {
+            this.timestamp = timestamp;
+            this.status = status;
+            this.error = error;
+            this.message = message;
+        }
+
+        public Instant getTimestamp() {
+            return timestamp;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+
+        public String getError() {
+            return error;
+        }
+
+        public String getMessage() {
+            return message;
+        }
     }
 }

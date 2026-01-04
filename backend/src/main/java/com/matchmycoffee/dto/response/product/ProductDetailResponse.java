@@ -1,4 +1,23 @@
 package com.matchmycoffee.dto.response.product;
 
-public class ProductDetailResponse {
+import com.matchmycoffee.dto.response.BrewingMethodResponse;
+import com.matchmycoffee.dto.response.OriginResponse;
+import com.matchmycoffee.dto.response.TasteResponse;
+import lombok.*;
+
+import java.util.List;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@ToString
+public class ProductDetailResponse extends ProductSummaryResponse {
+    private Boolean isActive;
+
+    private ProductSpecifications specifications;
+
+    private List<OriginResponse> origins;
+    private List<TasteResponse> tastes;
+    private List<BrewingMethodResponse> brewingMethods;
 }

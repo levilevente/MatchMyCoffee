@@ -9,7 +9,7 @@ import lombok.ToString;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(callSuper = true)
+@ToString
 public class ProductSummaryResponse {
     private Long id;
     private String name;

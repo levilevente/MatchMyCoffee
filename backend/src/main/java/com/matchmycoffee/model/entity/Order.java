@@ -1,9 +1,7 @@
 package com.matchmycoffee.model.entity;
 
 import com.matchmycoffee.model.enums.OrderStatus;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -30,6 +28,7 @@ public class Order extends BaseEntity {
             length = 20,
             columnDefinition = "VARCHAR(20) DEFAULT 'PENDING'"
     )
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
     @Column(name = "customer_email", nullable = false, length = 150)
