@@ -3,11 +3,16 @@ This module defines the application settings using Pydantic's BaseSettings.
 """
 
 from typing import Optional
-from pydantic import Field, SecretStr, FilePath, model_validator
+
+from pydantic import Field, FilePath, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class LLMConfig(BaseSettings):
+    """
+    Configuration settings for the Language Model (LLM).
+    """
+
     model_config = SettingsConfigDict(
         env_prefix="LLM_",
         env_file=".env",
@@ -31,9 +36,11 @@ class LLMConfig(BaseSettings):
                 encoding="utf-8"
             ).strip()
         if self.validator_system_prompt_path:
-            self.validator_system_prompt = self.validator_system_prompt_path.read_text(
-                encoding="utf-8"
-            ).strip()
+            self.validator_system_prompt = (
+                self.validator_system_prompt_path.read_text(
+                    encoding="utf-8"
+                ).strip()
+            )
 
         if not self.system_prompt:
             raise ValueError("system_prompt is required")
@@ -44,6 +51,10 @@ class LLMConfig(BaseSettings):
 
 
 class DBConfig(BaseSettings):
+    """
+    Configuration settings for the Database connection.
+    """
+
     model_config = SettingsConfigDict(
         env_prefix="DB_",
         env_file=".env",
@@ -62,9 +73,11 @@ class DBConfig(BaseSettings):
     @model_validator(mode="after")
     def load_queries(self):
         if self.find_coffee_match_query_path:
-            self.find_coffee_match_query = self.find_coffee_match_query_path.read_text(
-                encoding="utf-8"
-            ).strip()
+            self.find_coffee_match_query = (
+                self.find_coffee_match_query_path.read_text(
+                    encoding="utf-8"
+                ).strip()
+            )
 
         if not self.find_coffee_match_query:
             raise ValueError("find_coffee_match_query is required")
@@ -73,6 +86,10 @@ class DBConfig(BaseSettings):
 
 
 class UvicornConfig(BaseSettings):
+    """
+    Configuration settings for the Uvicorn server.
+    """
+
     model_config = SettingsConfigDict(
         env_prefix="UVICORN_",
         env_file=".env",
@@ -88,6 +105,10 @@ class UvicornConfig(BaseSettings):
 
 
 class FastAPIConfig(BaseSettings):
+    """
+    Configuration settings for the FastAPI application.
+    """
+
     model_config = SettingsConfigDict(
         env_prefix="FASTAPI_",
         env_file=".env",
@@ -105,6 +126,10 @@ class FastAPIConfig(BaseSettings):
 
 
 class LogConfig(BaseSettings):
+    """
+    Configuration settings for logging.
+    """
+
     model_config = SettingsConfigDict(
         env_prefix="LOG_",
         env_file=".env",
@@ -117,6 +142,10 @@ class LogConfig(BaseSettings):
 
 
 class OtherConfig(BaseSettings):
+    """
+    Other miscellaneous configuration settings.
+    """
+
     model_config = SettingsConfigDict(
         env_prefix="OTHER_",
         env_file=".env",
@@ -128,7 +157,9 @@ class OtherConfig(BaseSettings):
 
 
 class Settings(BaseSettings):
-    """Application settings container."""
+    """
+    Application settings container.
+    """
 
     model_config = SettingsConfigDict(
         env_file=".env",

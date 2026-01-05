@@ -2,6 +2,9 @@
     "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.formatOnSave": true,
     "pylint.args": [
-        "\"pylint.args\": [\"--rcfile=.pylintrc\"]"
+        "--rcfile=.pylintrc"
+    ],
+    "black-formatter.args": [
+        "-l80"
     ]
 }

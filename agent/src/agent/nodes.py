@@ -1,18 +1,27 @@
+"""
+Module defining workflow nodes for the coffee recommendation agent.
+"""
+
 import logging
 
 from langchain_core.messages import SystemMessage
 
-from .state import WorkflowState
-from .agent import get_agent, get_validator_agent
 from data.database import find_coffee_match
+
+from .agent import get_agent, get_validator_agent
+from .state import WorkflowState
 
 logger = logging.getLogger(__name__)
 
 QUESTIONS = [
     "How do you usually prepare your coffee at home?",
-    "How do you drink it? Pure black, with a splash of milk/cream, or heavily mixed (like lattes and cappuccinos)?",
-    "Imagine your perfect morning cup. Which set of flavors sounds most appealing to you right now?",
-    "How adventurous are you feeling? Do you want a classic 'coffee that tastes like coffee', or are you looking for something funky and experimental?",
+    "How do you drink it? Pure black, with a splash of milk/cream, \
+        or heavily mixed (like lattes and cappuccinos)?",
+    "Imagine your perfect morning cup. \
+        Which set of flavors sounds most appealing to you right now?",
+    "How adventurous are you feeling? \
+        Do you want a classic 'coffee that tastes like coffee', \
+        or are you looking for something funky and experimental?",
 ]
 
 INTRO_PROMPT = """
@@ -24,9 +33,11 @@ Then, naturally transition to asking this first question: '{question}'
 """
 
 QUESTION_PROMPT = """
-Ask the user this question: '{question}'. Introduce it naturally based on the conversation so far. 
+Ask the user this question: '{question}'. 
+Introduce it naturally based on the conversation so far. 
 Do not mix in any other questions or information. Ask one question at a time. 
-Use tools to get brewing methods and taste categories to give examples and help. Keep it friendly and engaging."""
+Use tools to get brewing methods and taste categories to give examples and help. 
+Keep it friendly and engaging."""
 
 FOLLOWUP_PROMPT = """
 The user's previous answer didn't quite answer the question. 
@@ -45,11 +56,13 @@ Here are the matching coffee products from the database you can choose from:
 
 def _invoke_agent_with_system_prompt(messages: list, prompt: str) -> dict:
     agent = get_agent()
-    response = agent.invoke({"messages": [SystemMessage(content=prompt)] + messages})
+    response = agent.invoke(
+        {"messages": [SystemMessage(content=prompt)] + messages}
+    )
     return response["messages"][-1]
 
 
-def introduction(state: WorkflowState) -> dict:
+def introduction(_: WorkflowState) -> dict:
     prompt = INTRO_PROMPT.format(question=QUESTIONS[0])
     response = _invoke_agent_with_system_prompt([], prompt)
     return {"messages": [response], "current_question_index": 1}
@@ -69,7 +82,7 @@ def ask_user_preferences(state: WorkflowState) -> dict:
 def validate_user_responses(state: WorkflowState) -> dict:
     agent = get_validator_agent()
     response = agent.invoke({"messages": state["messages"]})
-    logger.info(f"Validator agent response: {response}")
+    logger.info("Validator agent response: %s", response)
     return {
         "messages": [response["messages"][-1]],
         "user_profile": response["structured_response"],
@@ -77,14 +90,26 @@ def validate_user_responses(state: WorkflowState) -> dict:
 
 
 def ask_user_followup(state: WorkflowState) -> dict:
-    profile_state = state["user_profile"]["state"]
+    profile_state = None
+
+    try:
+        profile_state = state["user_profile"]["state"]
+    except (KeyError, TypeError):
+        logger.error(
+            "Invalid user_profile: %s",
+            state.get("user_profile"),
+        )
+        return {}
+
+    if not isinstance(profile_state, str):
+        return {}
 
     if profile_state.strip().lower() == "ok":
         return {}
 
     prompt = FOLLOWUP_PROMPT.format(issue=profile_state)
     response = _invoke_agent_with_system_prompt(state["messages"], prompt)
-    logger.info(f"Followup response: {response}")
+    logger.info("Followup response: %s", response)
     return {"messages": [response]}
 
 

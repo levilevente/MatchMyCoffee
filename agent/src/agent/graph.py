@@ -1,19 +1,23 @@
-import os
-import logging
+"""
+Defines the agent workflow graph for MatchMyCoffee.
+"""
 
-from langgraph.graph import StateGraph, START, END
-from langgraph.checkpoint.memory import MemorySaver
+import logging
+import os
+
+from langgraph.graph import END, START, StateGraph
 
 from settings import settings
-from .state import WorkflowState
+
 from .nodes import (
     QUESTIONS,
-    introduction,
-    ask_user_preferences,
-    validate_user_responses,
     ask_user_followup,
+    ask_user_preferences,
+    introduction,
     provide_coffee_match,
+    validate_user_responses,
 )
+from .state import WorkflowState
 
 logger = logging.getLogger(__name__)
 
@@ -53,7 +57,9 @@ def _build_graph() -> StateGraph:
     graph.add_conditional_edges(START, _route_from_start)
     graph.add_edge("introduction", END)
     graph.add_conditional_edges("ask_user_preferences", _route_after_ask)
-    graph.add_conditional_edges("validate_user_responses", _route_after_validation)
+    graph.add_conditional_edges(
+        "validate_user_responses", _route_after_validation
+    )
     graph.add_edge("ask_user_followup", END)
     graph.add_edge("provide_coffee_match", END)
 
@@ -67,13 +73,14 @@ def _save_graph_image(workflow) -> None:
         with open("out/agent_workflow.png", "wb") as f:
             f.write(image_data)
         logger.info("Workflow graph saved as out/agent_workflow.png")
-    except Exception as e:
-        logger.error(f"Failed to draw workflow graph: {e}")
+    except FileNotFoundError as e:
+        logger.error("Failed to draw workflow graph: %s", str(e))
 
 
-def create_agent_workflow():
+def create_agent_workflow(checkpointer=None):
     graph = _build_graph()
-    workflow = graph.compile(checkpointer=MemorySaver())
+
+    workflow = graph.compile(checkpointer=checkpointer)
 
     if settings.other.draw_graph:
         _save_graph_image(workflow)

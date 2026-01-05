@@ -2,17 +2,18 @@
 This module contains the tool calling agent's configuration.
 """
 
-from langchain.agents import create_agent as create_langchain_agent
-from settings import settings
 import logging
+
+from langchain.agents import create_agent as create_langchain_agent
+
+from data.database import get_brewing_methods as db_get_brewing_methods
+from data.database import get_taste_categories as db_get_taste_categories
+from settings import settings
+
 from .exceptions import WorkflowError
 from .llm_config import get_llm
 from .state import UserProfile
-from .tools import get_taste_categories, get_brewing_methods
-from data.database import (
-    get_taste_categories as db_get_taste_categories,
-    get_brewing_methods as db_get_brewing_methods,
-)
+from .tools import get_brewing_methods, get_taste_categories
 
 logger = logging.getLogger(__name__)
 
@@ -34,10 +35,16 @@ def create_agent():
             system_prompt=system_prompt,
         )
         logger.info(
-            f"Agent created successfully, with model: {settings.llm.model_name}, tools: {[tool.name for tool in tools]}, system_prompt: {'yes' if system_prompt else 'no'}."
+            "Agent created successfully, \
+                with model: %s, \
+                tools: %s, \
+                system_prompt: %s.",
+            settings.llm.model_name,
+            [tool.name for tool in tools],
+            "yes" if system_prompt else "no",
         )
     except Exception as e:
-        logger.error(f"Failed to create agent: {e}")
+        logger.error("Failed to create agent: %s", str(e))
         raise WorkflowError(f"Failed to create agent: {e}") from e
 
 
@@ -67,11 +74,16 @@ def create_validator_agent():
             response_format=UserProfile,
         )
         logger.info(
-            f"Validator agent created successfully, with model: {settings.llm.model_name}, "
-            f"brewing_methods: {len(brewing_methods)}, taste_categories: {len(taste_categories)}."
+            "Validator agent created successfully, \
+                with model: %s, \
+                brewing_methods: %s, \
+                taste_categories: %s.",
+            settings.llm.model_name,
+            len(brewing_methods),
+            len(taste_categories),
         )
     except Exception as e:
-        logger.error(f"Failed to create validator agent: {e}")
+        logger.error("Failed to create validator agent: %s", str(e))
         raise WorkflowError(f"Failed to create validator agent: {e}") from e
 
 

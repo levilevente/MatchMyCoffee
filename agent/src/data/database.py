@@ -2,56 +2,66 @@
 This module manages the connection with the PostgreSQL database.
 """
 
-import psycopg
-from settings import settings
 import logging
+from contextlib import contextmanager
+
+from psycopg_pool import ConnectionPool
+
+from settings import settings
 
 logger = logging.getLogger(__name__)
 
-_connection = None
+_pool = None
 
 
 def init_db():
-    global _connection
+    global _pool
 
-    if _connection is None:
-        _connection = psycopg.connect(
-            dbname=settings.db.database_name,
-            user=settings.db.username,
-            password=settings.db.password.get_secret_value(),
-            host=settings.db.host,
-            port=settings.db.port,
+    if _pool is None:
+        _pool = ConnectionPool(
+            min_size=1,
+            max_size=10,
+            kwargs={
+                "dbname": settings.db.database_name,
+                "user": settings.db.username,
+                "password": settings.db.password.get_secret_value(),
+                "host": settings.db.host,
+                "port": settings.db.port,
+            },
         )
-    return _connection
+    return _pool
 
 
+@contextmanager
 def get_db_connection():
-    global _connection
+    global _pool
 
-    if _connection is None:
-        return init_db()
-    return _connection
+    if _pool is None:
+        init_db()
+
+    with _pool.connection() as conn:
+        yield conn
 
 
 def close_db():
-    global _connection
+    global _pool
 
-    if _connection is not None:
-        _connection.close()
-        _connection = None
+    if _pool is not None:
+        _pool.close()
+        _pool = None
 
 
-def get_taste_categories() -> list:
+def get_taste_categories() -> dict[str, list[str]]:
     query = """
     SELECT tc.name AS category, t.name AS taste
     FROM taste_categories tc
     JOIN tastes t ON tc.id = t.category_id
     ORDER BY tc.name, t.name;
     """
-    conn = get_db_connection()
-    with conn.cursor() as cur:
-        cur.execute(query)
-        results = cur.fetchall()
+    with get_db_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(query)
+            results = cur.fetchall()
 
     taste_dict = {}
     for category, taste in results:
@@ -63,36 +73,36 @@ def get_taste_categories() -> list:
 
 def get_brewing_methods() -> list:
     query = "SELECT name FROM brewing_methods ORDER BY name;"
-    conn = get_db_connection()
-    with conn.cursor() as cur:
-        cur.execute(query)
-        results = cur.fetchall()
+    with get_db_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(query)
+            results = cur.fetchall()
 
     return [row[0] for row in results]
 
 
-def find_coffee_match(user_profile: dict) -> dict:
+def find_coffee_match(user_profile: dict) -> list[dict]:
     query = settings.db.find_coffee_match_query
 
-    conn = get_db_connection()
-    with conn.cursor() as cur:
-        cur.execute(
-            query,
-            (
-                user_profile["brewing_method"],
-                user_profile["min_roast_level"],
-                user_profile["max_roast_level"],
-                user_profile["min_acidity"],
-                user_profile["max_acidity"],
-                user_profile["target_flavor_keywords"],
+    with get_db_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                query,
                 (
-                    user_profile["prefer_single_origin"]
-                    if user_profile["prefer_single_origin"] is not None
-                    else False
+                    user_profile["brewing_method"],
+                    user_profile["min_roast_level"],
+                    user_profile["max_roast_level"],
+                    user_profile["min_acidity"],
+                    user_profile["max_acidity"],
+                    user_profile["target_flavor_keywords"],
+                    (
+                        user_profile["prefer_single_origin"]
+                        if user_profile["prefer_single_origin"] is not None
+                        else False
+                    ),
                 ),
-            ),
-        )
-        results = cur.fetchall()
+            )
+            results = cur.fetchall()
 
     if results:
         return [

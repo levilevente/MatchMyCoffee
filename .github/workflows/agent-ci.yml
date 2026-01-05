@@ -45,6 +45,18 @@ jobs:
     - name: Install dependencies
       run: uv sync --all-groups
 
+    - name: Format with black
+      run: uv run black -l 80 src/
+
+    - name: Sort imports with isort
+      run: uv run isort src/
+
+    - name: Fix with autopep8
+      run: uv run autopep8 --in-place --recursive src/
+
+    - name: Fix with ruff
+      run: uv run ruff check --fix src/
+
     - name: Lint with pylint
       run: uv run pylint --rcfile .pylintrc src/
 

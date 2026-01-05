@@ -2,7 +2,7 @@
 Data module configuration.
 """
 
-from src.settings import settings, DBConfig
+from src.settings import DBConfig, settings
 
 
 def get_db_config() -> DBConfig:

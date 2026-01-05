@@ -2,25 +2,50 @@
 This module contains FastAPI endpoints for the agent module.
 """
 
-from fastapi import FastAPI, Response
-from fastapi.responses import StreamingResponse
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from langchain_core.messages import HumanMessage
-from settings import settings
-from agent.graph import create_agent_workflow
-from utils.ThinkBlockFilter import ThinkBlockFilter
-import logging
 import json
+import logging
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI, Response
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
+from langchain_core.messages import HumanMessage
+from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
+from pydantic import BaseModel
+
+from agent.graph import create_agent_workflow
+from settings import settings
 
 logging.basicConfig(level=settings.log.level, format=settings.log.format)
 logger = logging.getLogger(__name__)
+
+_agent_workflow = None
+
+
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    global _agent_workflow
+    DB_URI = f"postgresql://{settings.db.username}:{settings.db.password.get_secret_value()}@{settings.db.host}:{settings.db.port}/{settings.db.database_name}?sslmode=disable"
+
+    async with AsyncPostgresSaver.from_conn_string(DB_URI) as checkpointer:
+        await checkpointer.setup()
+        try:
+            _agent_workflow = create_agent_workflow(checkpointer)
+            yield
+        except Exception as exc:
+            logger.error(
+                "Failed to initialize agent workflow during startup: %s", exc
+            )
+            _agent_workflow = None
+            raise exc
+
 
 app = FastAPI(
     debug=settings.fastapi.debug,
     title=settings.fastapi.title,
     description=settings.fastapi.description,
     version=settings.fastapi.version,
+    lifespan=lifespan,
 )
 
 app.add_middleware(
@@ -30,8 +55,6 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
-
-_agent_workflow = create_agent_workflow()
 
 STREAMABLE_NODES = {
     "introduction",
@@ -56,7 +79,9 @@ def is_node_streamable(node_name: str, langgraph_path: list) -> bool:
     """Check if content from this node should be streamed to the client."""
     path_str = str(langgraph_path)
 
-    if node_name in STREAMABLE_NODES or any(n in path_str for n in STREAMABLE_NODES):
+    if node_name in STREAMABLE_NODES or any(
+        n in path_str for n in STREAMABLE_NODES
+    ):
         return True
 
     if node_name == "model" and "validate_user_responses" not in path_str:
@@ -86,42 +111,52 @@ async def chat(request: ChatRequest):
             if request.message
             else {"current_question_index": 0}
         )
-        think_filter = ThinkBlockFilter()
+        current_node = None
 
         try:
-            async for event in _agent_workflow.astream_events(inputs, config=config):
+            async for event in _agent_workflow.astream_events(
+                inputs, config=config
+            ):
                 if event["event"] != "on_chat_model_stream":
                     continue
 
                 metadata = event["metadata"]
                 node_name = metadata["langgraph_node"]
+                current_node = node_name
                 langgraph_path = metadata["langgraph_path"]
                 content = event["data"]["chunk"].content
 
-                if not content or not is_node_streamable(node_name, langgraph_path):
+                if not content or not is_node_streamable(
+                    node_name, langgraph_path
+                ):
                     continue
 
-                chunks, send_thinking_status = think_filter.process(content, node_name)
-
-                for chunk in chunks:
-                    yield sse_event("token", request.thread_id, content=chunk)
-
-                if send_thinking_status:
-                    yield sse_event("status", request.thread_id, status="thinking")
+                yield sse_event("token", request.thread_id, content=content)
 
             # Check if the workflow reached the recommendation stage
             state = await _agent_workflow.aget_state(config)
             if (
                 state.values.get("user_profile")
-                and state.values["user_profile"].get("state", "").strip().lower()
+                and state.values["user_profile"]
+                .get("state", "")
+                .strip()
+                .lower()
                 == "ok"
             ):
                 yield sse_event("recommendation_complete", request.thread_id)
 
             yield sse_event("done", request.thread_id)
 
-        except Exception as e:
-            logger.error(f"Error during graph execution: {e}")
+        except ValueError as e:
+            logger.error(
+                "Graph execution failed | thread_id=%s | node=%s | "
+                "input_message=%s | error=%s",
+                request.thread_id,
+                current_node or "unknown",
+                request.message[:100] if request.message else "None",
+                str(e),
+                exc_info=True,
+            )
             yield sse_event("error", request.thread_id, message=str(e))
 
     return StreamingResponse(

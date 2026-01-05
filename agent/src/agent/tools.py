@@ -3,8 +3,9 @@ This module contains tool definitions for the agent.
 """
 
 from langchain_core.tools import tool
-from data.database import get_taste_categories as db_get_taste_categories
+
 from data.database import get_brewing_methods as db_get_brewing_methods
+from data.database import get_taste_categories as db_get_taste_categories
 
 
 @tool()

@@ -1,4 +1,8 @@
-from typing import TypedDict, Annotated
+"""
+Module defining the workflow state for the coffee recommendation agent.
+"""
+
+from typing import Annotated, TypedDict
 
 from langchain_core.messages import BaseMessage
 from langgraph.graph.message import add_messages
