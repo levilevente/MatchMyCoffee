@@ -155,10 +155,10 @@ async def chat(request: ChatRequest):
         except ValueError as e:
             logger.error(
                 "Graph execution failed | thread_id=%s | node=%s | "
-                "input_message=%s | error=%s",
+                "input_message_length=%s | error=%s",
                 request.thread_id,
                 current_node or "unknown",
-                request.message[:100] if request.message else "None",
+                len(request.message) if request.message else 0,
                 str(e),
                 exc_info=True,
             )

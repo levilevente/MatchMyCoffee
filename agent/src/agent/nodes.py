@@ -14,14 +14,19 @@ from .state import WorkflowState
 logger = logging.getLogger(__name__)
 
 QUESTIONS = [
-    "How do you usually prepare your coffee at home?",
-    "How do you drink it? Pure black, with a splash of milk/cream, \
-        or heavily mixed (like lattes and cappuccinos)?",
-    "Imagine your perfect morning cup. \
-        Which set of flavors sounds most appealing to you right now?",
-    "How adventurous are you feeling? \
-        Do you want a classic 'coffee that tastes like coffee', \
-        or are you looking for something funky and experimental?",
+    (
+        "How do you drink it? Pure black, with a splash of milk/cream, "
+        "or heavily mixed (like lattes and cappuccinos)?"
+    ),
+    (
+        "Imagine your perfect morning cup. "
+        "Which set of flavors sounds most appealing to you right now?"
+    ),
+    (
+        "How adventurous are you feeling? "
+        "Do you want a classic 'coffee that tastes like coffee', "
+        "or are you looking for something funky and experimental?"
+    ),
 ]
 
 INTRO_PROMPT = """

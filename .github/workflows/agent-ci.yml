@@ -47,15 +47,27 @@ jobs:
 
     - name: Format with black
       run: uv run black -l 80 src/
+    
+    - name: Check formatting with black
+      run: uv run black --check -l 80 src/
 
     - name: Sort imports with isort
       run: uv run isort src/
 
+    - name: Check import sorting with isort
+      run: uv run isort --check-only src/
+
     - name: Fix with autopep8
       run: uv run autopep8 --in-place --recursive src/
 
+    - name: Check with autopep8
+      run: uv run autopep8 --diff --recursive src/
+
     - name: Fix with ruff
       run: uv run ruff check --fix src/
+
+    - name: Check with ruff
+      run: uv run ruff check src/
 
     - name: Lint with pylint
       run: uv run pylint --rcfile .pylintrc src/
