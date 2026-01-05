@@ -25,7 +25,12 @@ _agent_workflow = None
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     global _agent_workflow
-    DB_URI = f"postgresql://{settings.db.username}:{settings.db.password.get_secret_value()}@{settings.db.host}:{settings.db.port}/{settings.db.database_name}?sslmode=disable"
+    DB_URI = (
+        "postgresql://"
+        f"{settings.db.username}:{settings.db.password.get_secret_value()}@"
+        f"{settings.db.host}:{settings.db.port}/{settings.db.database_name}"
+        "?sslmode=disable"
+    )
 
     async with AsyncPostgresSaver.from_conn_string(DB_URI) as checkpointer:
         await checkpointer.setup()
