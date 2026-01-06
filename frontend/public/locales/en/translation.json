@@ -38,7 +38,10 @@
     "addedToCart": "Added to Cart",
     "addToFavorites": "Add to Favorites",
     "removeFromFavorites": "Remove from Favorites",
-    "quantity": "Quantity"
+    "quantity": "Quantity",
+    "writeReviewPlaceholder": "Write your review here...",
+    "reviewerName": "Your Name",
+    "reviewerNamePlaceholder": "Enter your name"
   },
   "title": "Match My Coffee",
   "description": "Find your perfect coffee match based on your preferences and taste!",
@@ -91,5 +94,10 @@
     "shippingInformation": "Shipping Information",
     "totalAmount": "Total Amount",
     "thankYouMessage": "Thank you for your purchase! Your order has been received and is being processed."
+  },
+  "blogPosts": {
+    "publishedAt": "Published At:",
+    "authorRole": "Author Role:",
+    "seeMore": "See More"
   }
 }

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import type { ReviewType } from '../../types/ReviewType.ts';
 import MainButton from '../common/MainButton.tsx';
@@ -12,8 +13,11 @@ interface AddReviewsProps {
 
 function AddReview(props: AddReviewsProps) {
     const { setReviews, productId } = props;
-    const [stars, setStars] = React.useState<number>(0);
-    const [reviewText, setReviewText] = React.useState<string>('');
+
+    const { t } = useTranslation();
+    const [stars, setStars] = useState<number>(0);
+    const [reviewText, setReviewText] = useState<string>('');
+    const [reviewerName, setReviewerName] = useState<string>('');
 
     return (
         <div className={style.reviewCard}>
@@ -23,7 +27,13 @@ function AddReview(props: AddReviewsProps) {
             </div>
             <textarea
                 className={style.textArea}
-                placeholder="Write your review here..."
+                placeholder={t('product.reviewerNamePlaceholder')}
+                value={reviewerName}
+                onChange={(e) => setReviewerName(e.target.value)}
+            />
+            <textarea
+                className={style.textArea}
+                placeholder={t('product.writeReviewPlaceholder')}
                 value={reviewText}
                 onChange={(e) => setReviewText(e.target.value)}
             />
@@ -36,7 +46,7 @@ function AddReview(props: AddReviewsProps) {
                         productId: productId,
                         rating: stars,
                         comment: reviewText,
-                        authorName: 'Anonymous',
+                        authorName: reviewerName ? reviewerName : 'Anonymous',
                         isApproved: true,
                     };
                     setReviews((prevReviews) => [newReview, ...prevReviews]);
