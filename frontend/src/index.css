@@ -1,73 +1,92 @@
 :root {
-    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-    line-height: 1.5;
-    font-weight: 400;
+    --color-primary: #4b2c20;
+    --color-secondary: #c49b66;
+    --color-bg-main: #f9f7f5;
+    --color-bg-alt: #f0ebe3;
+    --color-text-main: #2d2424;
+    --color-text-light: #f9f7f5;
+    --color-outline: #e0e0e0;
 
-    color-scheme: light dark;
-    color: rgba(255, 255, 255, 0.87);
-    background-color: #242424;
+    /* --- Fonts --- */
+    --font-heading: Copperplate, 'Copperplate Gothic Light', fantasy;
+    --font-secondary-heading: 'Baskerville', sans-serif;
+    --font-body: 'Gill Sans', sans-serif;
 
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    /* --- Spacing --- */
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 32px;
 }
 
-a {
-    font-weight: 500;
-    color: #646cff;
-    text-decoration: inherit;
+body,
+html {
+    overflow-x: hidden;
+    width: 100%;
 }
 
-a:hover {
-    color: #535bf2;
+p,
+td {
+    font-size: 20px;
+    font-family: var(--font-body), 'sans-serif';
+    line-height: 1.6;
 }
 
-body {
-    margin: 0;
-    display: flex;
-    place-items: center;
-    min-width: 320px;
-    min-height: 100vh;
+h2 {
+    font-size: 38px;
+    font-weight: bold;
+    font-family: var(--font-secondary-heading), 'sans-serif';
 }
 
 h1 {
-    font-size: 3.2em;
-    line-height: 1.1;
+    font-size: 46px;
+    font-weight: bold;
+    font-family: var(--font-heading), 'fantasy';
 }
 
-button {
-    border-radius: 8px;
-    border: 1px solid transparent;
-    padding: 0.6em 1.2em;
-    font-size: 1em;
-    font-weight: 500;
-    font-family: inherit;
-    background-color: #1a1a1a;
-    cursor: pointer;
-    transition: border-color 0.25s;
+h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 3.4rem;
+    margin-bottom: 1rem;
+    font-family: var(--font-secondary-heading), 'sans-serif';
 }
 
-button:hover {
-    border-color: #646cff;
+.page-container {
+    min-height: 100vh; /* full height */
+    display: flex;
+    flex-direction: column;
 }
 
-button:focus,
-button:focus-visible {
-    outline: 4px auto -webkit-focus-ring-color;
+.content-wrap {
+    flex: 1; /* pushes footer down */
 }
 
-@media (prefers-color-scheme: light) {
-    :root {
-        color: #213547;
-        background-color: #ffffff;
+@media (max-width: 1200px) {
+    h2 {
+        font-size: 28px;
+        font-weight: bold;
     }
 
-    a:hover {
-        color: #747bff;
+    h1 {
+        font-size: 36px;
+        font-weight: bold;
     }
 
-    button {
-        background-color: #f9f9f9;
+    h3 {
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 3.4rem;
+        margin-bottom: 1rem;
+    }
+
+    p {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 992px) {
+    .line {
+        width: calc(100% - 5.6rem);
+        margin-left: 2.8rem;
     }
 }

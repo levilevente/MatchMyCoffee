@@ -1,0 +1,244 @@
+.container {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    gap: 3rem;
+    padding: 1rem 0;
+}
+
+.mainSection {
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+    gap: 6rem;
+}
+
+.leftSection {
+    flex: 1;
+    height: 30rem;
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image {
+    height: 30rem;
+    width: auto;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.reviewCard {
+    border: 1px solid var(--color-text-main);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.ratingContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.purchaseSection {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.rightSection {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 3rem;
+}
+
+.buttonContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 25rem;
+}
+
+.buttonContainer button {
+    flex: 1;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: var(--font-body), sans-serif;
+}
+
+.detailsSection {
+    margin-top: 2rem;
+    margin-left: 10rem;
+    margin-right: 10rem;
+}
+
+.description {
+    margin-top: 3px;
+    line-height: 1.6;
+}
+
+.specificationsSection {
+    margin-top: 3rem;
+}
+
+.specificationsSection table {
+    width: 100%;
+}
+
+.multilineTableCell {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.reviewLink {
+    text-decoration: none;
+    color: var(--color-primary);
+    font-weight: 500;
+    font-family: var(--font-body), sans-serif;
+    font-size: 1.2rem;
+    margin-left: 5px;
+}
+
+.reviewsSection {
+    margin-top: 40px;
+}
+
+/* --------------------------------------------------------- */
+/*     TABLET FIX                                            */
+/* --------------------------------------------------------- */
+@media (max-width: 1024px) {
+    .mainSection {
+        gap: 2.5rem;
+        padding: 16px;
+    }
+
+    .image {
+        width: 24rem;
+    }
+
+    .buttonContainer {
+        width: 12rem;
+    }
+
+    .specificationsSection {
+        margin-left: 5%;
+        width: 70%;
+    }
+
+    .detailsSection {
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+}
+
+/* --------------------------------------------------------- */
+/*     TABLET + MOBILE FIX                                   */
+/* --------------------------------------------------------- */
+
+@media (max-width: 768px) {
+    .mainSection {
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 12px;
+        align-items: center;
+    }
+
+    .leftSection {
+        width: 100%;
+        height: auto;
+        padding: 0 1rem;
+    }
+
+    .image {
+        width: 100%;
+        max-width: 28rem;
+        height: auto;
+        border-radius: 8px;
+    }
+
+    .rightSection {
+        width: 100%;
+        padding: 0 1rem;
+        align-items: flex-start;
+    }
+
+    .buttonContainer {
+        flex-direction: column;
+        width: 13rem;
+        gap: 10px;
+        margin-top: 1px;
+    }
+
+    .purchaseSection {
+        width: 100%;
+        align-items: flex-start;
+    }
+
+    .specificationsSection {
+        margin-left: 0;
+        margin-top: 20px;
+        width: 100%;
+        padding: 0 1rem;
+        overflow-x: auto;
+    }
+
+    .specificationsSection table {
+        min-width: 460px;
+    }
+
+    .ratingContainer h4 {
+        font-size: 1rem;
+        margin: 0;
+    }
+
+    .detailsSection {
+        margin-left: 0;
+        margin-right: 0;
+        padding: 0 1rem;
+    }
+}
+
+/* --------------------------------------------------------- */
+/*     MOBILE FIX                                            */
+/* --------------------------------------------------------- */
+
+@media (max-width: 480px) {
+    .mainSection {
+        gap: 1rem;
+        padding: 8px;
+    }
+
+    .image {
+        max-width: 20rem;
+    }
+
+    .buttonContainer button,
+    .buttonContainer .btn {
+        font-size: 14px;
+        padding: 8px 10px;
+    }
+
+    h1 {
+        font-size: 1.4rem;
+    }
+
+    h3 {
+        font-size: 1rem;
+    }
+
+    .specificationsSection table {
+        min-width: 380px;
+    }
+}
