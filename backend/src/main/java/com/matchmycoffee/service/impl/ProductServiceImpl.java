@@ -4,6 +4,7 @@ import com.matchmycoffee.model.entity.Product;
 import com.matchmycoffee.repository.ProductRepository;
 import com.matchmycoffee.service.ProductService;
 import com.matchmycoffee.service.exception.BusinessException;
+import com.matchmycoffee.service.exception.IllegalProductArgumentException;
 import com.matchmycoffee.service.exception.ProductNotAvailableException;
 import com.matchmycoffee.service.exception.ServiceException;
 import jakarta.persistence.EntityNotFoundException;
@@ -82,8 +83,17 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public Product createProduct(Product product) {
-        // TODO: Add validation logic here
+    public Product createProduct(Product product) throws IllegalProductArgumentException {
+        if (product.getAcidityScore() > 5 || product.getAcidityScore() < 1) {
+            log.error("Acidity score {} is out of bounds. It should be between 1 and 5.", product.getAcidityScore());
+            throw new IllegalProductArgumentException("Acidity score must be between 1 and 5.");
+        }
+
+        if (product.getRoastLevel() > 5 || product.getRoastLevel() < 1) {
+            log.error("Roast level {} is out of bounds. It should be between 1 and 5.", product.getRoastLevel());
+            throw new IllegalProductArgumentException("Roast level must be between 1 and 5.");
+        }
+
         log.info("Creating new product: {}", product.getName());
         return productRepository.save(product);
     }

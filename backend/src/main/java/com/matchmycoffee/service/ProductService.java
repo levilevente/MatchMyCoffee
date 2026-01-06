@@ -2,6 +2,7 @@ package com.matchmycoffee.service;
 
 import com.matchmycoffee.model.entity.Product;
 import com.matchmycoffee.service.exception.BusinessException;
+import com.matchmycoffee.service.exception.IllegalProductArgumentException;
 import com.matchmycoffee.service.exception.ProductNotAvailableException;
 import com.matchmycoffee.service.exception.ServiceException;
 import org.springframework.data.domain.Page;
@@ -16,7 +17,7 @@ public interface ProductService {
 
     Page<Product> getAllProducts(Pageable pageable) throws BusinessException;
 
-    Product createProduct(Product product);
+    Product createProduct(Product product) throws IllegalProductArgumentException;
 
     Product updateProduct(Long id, Product productDetails) throws ProductNotAvailableException;
 

@@ -1,5 +1,6 @@
 package com.matchmycoffee.mapper;
 
+import com.matchmycoffee.dto.request.product.ProductCreatedRequest;
 import com.matchmycoffee.dto.response.BrewingMethodResponse;
 import com.matchmycoffee.dto.response.OriginResponse;
 import com.matchmycoffee.dto.response.TasteCategoryResponse;
@@ -14,6 +15,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
+    // To DTO mappings
     @Mapping(source = "calculatedAverageRating", target = "averageRating")
     @Mapping(source = "calculatedReviewCount", target = "reviewCount")
     ProductSummaryResponse toProductSummaryResponse(Product product);
@@ -49,4 +51,9 @@ public interface ProductMapper {
     TasteResponse toTasteResponse(ProductTaste productTaste);
 
     TasteCategoryResponse toTasteCategoryResponse(TasteCategory category);
+
+
+    // To Entity mappings
+    @Mapping(target = "id", ignore = true)
+    Product toEntity(ProductCreatedRequest productSummaryResponse);
 }

@@ -1,17 +1,24 @@
 package com.matchmycoffee.controller;
 
+import com.matchmycoffee.dto.request.product.ProductCreatedRequest;
 import com.matchmycoffee.dto.response.product.ProductDetailResponse;
 import com.matchmycoffee.dto.response.product.ProductSummaryResponse;
 import com.matchmycoffee.mapper.ProductMapper;
 import com.matchmycoffee.model.entity.Product;
 import com.matchmycoffee.service.ProductService;
 import com.matchmycoffee.service.exception.BusinessException;
+import com.matchmycoffee.service.exception.IllegalProductArgumentException;
 import com.matchmycoffee.service.exception.ProductNotAvailableException;
+import com.matchmycoffee.service.exception.ServiceException;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @Slf4j
 @RestController
@@ -58,5 +65,27 @@ public class ProductController {
         log.info("GET /products/{}", id);
         Product product = productService.getProductById(id);
         return ResponseEntity.ok(productMapper.toProductDetailResponse(product));
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<ProductDetailResponse> createProduct(
+            @RequestBody @Valid ProductCreatedRequest productDto
+    ) throws IllegalProductArgumentException {
+        log.info("POST /products");
+        Product product = productMapper.toEntity(productDto);
+        URI createdProductUri = URI.create("/products/" + product.getId());
+        Product createdProduct = productService.createProduct(product);
+        return ResponseEntity.created(createdProductUri)
+                .body(productMapper.toProductDetailResponse(createdProduct));
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAllProducts(
+            @PathVariable Long id
+    ) throws ServiceException {
+        log.info("DELETE /products");
+        productService.deleteProduct(id);
     }
 }

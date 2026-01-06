@@ -1,6 +1,7 @@
 package com.matchmycoffee.controller.controlleradvice;
 
 import com.matchmycoffee.service.exception.BusinessException;
+import com.matchmycoffee.service.exception.IllegalProductArgumentException;
 import com.matchmycoffee.service.exception.ProductNotAvailableException;
 import com.matchmycoffee.service.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +47,14 @@ public class ValidationErrorHandler {
     public final ErrorResponse handleProductNotAvailableException(ProductNotAvailableException e) {
         log.debug("ProductNotAvailableException occurred", e);
         return buildErrorResponse(HttpStatus.NOT_FOUND, e.getMessage());
+    }
+
+    @ExceptionHandler(IllegalProductArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public final ErrorResponse handleIllegalProductArgumentException(IllegalProductArgumentException e) {
+        log.debug("IllegalProductArgumentException occurred", e);
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
     public static class ErrorResponse {
