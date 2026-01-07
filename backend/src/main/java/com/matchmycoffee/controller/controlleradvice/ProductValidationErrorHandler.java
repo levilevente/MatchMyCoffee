@@ -1,6 +1,5 @@
 package com.matchmycoffee.controller.controlleradvice;
 
-import com.matchmycoffee.service.exception.BusinessException;
 import com.matchmycoffee.service.exception.IllegalProductArgumentException;
 import com.matchmycoffee.service.exception.ProductNotAvailableException;
 import com.matchmycoffee.service.exception.ServiceException;
@@ -15,7 +14,7 @@ import java.time.Instant;
 
 @ControllerAdvice
 @Slf4j
-public class ValidationErrorHandler {
+public class ProductValidationErrorHandler {
     private ErrorResponse buildErrorResponse(HttpStatus status, String message) {
         return new ErrorResponse(
                 Instant.now(),
@@ -23,14 +22,6 @@ public class ValidationErrorHandler {
                 status.getReasonPhrase(),
                 message
         );
-    }
-
-    @ExceptionHandler(BusinessException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ResponseBody
-    public final ErrorResponse handleBusinessException(BusinessException e) {
-        log.error("Exception occurred", e);
-        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An internal server error occurred.");
     }
 
     @ExceptionHandler(ServiceException.class)

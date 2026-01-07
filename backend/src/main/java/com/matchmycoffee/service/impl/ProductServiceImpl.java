@@ -3,7 +3,6 @@ package com.matchmycoffee.service.impl;
 import com.matchmycoffee.model.entity.Product;
 import com.matchmycoffee.repository.ProductRepository;
 import com.matchmycoffee.service.ProductService;
-import com.matchmycoffee.service.exception.BusinessException;
 import com.matchmycoffee.service.exception.IllegalProductArgumentException;
 import com.matchmycoffee.service.exception.ProductNotAvailableException;
 import com.matchmycoffee.service.exception.ServiceException;
@@ -55,13 +54,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<Product> findProductByName(String name) throws BusinessException {
+    public Optional<Product> findProductByName(String name) throws ServiceException {
         log.info("Finding product by name: {}", name);
         return Optional.ofNullable(productRepository.findByName(name));
     }
 
     @Override
-    public Page<Product> getAllProducts(Pageable pageable) throws BusinessException {
+    public Page<Product> getAllProducts(Pageable pageable) throws ServiceException {
         log.info(
                 "Fetching all products with pagination: page number {}, page size {}",
                 pageable.getPageNumber(),

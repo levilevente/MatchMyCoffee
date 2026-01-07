@@ -6,7 +6,6 @@ import com.matchmycoffee.dto.response.product.ProductSummaryResponse;
 import com.matchmycoffee.mapper.ProductMapper;
 import com.matchmycoffee.model.entity.Product;
 import com.matchmycoffee.service.ProductService;
-import com.matchmycoffee.service.exception.BusinessException;
 import com.matchmycoffee.service.exception.IllegalProductArgumentException;
 import com.matchmycoffee.service.exception.ProductNotAvailableException;
 import com.matchmycoffee.service.exception.ServiceException;
@@ -36,7 +35,7 @@ public class ProductController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy
-    ) throws BusinessException {
+    ) throws ServiceException {
         log.info("GET /products");
 
         if (!"id".equals(sortBy) && !"name".equals(sortBy) && !"price".equals(sortBy)) {
