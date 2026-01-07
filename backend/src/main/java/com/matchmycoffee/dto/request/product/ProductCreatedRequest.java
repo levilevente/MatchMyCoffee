@@ -5,6 +5,9 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.List;
+import java.util.Set;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -44,4 +47,15 @@ public class ProductCreatedRequest {
     @NotNull
     @Positive(message = "Acidity score must be a positive integer")
     private Integer acidityScore;
+
+
+    // Relationships
+    @NotNull
+    private List<ProductOriginRequest> origins;
+
+    @NotNull
+    private List<ProductBrewingMethodRequest> brewingMethods;
+
+    @NotNull
+    private Set<Long> tastes;
 }

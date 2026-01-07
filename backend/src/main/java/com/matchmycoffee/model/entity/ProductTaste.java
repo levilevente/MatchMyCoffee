@@ -10,7 +10,7 @@ import lombok.ToString;
 @Setter
 @ToString(callSuper = true)
 @Table(name = "product_tastes")
-public class ProductTaste extends AbstractModel {
+public class ProductTaste {
 
     @EmbeddedId
     private ProductTasteId id = new ProductTasteId();

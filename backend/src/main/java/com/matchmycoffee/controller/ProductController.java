@@ -71,11 +71,13 @@ public class ProductController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ProductDetailResponse> createProduct(
             @RequestBody @Valid ProductCreatedRequest productDto
-    ) throws IllegalProductArgumentException {
+    ) throws IllegalProductArgumentException, ServiceException {
         log.info("POST /products");
+
         Product product = productMapper.toEntity(productDto);
-        URI createdProductUri = URI.create("/products/" + product.getId());
         Product createdProduct = productService.createProduct(product);
+
+        URI createdProductUri = URI.create(String.format("/products/%s", createdProduct.getId()));
         return ResponseEntity.created(createdProductUri)
                 .body(productMapper.toProductDetailResponse(createdProduct));
     }

@@ -17,7 +17,7 @@ public interface ProductService {
 
     Page<Product> getAllProducts(Pageable pageable) throws BusinessException;
 
-    Product createProduct(Product product) throws IllegalProductArgumentException;
+    Product createProduct(Product product) throws IllegalProductArgumentException, ServiceException;
 
     Product updateProduct(Long id, Product productDetails) throws ProductNotAvailableException;
 

@@ -18,5 +18,5 @@ public class ProductOriginId implements Serializable {
     private Long productId;
 
     @Column(name = "origin_id")
-    private Integer originId;
+    private Long originId;
 }

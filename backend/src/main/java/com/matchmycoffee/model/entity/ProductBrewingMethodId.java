@@ -18,5 +18,5 @@ public class ProductBrewingMethodId implements Serializable {
     private Long productId;
 
     @Column(name = "brewing_method_id")
-    private Integer brewingMethodId;
+    private Long brewingMethodId;
 }

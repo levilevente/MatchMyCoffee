@@ -10,7 +10,7 @@ import lombok.ToString;
 @Setter
 @ToString(callSuper = true, exclude = "id")
 @Table(name = "product_origins")
-public class ProductOrigin extends AbstractModel {
+public class ProductOrigin {
 
     @EmbeddedId
     private ProductOriginId id = new ProductOriginId();

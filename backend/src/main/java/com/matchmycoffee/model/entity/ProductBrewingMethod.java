@@ -11,7 +11,7 @@ import lombok.ToString;
 @Setter
 @ToString(callSuper = true, exclude = "id")
 @Table(name = "product_brewing_methods")
-public class ProductBrewingMethod extends AbstractModel {
+public class ProductBrewingMethod {
 
     @EmbeddedId
     private ProductBrewingMethodId id = new ProductBrewingMethodId();

@@ -83,7 +83,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public Product createProduct(Product product) throws IllegalProductArgumentException {
+    public Product createProduct(Product product) throws IllegalProductArgumentException, ServiceException {
         if (product.getAcidityScore() > 5 || product.getAcidityScore() < 1) {
             log.error("Acidity score {} is out of bounds. It should be between 1 and 5.", product.getAcidityScore());
             throw new IllegalProductArgumentException("Acidity score must be between 1 and 5.");
@@ -95,7 +95,13 @@ public class ProductServiceImpl implements ProductService {
         }
 
         log.info("Creating new product: {}", product.getName());
-        return productRepository.save(product);
+        Product savedProduct = productRepository.save(product);
+
+        try {
+            return this.getProductById(savedProduct.getId());
+        } catch (ProductNotAvailableException e) {
+            throw new ServiceException("Failed to retrieve the created product.", e);
+        }
     }
 
     @Override
