@@ -5,20 +5,49 @@ This module defines the application settings using Pydantic's BaseSettings.
 from typing import Optional
 
 from pydantic import Field, FilePath, SecretStr, model_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import (
+    BaseSettings,
+    SettingsConfigDict,
+    PydanticBaseSettingsSource,
+)
 
 
-class LLMConfig(BaseSettings):
+class BaseConfig(BaseSettings):
     """
-    Configuration settings for the Language Model (LLM).
+    Base configuration class with common settings.
+    Prioritizes .env file values over environment variables.
     """
 
     model_config = SettingsConfigDict(
-        env_prefix="LLM_",
         env_file=".env",
         env_file_encoding="utf-8",
         extra="ignore",
     )
+
+    @classmethod
+    def settings_customise_sources(
+        cls,
+        settings_cls: type[BaseSettings],
+        init_settings: PydanticBaseSettingsSource,
+        env_settings: PydanticBaseSettingsSource,
+        dotenv_settings: PydanticBaseSettingsSource,
+        file_secret_settings: PydanticBaseSettingsSource,
+    ) -> tuple[PydanticBaseSettingsSource, ...]:
+        """Prioritize .env file over environment variables."""
+        return (
+            init_settings,
+            dotenv_settings,
+            env_settings,
+            file_secret_settings,
+        )
+
+
+class LLMConfig(BaseConfig):
+    """
+    Configuration settings for the Language Model (LLM).
+    """
+
+    model_config = SettingsConfigDict(env_prefix="LLM_")
 
     provider: str
     api_key: SecretStr
@@ -50,17 +79,12 @@ class LLMConfig(BaseSettings):
         return self
 
 
-class DBConfig(BaseSettings):
+class DBConfig(BaseConfig):
     """
     Configuration settings for the Database connection.
     """
 
-    model_config = SettingsConfigDict(
-        env_prefix="DB_",
-        env_file=".env",
-        env_file_encoding="utf-8",
-        extra="ignore",
-    )
+    model_config = SettingsConfigDict(env_prefix="DB_")
 
     host: str
     port: int
@@ -85,17 +109,12 @@ class DBConfig(BaseSettings):
         return self
 
 
-class UvicornConfig(BaseSettings):
+class UvicornConfig(BaseConfig):
     """
     Configuration settings for the Uvicorn server.
     """
 
-    model_config = SettingsConfigDict(
-        env_prefix="UVICORN_",
-        env_file=".env",
-        env_file_encoding="utf-8",
-        extra="ignore",
-    )
+    model_config = SettingsConfigDict(env_prefix="UVICORN_")
 
     host: str
     port: int
@@ -104,17 +123,12 @@ class UvicornConfig(BaseSettings):
     app: str
 
 
-class FastAPIConfig(BaseSettings):
+class FastAPIConfig(BaseConfig):
     """
     Configuration settings for the FastAPI application.
     """
 
-    model_config = SettingsConfigDict(
-        env_prefix="FASTAPI_",
-        env_file=".env",
-        env_file_encoding="utf-8",
-        extra="ignore",
-    )
+    model_config = SettingsConfigDict(env_prefix="FASTAPI_")
 
     title: str
     version: str
@@ -125,47 +139,31 @@ class FastAPIConfig(BaseSettings):
     ]
 
 
-class LogConfig(BaseSettings):
+class LogConfig(BaseConfig):
     """
     Configuration settings for logging.
     """
 
-    model_config = SettingsConfigDict(
-        env_prefix="LOG_",
-        env_file=".env",
-        env_file_encoding="utf-8",
-        extra="ignore",
-    )
+    model_config = SettingsConfigDict(env_prefix="LOG_")
 
     level: str = "INFO"
     format: str = "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
 
 
-class OtherConfig(BaseSettings):
+class OtherConfig(BaseConfig):
     """
     Other miscellaneous configuration settings.
     """
 
-    model_config = SettingsConfigDict(
-        env_prefix="OTHER_",
-        env_file=".env",
-        env_file_encoding="utf-8",
-        extra="ignore",
-    )
+    model_config = SettingsConfigDict(env_prefix="OTHER_")
 
     draw_graph: bool = False
 
 
-class Settings(BaseSettings):
+class Settings(BaseConfig):
     """
     Application settings container.
     """
-
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-        extra="ignore",
-    )
 
     llm: LLMConfig = Field(default_factory=LLMConfig)
     db: DBConfig = Field(default_factory=DBConfig)
