@@ -1,0 +1,38 @@
+.container {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.leftContainer {
+    flex: 1;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.rightContainer {
+    flex: 0.4;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    overflow-y: auto;
+    max-height: 114vh;
+}
+
+@media (max-width: 1126px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    .leftContainer,
+    .rightContainer {
+        width: 90%;
+        margin-bottom: 2rem;
+    }
+}

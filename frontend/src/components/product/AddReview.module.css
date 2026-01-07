@@ -1,0 +1,18 @@
+.reviewCard {
+    border: 1px solid var(--color-text-main);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.starRating {
+    font-size: 1.2rem;
+}
+
+.reviewText {
+    font-size: 1rem;
+    color: var(--color-text-main);
+}

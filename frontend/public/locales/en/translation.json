@@ -1,0 +1,103 @@
+{
+  "blogposts": {
+    "title": "Blog Posts"
+  },
+  "blogpost": {
+    "title": "Blog Post"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "emptyTitleMessage": "You haven't added any coffees to cart yet! ☕",
+    "emptySubtitleMessage": "Go back to the store to find your perfect brew.",
+    "finalizePurchase": "Finalize Purchase"
+  },
+  "favorites": {
+    "title": "Favorites",
+    "emptyTitleMessage": "You haven't liked any coffees yet! ☕",
+    "emptySubtitleMessage": "Go back to the store to find your perfect brew."
+  },
+  "home": {
+    "title": "Welcome to Our Store"
+  },
+  "product": {
+    "title": "Product Details",
+    "specifications": "Specifications",
+    "value": "Value",
+    "brand": "Brand",
+    "flavorNotes": "Flavor Notes",
+    "roastLevel": "Roast Level",
+    "origin": "Origin",
+    "acidity": "Acidity",
+    "tastes": "Tastes",
+    "brewingMethods": "Brewing Methods",
+    "brewingInstructions": "Brewing Instructions",
+    "reviews": "Customer Reviews",
+    "description": "Description",
+    "specification": "Specification",
+    "addToCart": "Add to Cart",
+    "addedToCart": "Added to Cart",
+    "addToFavorites": "Add to Favorites",
+    "removeFromFavorites": "Remove from Favorites",
+    "quantity": "Quantity",
+    "writeReviewPlaceholder": "Write your review here...",
+    "reviewerName": "Your Name",
+    "reviewerNamePlaceholder": "Enter your name"
+  },
+  "title": "Match My Coffee",
+  "description": "Find your perfect coffee match based on your preferences and taste!",
+  "copyright": "© 2026 Match My Coffee. All rights reserved.",
+  "footer": {
+    "home": "Home",
+    "explore": "Explore",
+    "blog": "Blog",
+    "aboutUs": "About Us",
+    "contact": "Contact",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "helpCenter": "Help Center",
+    "followUs": "Follow Us",
+    "facebook": "Facebook",
+    "twitter": "Twitter",
+    "instagram": "Instagram"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "emailHelpText": "We'll never share your email with anyone else.",
+    "firstName": "First Name",
+    "firstNamePlaceholder": "Enter your first name",
+    "lastName": "Last Name",
+    "lastNamePlaceholder": "Enter your last name",
+    "addressLine1": "Address Line 1",
+    "addressLine1Placeholder": "Enter your address",
+    "addressLine2": "Address Line 2",
+    "addressLine2Placeholder": "Apartment, suite, etc. (optional)",
+    "city": "City",
+    "cityPlaceholder": "Enter your city",
+    "state": "State/Province",
+    "statePlaceholder": "Enter your state",
+    "stateProvincePlaceholder": "Enter your state or province",
+    "zipCode": "Postal Code",
+    "zipCodePlaceholder": "Enter your postal code",
+    "country": "Country",
+    "countryPlaceholder": "Select your country",
+    "selectPaymentMethod": "Select Payment Method",
+    "creditCard": "Credit Card",
+    "paypal": "PayPal",
+    "bankTransfer": "Bank Transfer",
+    "cashOnDelivery": "Cash on Delivery",
+    "reviewOrder": "Review Order",
+    "paymentMethod": "Payment Method",
+    "emailRequiredError": "Email is required",
+    "sendOrder": "Send Order",
+    "shippingInformation": "Shipping Information",
+    "totalAmount": "Total Amount",
+    "thankYouMessage": "Thank you for your purchase! Your order has been received and is being processed."
+  },
+  "blogPosts": {
+    "publishedAt": "Published At:",
+    "authorRole": "Author Role:",
+    "seeMore": "See More"
+  }
+}
