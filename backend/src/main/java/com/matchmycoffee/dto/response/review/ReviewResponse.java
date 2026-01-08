@@ -14,4 +14,5 @@ public class ReviewResponse {
     private String authorName;
     private Integer rating;
     private String comment;
+    private Boolean isApproved;
 }

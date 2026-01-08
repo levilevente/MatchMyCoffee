@@ -12,9 +12,9 @@ public interface ReviewService {
 
     Page<Review> getAllReviews(Long productId, Pageable pageable) throws ServiceException;
 
-    Review createReview(Review review) throws IllegalReviewArgumentException, ServiceException;
+    Review createReview(Long productId, Review review) throws IllegalReviewArgumentException, ServiceException;
 
-    Review updateReview(Long id, Review reviewDetails) throws ReviewNotFoundException;
+    Review updateReview(Long productId, Long id, Review reviewDetails) throws ReviewNotFoundException;
 
     void deleteReview(Long id) throws ServiceException;
 }
