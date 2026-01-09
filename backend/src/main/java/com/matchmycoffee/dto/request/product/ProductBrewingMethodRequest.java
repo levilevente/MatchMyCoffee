@@ -1,5 +1,6 @@
-package com.matchmycoffee.dto.response;
+package com.matchmycoffee.dto.request.product;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,11 +9,11 @@ import lombok.ToString;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(callSuper = true)
-public class BrewingMethodResponse {
+@ToString
+public class ProductBrewingMethodRequest {
+    @NotNull
     private Long id;
-    private String name;
-    private String description;
-    private String iconUrl;
+
+    @NotNull
     private Boolean isOptimal;
 }
