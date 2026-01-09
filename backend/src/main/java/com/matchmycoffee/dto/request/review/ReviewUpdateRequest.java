@@ -1,6 +1,5 @@
 package com.matchmycoffee.dto.request.review;
 
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
