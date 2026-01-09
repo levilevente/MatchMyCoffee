@@ -134,15 +134,15 @@ function ChatArea() {
 
                             const viewConfig = isAgent
                                 ? {
-                                    className: style.agentMessage,
-                                    label: t('recommendations.agent'),
-                                    content: <ReactMarkdown>{msg.text}</ReactMarkdown>,
-                                }
+                                      className: style.agentMessage,
+                                      label: t('recommendations.agent'),
+                                      content: <ReactMarkdown>{msg.text}</ReactMarkdown>,
+                                  }
                                 : {
-                                    className: style.userMessage,
-                                    label: t('recommendations.user'),
-                                    content: msg.text,
-                                };
+                                      className: style.userMessage,
+                                      label: t('recommendations.user'),
+                                      content: msg.text,
+                                  };
 
                             return (
                                 <div key={`${msg.from}-${msg.text}-${index}`}>
