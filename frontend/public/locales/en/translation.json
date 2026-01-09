@@ -99,5 +99,15 @@
     "publishedAt": "Published At:",
     "authorRole": "Author Role:",
     "seeMore": "See More"
+  },
+  "recommendations": {
+    "title": "Find Your Coffee",
+    "startChat": "Start a new chat to find your perfect coffee match!",
+    "startChatButton": "New Chat",
+    "sendMessageButton": "Send",
+    "agent": "Agent",
+    "user": "You",
+    "typeMessagePlaceholder": "Type your message here...",
+    "conversationEnded": "The conversation has ended"
   }
 }

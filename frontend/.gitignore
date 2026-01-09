@@ -47,3 +47,5 @@ dist-ssr
 
 
 # build folders, .idea
+
+.env
