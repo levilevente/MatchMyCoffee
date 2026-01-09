@@ -1,0 +1,125 @@
+/* To access global colors: var(--color-secondary) */
+.chatContainer {
+    position: relative;
+    margin: 8px;
+}
+
+.mainCard {
+    background-color: var(--color-bg-main);
+}
+
+.topGradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(to bottom, var(--color-bg-main) 0%, rgba(255, 255, 255, 0) 100%);
+    z-index: 10;
+    pointer-events: none;
+}
+
+.scrollableArea {
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 15px;
+    scrollbar-color: var(--color-primary) transparent;
+}
+
+.userMessage {
+    padding: 8px;
+    border-radius: 8px;
+    margin: 4px 0;
+    font-family: var(--font-body);
+
+    text-align: right;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.agentMessage {
+    padding: 8px;
+    border-radius: 8px;
+    margin: 4px 0;
+    font-family: var(--font-body);
+    text-align: left;
+    font-style: italic;
+
+    /* Enforce consistent base styling */
+    font-size: 16px;
+    font-weight: 650;
+}
+
+.agentMessage p,
+.agentMessage li,
+.agentMessage ul,
+.agentMessage ol,
+.agentMessage div,
+.agentMessage span {
+    font-size: 16px;
+    font-weight: 650;
+}
+
+.agentMessage a {
+    color: var(--color-primary);
+    filter: brightness(2);
+}
+
+.chatInputFooter {
+    background-color: var(--color-bg-main);
+}
+
+.separator {
+    width: 50%;
+    margin: 8px auto;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.inputWrapper {
+    position: relative;
+    flex-grow: 1;
+}
+
+.chatInput {
+    background-color: transparent !important;
+    font-family: var(--font-body) !important;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-radius: 0 0 12px 12px;
+    resize: none;
+}
+
+
+.chatInput:focus {
+    box-shadow: none !important;
+    outline: none !important;
+    border-color: rgba(0, 0, 0, 0.5) !important;
+    background-color: transparent !important;
+}
+
+.sendButton {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    align-self: flex-end;
+    font-family: var(--font-heading), fantasy;
+}
+
+.sendButton:hover {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+}
+
+.sendButton:disabled {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    cursor: not-allowed;
+    filter: brightness(1.5);
+}
+

@@ -9,6 +9,7 @@ import CartPage from './pages/CartPage.tsx';
 import FavoritesPage from './pages/FavoritesPage.tsx';
 import HomePage from './pages/HomePage.tsx';
 import ProductPage from './pages/ProductPage.tsx';
+import RecommendationsPage from './pages/RecommendationsPage.tsx';
 
 function Root() {
     return (
@@ -25,6 +26,7 @@ function Root() {
                             <Route path="/favorites" element={<FavoritesPage />} />
                             <Route path="/blog" element={<BlogPostsPage />} />
                             <Route path="/blog/:blogId" element={<BlogPostPage />} />
+                            <Route path="/recommendations" element={<RecommendationsPage />} />
                         </Routes>
                     </main>
                     <FooterBar />

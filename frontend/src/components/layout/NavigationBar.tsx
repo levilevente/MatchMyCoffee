@@ -19,6 +19,9 @@ function NavigationBar() {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className={`ms-auto ${style.navStyle}`}>
+                        <Nav.Link href="/recommendations" className={style.navLinkStyle}>
+                            {t('recommendations.title')}
+                        </Nav.Link>
                         <Nav.Link href="/blog" className={style.navLinkStyle}>
                             {t('blogposts.title')}
                         </Nav.Link>
