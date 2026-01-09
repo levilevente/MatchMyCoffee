@@ -8,9 +8,9 @@ import lombok.*;
 import java.util.List;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 @ToString
 public class ProductDetailResponse extends ProductSummaryResponse {
     private Boolean isActive;

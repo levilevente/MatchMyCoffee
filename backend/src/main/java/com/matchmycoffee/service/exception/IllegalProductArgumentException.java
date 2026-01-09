@@ -5,7 +5,7 @@ public class IllegalProductArgumentException extends Exception {
         super(message);
     }
 
-    public IllegalProductArgumentException(String message, Exception cause) {
+    public IllegalProductArgumentException(String message, Throwable cause) {
         super(message, cause);
     }
 }

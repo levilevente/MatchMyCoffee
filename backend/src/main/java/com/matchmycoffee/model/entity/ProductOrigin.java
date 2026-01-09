@@ -8,7 +8,7 @@ import lombok.ToString;
 @Entity
 @Getter
 @Setter
-@ToString(callSuper = true, exclude = "id")
+@ToString
 @Table(name = "product_origins")
 public class ProductOrigin {
 

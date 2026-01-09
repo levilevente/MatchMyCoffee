@@ -19,5 +19,5 @@ public class ProductSummaryResponse {
     private Boolean isBlend;
     private Integer roastLevel;
     private Double averageRating;
-    private Integer reviewCount;
+    private Long reviewCount;
 }

@@ -83,10 +83,10 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteAllProducts(
+    public void deleteProduct(
             @PathVariable Long id
     ) throws ServiceException {
-        log.info("DELETE /products");
+        log.info("DELETE /products/{}", id);
         productService.deleteProduct(id);
     }
 }

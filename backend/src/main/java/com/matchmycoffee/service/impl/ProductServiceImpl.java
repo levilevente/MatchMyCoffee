@@ -73,8 +73,8 @@ public class ProductServiceImpl implements ProductService {
             Long reviewCount = (Long) objects[1];
             Double averageRating = (Double) objects[2];
 
-            product.setCalculatedReviewCount((long) (reviewCount != null ? reviewCount.intValue() : 0));
-            product.setCalculatedAverageRating((double) (averageRating != null ? averageRating.floatValue() : 0.0f));
+            product.setCalculatedReviewCount(reviewCount != null ? reviewCount : 0);
+            product.setCalculatedAverageRating(averageRating != null ? averageRating : 0.0);
 
             return product;
         });

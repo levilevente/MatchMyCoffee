@@ -1,12 +1,17 @@
 package com.matchmycoffee.controller.controlleradvice;
 
 import com.matchmycoffee.service.exception.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.Instant;
 
@@ -62,33 +67,23 @@ public class ProductValidationErrorHandler {
         return buildErrorResponse(HttpStatus.NOT_FOUND, e.getMessage());
     }
 
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public final ErrorResponse handleTypeMismatch(MethodArgumentTypeMismatchException e) {
+        log.debug("MethodArgumentTypeMismatchException occurred", e);
+        String message = String.format("Invalid value '%s' for parameter '%s'.", e.getValue(), e.getName());
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, message);
+    }
+
+    @Data
+    @Getter
+    @Setter
+    @AllArgsConstructor
     public static class ErrorResponse {
         private final Instant timestamp;
         private final int status;
         private final String error;
         private final String message;
-
-        public ErrorResponse(Instant timestamp, int status, String error, String message) {
-            this.timestamp = timestamp;
-            this.status = status;
-            this.error = error;
-            this.message = message;
-        }
-
-        public Instant getTimestamp() {
-            return timestamp;
-        }
-
-        public int getStatus() {
-            return status;
-        }
-
-        public String getError() {
-            return error;
-        }
-
-        public String getMessage() {
-            return message;
-        }
     }
 }

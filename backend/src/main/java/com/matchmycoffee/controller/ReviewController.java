@@ -9,6 +9,7 @@ import com.matchmycoffee.service.ReviewService;
 import com.matchmycoffee.service.exception.IllegalReviewArgumentException;
 import com.matchmycoffee.service.exception.ReviewNotFoundException;
 import com.matchmycoffee.service.exception.ServiceException;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -60,7 +61,7 @@ public class ReviewController {
     @PostMapping
     public ResponseEntity<ReviewResponse> createReview(
             @PathVariable Long productId,
-            @RequestBody ReviewRequest reviewRequest
+            @RequestBody @Valid ReviewRequest reviewRequest
     ) throws ServiceException, IllegalReviewArgumentException {
         log.info("POST /products/{}/reviews", productId);
 
@@ -75,7 +76,7 @@ public class ReviewController {
     public ResponseEntity<ReviewResponse> updateReview(
             @PathVariable Long productId,
             @PathVariable Long id,
-            @RequestBody ReviewUpdateRequest reviewRequest
+            @RequestBody @Valid ReviewUpdateRequest reviewRequest
     ) throws ReviewNotFoundException {
         log.info("PATCH /products/reviews/{}", id);
 

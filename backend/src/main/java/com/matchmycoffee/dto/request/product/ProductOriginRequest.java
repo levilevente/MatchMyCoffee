@@ -15,5 +15,5 @@ public class ProductOriginRequest {
     private Long id;
 
     @NotNull
-    private String percentage;
+    private Integer percentage;
 }

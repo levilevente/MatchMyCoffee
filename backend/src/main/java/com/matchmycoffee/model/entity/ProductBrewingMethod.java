@@ -9,7 +9,7 @@ import lombok.ToString;
 @Entity
 @Getter
 @Setter
-@ToString(callSuper = true, exclude = "id")
+@ToString
 @Table(name = "product_brewing_methods")
 public class ProductBrewingMethod {
 

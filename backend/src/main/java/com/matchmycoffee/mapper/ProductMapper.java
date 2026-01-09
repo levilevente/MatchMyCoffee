@@ -59,6 +59,10 @@ public interface ProductMapper {
 
     // To Entity mappings
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "uuid", ignore = true)
+    @Mapping(target = "reviews", ignore = true)
+    @Mapping(target = "calculatedReviewCount", ignore = true)
+    @Mapping(target = "calculatedAverageRating", ignore = true)
     @Mapping(target = "productOrigins", source = "origins")
     @Mapping(target = "productBrewingMethods", source = "brewingMethods")
     @Mapping(target = "productTastes", source = "tastes")

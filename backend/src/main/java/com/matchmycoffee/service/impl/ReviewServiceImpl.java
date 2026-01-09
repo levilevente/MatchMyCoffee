@@ -31,6 +31,12 @@ public class ReviewServiceImpl implements ReviewService {
     private ReviewMapper reviewMapper;
 
     @Override
+    public Page<Review> getAllReviews(Long productId, Pageable pageable) {
+        log.info("Getting all reviews for product id: {}", productId);
+        return reviewRepository.findAllByProductId(productId, pageable);
+    }
+
+    @Override
     public Review getReviewById(Long id) throws ReviewNotFoundException {
         log.info("Getting review by id: {}", id);
         try {
@@ -42,17 +48,6 @@ public class ReviewServiceImpl implements ReviewService {
         } catch (EntityNotFoundException e) {
             log.error("Error while retrieving review with id {}", id, e);
             throw new ReviewNotFoundException("Review not found!", e);
-        }
-    }
-
-    @Override
-    public Page<Review> getAllReviews(Long productId, Pageable pageable) throws ServiceException {
-        log.info("Getting all reviews for product id: {}", productId);
-        try {
-            return reviewRepository.findAllByProductId(productId, pageable);
-        } catch (EntityNotFoundException e) {
-            log.error("Error while retrieving reviews for product id {}", productId, e);
-            throw new ServiceException("Failed to retrieve reviews", e);
         }
     }
 
@@ -108,7 +103,13 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void deleteReview(Long id) throws ServiceException {
-
+        log.info("Deleting review with id: {}", id);
+        try {
+            reviewRepository.deleteById(id);
+        } catch (EntityNotFoundException e) {
+            log.error("Error while deleting review with id {}", id, e);
+            throw new ServiceException("Failed to delete review", e);
+        }
     }
 
     private void validateRating(int rating) throws IllegalReviewArgumentException {
