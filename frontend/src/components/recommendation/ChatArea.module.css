@@ -91,7 +91,6 @@
     resize: none;
 }
 
-
 .chatInput:focus {
     box-shadow: none !important;
     outline: none !important;
@@ -122,4 +121,3 @@
     cursor: not-allowed;
     filter: brightness(1.5);
 }
-

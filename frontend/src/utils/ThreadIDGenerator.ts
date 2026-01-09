@@ -3,6 +3,6 @@ function generateThreadId(): string {
         return crypto.randomUUID();
     }
     return Math.random().toString(36).substring(2) + Date.now().toString(36);
-};
+}
 
 export default generateThreadId;

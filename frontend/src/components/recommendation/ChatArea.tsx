@@ -37,13 +37,14 @@ function ChatArea() {
         setIsStreaming(true);
         sendSSERequest(setMessages, setIsStreaming, threadId!, inputValue, () => {
             setConversationComplete(true);
-        }).then(() => {
-            setIsStreaming(false);
-        }).catch((error) => {
-            console.error('Error sending SSE request:', error);
-            setIsStreaming(false);
-        }
-        );
+        })
+            .then(() => {
+                setIsStreaming(false);
+            })
+            .catch((error) => {
+                console.error('Error sending SSE request:', error);
+                setIsStreaming(false);
+            });
     };
 
     const handleSend = () => {
@@ -96,76 +97,94 @@ function ChatArea() {
             setIsStreaming(true);
             sendSSERequest(setMessages, setIsStreaming, newThreadId, '', () => {
                 setConversationComplete(true);
-            }).then(() => {
-                setIsStreaming(false);
-            }).catch((error) => {
-                console.error('Error sending SSE request:', error);
-                setIsStreaming(false);
-            });
+            })
+                .then(() => {
+                    setIsStreaming(false);
+                })
+                .catch((error) => {
+                    console.error('Error sending SSE request:', error);
+                    setIsStreaming(false);
+                });
         }
     };
 
     if (!threadId) {
-        return <Card className="text-center">
-            <Card.Body>
-                <Card.Title>{t('recommendations.title')}</Card.Title>
-                <Card.Text>{t('recommendations.startChat')}</Card.Text>
-                <Button variant="dark" onClick={beginNewChat}>{t('recommendations.startChatButton')}</Button>
-            </Card.Body>
-        </Card>;
+        return (
+            <Card className="text-center">
+                <Card.Body>
+                    <Card.Title>{t('recommendations.title')}</Card.Title>
+                    <Card.Text>{t('recommendations.startChat')}</Card.Text>
+                    <Button variant="dark" onClick={beginNewChat}>
+                        {t('recommendations.startChatButton')}
+                    </Button>
+                </Card.Body>
+            </Card>
+        );
     }
 
-    return <Card border='dark' className={style.mainCard} >
-        <Card.Body>
-            <Card.Title>{t('recommendations.title')}</Card.Title>
-            <div className={style.chatContainer}>
-                <div className={style.topGradient} />
-                <div className={style.scrollableArea} ref={scrollableAreaRef}>
-                    {messages.map((msg, index) => {
-                        const isAgent = msg.from === 'agent';
+    return (
+        <Card border="dark" className={style.mainCard}>
+            <Card.Body>
+                <Card.Title>{t('recommendations.title')}</Card.Title>
+                <div className={style.chatContainer}>
+                    <div className={style.topGradient} />
+                    <div className={style.scrollableArea} ref={scrollableAreaRef}>
+                        {messages.map((msg, index) => {
+                            const isAgent = msg.from === 'agent';
 
-                        const viewConfig = isAgent ? {
-                            className: style.agentMessage,
-                            label: t('recommendations.agent'),
-                            content: <ReactMarkdown>{msg.text}</ReactMarkdown>
-                        } : {
-                            className: style.userMessage,
-                            label: t('recommendations.user'),
-                            content: msg.text
-                        };
+                            const viewConfig = isAgent
+                                ? {
+                                      className: style.agentMessage,
+                                      label: t('recommendations.agent'),
+                                      content: <ReactMarkdown>{msg.text}</ReactMarkdown>,
+                                  }
+                                : {
+                                      className: style.userMessage,
+                                      label: t('recommendations.user'),
+                                      content: msg.text,
+                                  };
 
-                        return (
-                            <div key={index}>
-                                <Card.Text as="div" className={viewConfig.className}>
-                                    <h6>{viewConfig.label}</h6>
-                                    {viewConfig.content}
-                                </Card.Text>
-                                {index < messages.length - 1 ? <div className={style.separator} /> : null}
-                            </div>
-                        );
-                    })}
-                </div>
-                <Card.Footer className={style.chatInputFooter}>
-                    <div className="d-flex gap-2">
-                        <Form.Control
-                            className={style.chatInput}
-                            ref={inputRef}
-                            as="textarea"
-                            rows={1}
-                            placeholder={conversationComplete ? t('recommendations.conversationEnded') : t('recommendations.typeMessagePlaceholder')}
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
-                            onKeyDown={handleKeyDown}
-                            disabled={isStreaming || conversationComplete}
-                        />
-                        <Button onClick={handleSend} disabled={isStreaming || conversationComplete} className={style.sendButton}>
-                            {t('recommendations.sendMessageButton')}
-                        </Button>
+                            return (
+                                <div key={index}>
+                                    <Card.Text as="div" className={viewConfig.className}>
+                                        <h6>{viewConfig.label}</h6>
+                                        {viewConfig.content}
+                                    </Card.Text>
+                                    {index < messages.length - 1 ? <div className={style.separator} /> : null}
+                                </div>
+                            );
+                        })}
                     </div>
-                </Card.Footer>
-            </div>
-        </Card.Body>
-    </Card>;
+                    <Card.Footer className={style.chatInputFooter}>
+                        <div className="d-flex gap-2">
+                            <Form.Control
+                                className={style.chatInput}
+                                ref={inputRef}
+                                as="textarea"
+                                rows={1}
+                                placeholder={
+                                    conversationComplete
+                                        ? t('recommendations.conversationEnded')
+                                        : t('recommendations.typeMessagePlaceholder')
+                                }
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                                onKeyDown={handleKeyDown}
+                                disabled={isStreaming || conversationComplete}
+                            />
+                            <Button
+                                onClick={handleSend}
+                                disabled={isStreaming || conversationComplete}
+                                className={style.sendButton}
+                            >
+                                {t('recommendations.sendMessageButton')}
+                            </Button>
+                        </div>
+                    </Card.Footer>
+                </div>
+            </Card.Body>
+        </Card>
+    );
 }
 
 export default ChatArea;
