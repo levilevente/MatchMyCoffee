@@ -34,7 +34,7 @@ async function sendSSERequest(
     try {
         const payload = {
             thread_id: threadId,
-            ...(message !== null && { message }),
+            ...(message !== '' && { message }),
         };
 
         const response = await fetch(`${agentUrl}/chat`, {
@@ -44,6 +44,10 @@ async function sendSSERequest(
             },
             body: JSON.stringify(payload),
         });
+
+        if (!response.ok) {
+            throw new Error(`Request failed with status ${response.status}`);
+        }
 
         if (!response.body) {
             throw new Error('No response body');
@@ -72,7 +76,16 @@ async function sendSSERequest(
                         if (data.type === 'token') {
                             appendToLastAgentMessage(setMessages, data.content);
                         } else if (data.type === 'error') {
-                            appendToLastAgentMessage(setMessages, `\n[Error: ${data.content}]`);
+                            setMessages((prev) => {
+                                const lastMessage = prev[prev.length - 1];
+                                if (lastMessage?.from === 'agent') {
+                                    return [
+                                        ...prev.slice(0, -1),
+                                        { ...lastMessage, text: lastMessage.text + `\n[Connection Error]` },
+                                    ];
+                                }
+                                return [...prev, { from: 'agent', text: `[Connection Error]` }];
+                            });
                         } else if (data.type === 'done') {
                             setIsStreaming(false);
                         } else if (data.type === 'recommendation_complete') {

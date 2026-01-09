@@ -63,7 +63,7 @@ function ChatArea() {
         }
     };
 
-    // Hook that saves  threadId to localStorage whenever it changes
+    // Hook that saves threadId to localStorage whenever it changes
     useEffect(() => {
         if (threadId) {
             localStorage.setItem(STORAGE_KEY_THREAD_ID, threadId);
@@ -134,18 +134,18 @@ function ChatArea() {
 
                             const viewConfig = isAgent
                                 ? {
-                                      className: style.agentMessage,
-                                      label: t('recommendations.agent'),
-                                      content: <ReactMarkdown>{msg.text}</ReactMarkdown>,
-                                  }
+                                    className: style.agentMessage,
+                                    label: t('recommendations.agent'),
+                                    content: <ReactMarkdown>{msg.text}</ReactMarkdown>,
+                                }
                                 : {
-                                      className: style.userMessage,
-                                      label: t('recommendations.user'),
-                                      content: msg.text,
-                                  };
+                                    className: style.userMessage,
+                                    label: t('recommendations.user'),
+                                    content: msg.text,
+                                };
 
                             return (
-                                <div key={index}>
+                                <div key={`${msg.from}-${msg.text}-${index}`}>
                                     <Card.Text as="div" className={viewConfig.className}>
                                         <h6>{viewConfig.label}</h6>
                                         {viewConfig.content}
@@ -171,11 +171,14 @@ function ChatArea() {
                                 onChange={(e) => setInputValue(e.target.value)}
                                 onKeyDown={handleKeyDown}
                                 disabled={isStreaming || conversationComplete}
+                                aria-label="Chat input area to type message to agent"
                             />
                             <Button
                                 onClick={handleSend}
                                 disabled={isStreaming || conversationComplete}
                                 className={style.sendButton}
+                                aria-label={t('recommendations.sendMessageButton')}
+                                aria-disabled={isStreaming || conversationComplete}
                             >
                                 {t('recommendations.sendMessageButton')}
                             </Button>
