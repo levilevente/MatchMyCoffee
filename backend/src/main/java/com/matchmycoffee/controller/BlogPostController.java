@@ -1,8 +1,11 @@
 package com.matchmycoffee.controller;
 
+import com.matchmycoffee.dto.response.blogpost.BlogPostDetailedResponse;
 import com.matchmycoffee.dto.response.blogpost.BlogPostResponse;
 import com.matchmycoffee.mapper.BlogPostMapper;
+import com.matchmycoffee.model.entity.BlogPost;
 import com.matchmycoffee.service.BlogPostService;
+import com.matchmycoffee.service.exception.BlogPostNotFoundException;
 import com.matchmycoffee.service.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -45,5 +45,17 @@ public class BlogPostController {
                 blogPostService.getAllBlogPosts(pageable).map(blogPostMapper::toDto);
 
         return ResponseEntity.ok(blogPostResponses);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BlogPostResponse> getBlogPostById(
+            @PathVariable Long id
+    ) throws BlogPostNotFoundException {
+        log.info("GET /blogposts/{}", id);
+
+        BlogPost blogPost = blogPostService.getBlogPostById(id);
+        BlogPostDetailedResponse blogPostResponse = blogPostMapper.toDetailedDto(blogPost);
+
+        return ResponseEntity.ok(blogPostResponse);
     }
 }

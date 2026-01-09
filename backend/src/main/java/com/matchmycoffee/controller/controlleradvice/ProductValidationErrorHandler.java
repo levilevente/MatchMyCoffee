@@ -1,9 +1,6 @@
 package com.matchmycoffee.controller.controlleradvice;
 
-import com.matchmycoffee.service.exception.IllegalProductArgumentException;
-import com.matchmycoffee.service.exception.ProductNotAvailableException;
-import com.matchmycoffee.service.exception.ReviewNotFoundException;
-import com.matchmycoffee.service.exception.ServiceException;
+import com.matchmycoffee.service.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -54,6 +51,14 @@ public class ProductValidationErrorHandler {
     @ResponseBody
     public final ErrorResponse handleReviewNotFoundException(ReviewNotFoundException e) {
         log.debug("ReviewNotFoundException occurred", e);
+        return buildErrorResponse(HttpStatus.NOT_FOUND, e.getMessage());
+    }
+
+    @ExceptionHandler(BlogPostNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public final ErrorResponse handleBlogPostNotFoundException(BlogPostNotFoundException e) {
+        log.debug("BlogPostNotFoundException occurred", e);
         return buildErrorResponse(HttpStatus.NOT_FOUND, e.getMessage());
     }
 

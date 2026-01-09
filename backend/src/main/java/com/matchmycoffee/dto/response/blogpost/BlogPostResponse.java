@@ -13,8 +13,6 @@ import lombok.ToString;
 public class BlogPostResponse {
     private Long id;
     private String title;
-    private String content;
-    private String authorRole;
     private String publishedAt;
     private Boolean isPublished;
 }
