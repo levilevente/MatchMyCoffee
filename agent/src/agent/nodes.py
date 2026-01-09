@@ -123,6 +123,13 @@ def provide_coffee_match(state: WorkflowState) -> dict:
     agent = get_agent()
     coffee_matches = find_coffee_match(profile)
 
+    for coffee in coffee_matches:
+        coffee_id = coffee.get("id")
+        if coffee_id is None:
+            coffee["url"] = "No URL available"
+        else:
+            coffee["url"] = f"/products/{coffee_id}"
+
     prompt = RECOMMENDATION_PROMPT.format(coffee_matches=coffee_matches)
 
     response = agent.invoke(
