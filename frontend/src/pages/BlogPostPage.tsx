@@ -1,13 +1,25 @@
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 
-import { getBlogPostById } from '../services/main.api.ts';
+import { useBlogPostById } from '../query/main.query.ts';
 import style from './BlogPostPage.module.css';
 
 function BlogPostPage() {
     const { t } = useTranslation();
     const blogId = useParams().blogId;
-    const blogPost = getBlogPostById(blogId ? parseInt(blogId) : -1);
+    const { data: blogPost, isLoading, error } = useBlogPostById(blogId ? parseInt(blogId, 10) : 0);
+
+    if (!blogPost) {
+        return <div className={style.container}>Loading...</div>;
+    }
+
+    if (isLoading) {
+        return <div className={style.container}>Loading...</div>;
+    }
+
+    if (error) {
+        return <div className={style.container}>Error loading blog post.</div>;
+    }
 
     return (
         <div className={style.container}>

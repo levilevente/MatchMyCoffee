@@ -1,16 +1,16 @@
-import { useState } from 'react';
-
 import ProductGrid from '../components/common/ProductGrid.tsx';
-import { getCoffees } from '../services/main.api.ts';
-import type { ProductSummary } from '../types/ProductsType.ts';
+import { useAllProducts } from '../query/main.query.ts';
 import style from './HomePage.module.css';
 
 function HomePage() {
-    const [products, setProducts] = useState<ProductSummary[]>([]);
+    const { data: products = [], isLoading, error } = useAllProducts();
 
-    if (products.length === 0) {
-        const fetchedProducts = getCoffees();
-        setProducts(fetchedProducts);
+    if (isLoading) {
+        return <div className={style.container}>Loading...</div>;
+    }
+
+    if (error) {
+        return <div className={style.container}>Error loading products.</div>;
     }
 
     return (

@@ -12,6 +12,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.90.17",
     "@typescript-eslint/parser": "^8.49.0",
     "axios": "^1.13.2",
     "bootstrap": "^5.3.8",

@@ -1,23 +1,50 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { ReviewType } from '../../types/ReviewType.ts';
+import { submitReview } from '../../services/main.api.ts';
 import MainButton from '../common/MainButton.tsx';
 import StarRating from '../common/StarRating.tsx';
 import style from './AddReview.module.css';
 
 interface AddReviewsProps {
-    setReviews: React.Dispatch<React.SetStateAction<ReviewType[]>>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    refetchWithInvalidation: () => any;
     productId: number;
 }
 
 function AddReview(props: AddReviewsProps) {
-    const { setReviews, productId } = props;
+    const { refetchWithInvalidation, productId } = props;
 
     const { t } = useTranslation();
     const [stars, setStars] = useState<number>(0);
     const [reviewText, setReviewText] = useState<string>('');
     const [reviewerName, setReviewerName] = useState<string>('');
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+    const handleSubmit = async () => {
+        if (stars === 0) {
+            alert('Please provide a rating');
+            return;
+        }
+
+        setIsSubmitting(true);
+        try {
+            await submitReview(productId, {
+                authorName: reviewerName || 'Anonymous',
+                rating: stars,
+                comment: reviewText,
+            });
+            await refetchWithInvalidation();
+            setStars(0);
+            setReviewText('');
+            setReviewerName('');
+        } catch (error) {
+            console.error('Error submitting review:', error);
+            alert('Failed to submit review. Please try again.');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
     return (
         <div className={style.reviewCard}>
@@ -37,23 +64,7 @@ function AddReview(props: AddReviewsProps) {
                 value={reviewText}
                 onChange={(e) => setReviewText(e.target.value)}
             />
-            <MainButton
-                text={'Submit Review'}
-                onClick={() => {
-                    const newReview: ReviewType = {
-                        createdAt: '',
-                        id: Date.now(),
-                        productId: productId,
-                        rating: stars,
-                        comment: reviewText,
-                        authorName: reviewerName ? reviewerName : 'Anonymous',
-                        isApproved: true,
-                    };
-                    setReviews((prevReviews) => [newReview, ...prevReviews]);
-                    setStars(0);
-                    setReviewText('');
-                }}
-            />
+            <MainButton text={isSubmitting ? 'Submitting...' : 'Submit Review'} onClick={() => void handleSubmit()} />
         </div>
     );
 }
