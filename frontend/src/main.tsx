@@ -16,6 +16,5 @@ createRoot(document.getElementById('root')!).render(
                 <Root />
             </CartProvider>
         </FavoritesProvider>
-        ,
     </QueryClientProvider>,
 );
