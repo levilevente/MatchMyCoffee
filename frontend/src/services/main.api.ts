@@ -12,13 +12,19 @@ export const mainAPI = axios.create({
     },
 });
 
-export async function getCoffees(page = 0, size = 12): Promise<{ content: ProductSummary[]; totalPages: number; totalElements: number }> {
-    const response = await mainAPI.get<{ content: ProductSummary[]; totalPages: number; totalElements: number }>('/products', {
-        params: {
-            page,
-            size,
+export async function getCoffees(
+    page = 0,
+    size = 12,
+): Promise<{ content: ProductSummary[]; totalPages: number; totalElements: number }> {
+    const response = await mainAPI.get<{ content: ProductSummary[]; totalPages: number; totalElements: number }>(
+        '/products',
+        {
+            params: {
+                page,
+                size,
+            },
         },
-    });
+    );
     return response.data;
 }
 

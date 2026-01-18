@@ -17,22 +17,33 @@ interface Props {
 }
 
 const ProductGrid = (props: Props) => {
-    const { inCart, products, storageKey, currentPage: externalCurrentPage, totalPages: externalTotalPages, onPageChange } = props;
-    const safeProducts = Array.isArray(products) ? products : [];
-
-    const clientPagination = storageKey ? useClientPagination({
-        data: safeProducts,
+    const {
+        inCart,
+        products,
         storageKey,
-    }) : null;
+        currentPage: externalCurrentPage,
+        totalPages: externalTotalPages,
+        onPageChange,
+    } = props;
+
+    const safeProducts = useMemo(
+        () => (Array.isArray(products) ? products : []),
+        [products]
+    );
+
+    const clientPagination = useClientPagination({
+        data: safeProducts,
+        storageKey: storageKey || 'homePage',
+    });
 
     const productsToDisplay = useMemo(() => {
-        if (storageKey && clientPagination) {
+        if (storageKey) {
             return clientPagination.paginationData;
         }
         return safeProducts;
-    }, [storageKey, clientPagination, safeProducts]);
+    }, [storageKey, clientPagination.paginationData, safeProducts]);
 
-    const showPagination = storageKey || (externalTotalPages && externalTotalPages > 1);
+    const showPagination = storageKey ?? (externalTotalPages && externalTotalPages > 1);
 
     return (
         <div className={style.container}>
@@ -42,13 +53,14 @@ const ProductGrid = (props: Props) => {
                     return <ProductCard data={productData} key={productData.id} inCart={inCart} />;
                 })}
             </div>
-            {showPagination && (
-                <ProductPagination
-                    currentPage={storageKey && clientPagination ? clientPagination.currentPage : (externalCurrentPage || 1)}
-                    goToPage={storageKey && clientPagination ? clientPagination.goToPage : (onPageChange || (() => {}))}
-                    totalPages={storageKey && clientPagination ? clientPagination.totalPages : (externalTotalPages || 1)}
-                />
-            )}
+            {showPagination ? <ProductPagination
+                    currentPage={
+                        storageKey && clientPagination ? clientPagination.currentPage : externalCurrentPage ?? 1
+                    }
+                    // eslint-disable-next-line @typescript-eslint/no-empty-function
+                    goToPage={storageKey && clientPagination ? clientPagination.goToPage : onPageChange ?? (() => {})}
+                    totalPages={storageKey && clientPagination ? clientPagination.totalPages : externalTotalPages ?? 1}
+                /> : null}
         </div>
     );
 };

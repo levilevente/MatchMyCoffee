@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getBlogPostById, getBlogPosts, getCoffeeById, getCoffees, getProductReviews } from '../services/main.api.ts';
 import { queryClient } from './common.query.ts';
 
-export function useAllProducts(page: number = 0, size: number = 12) {
+export function useAllProducts(page = 0, size = 12) {
     const query = useQuery({
         queryKey: ['allProducts', page, size],
         queryFn: () => getCoffees(page, size),

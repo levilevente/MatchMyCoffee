@@ -10,8 +10,8 @@ function HomePage() {
 
     const { data, isLoading, error } = useAllProducts(currentPage - 1, itemsPerPage);
 
-    const products = data?.content || [];
-    const totalPages = data?.totalPages || 1;
+    const products = data?.content ?? [];
+    const totalPages = data?.totalPages ?? 1;
 
     if (isLoading) {
         return <div className={style.container}>Loading...</div>;

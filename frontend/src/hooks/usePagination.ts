@@ -87,4 +87,3 @@ export function usePagination(props: BackendPaginationProps) {
         itemsPerPage,
     };
 }
-
