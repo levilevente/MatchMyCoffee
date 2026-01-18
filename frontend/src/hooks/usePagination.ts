@@ -9,7 +9,7 @@ interface PaginationProps {
     storageKey: 'homePage' | 'favoritesPage' | 'cartPage';
 }
 
-export function usePagination(props: PaginationProps) {
+export function useClientPagination(props: PaginationProps) {
     const { data, itemsPerPage = 12, storageKey = 'homePage' } = props;
     const safeData = useMemo(() => {
         return Array.isArray(data) ? data : [];
@@ -56,3 +56,35 @@ export function usePagination(props: PaginationProps) {
         itemsPerPage,
     };
 }
+
+interface BackendPaginationProps {
+    storageKey: string;
+    itemsPerPage?: number;
+}
+
+export function usePagination(props: BackendPaginationProps) {
+    const { storageKey, itemsPerPage = 12 } = props;
+
+    const [currentPage, setCurrentPage] = useState(() => {
+        return Number(localStorage.getItem(storageKey)) || 1;
+    });
+
+    useEffect(() => {
+        localStorage.setItem(storageKey, String(currentPage));
+    }, [currentPage, storageKey]);
+
+    const goToPage = (page: number) => {
+        if (page < 1) {
+            setCurrentPage(1);
+        } else {
+            setCurrentPage(page);
+        }
+    };
+
+    return {
+        currentPage,
+        goToPage,
+        itemsPerPage,
+    };
+}
+

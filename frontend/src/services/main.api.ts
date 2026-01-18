@@ -12,9 +12,14 @@ export const mainAPI = axios.create({
     },
 });
 
-export async function getCoffees(): Promise<ProductSummary[]> {
-    const response = await mainAPI.get<{ content: ProductSummary[] }>('/products');
-    return response.data.content;
+export async function getCoffees(page = 0, size = 12): Promise<{ content: ProductSummary[]; totalPages: number; totalElements: number }> {
+    const response = await mainAPI.get<{ content: ProductSummary[]; totalPages: number; totalElements: number }>('/products', {
+        params: {
+            page,
+            size,
+        },
+    });
+    return response.data;
 }
 
 export async function getCoffeeById(id: number): Promise<ProductDetail> {
