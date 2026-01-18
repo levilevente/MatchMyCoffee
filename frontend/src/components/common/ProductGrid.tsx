@@ -26,14 +26,11 @@ const ProductGrid = (props: Props) => {
         onPageChange,
     } = props;
 
-    const safeProducts = useMemo(
-        () => (Array.isArray(products) ? products : []),
-        [products]
-    );
+    const safeProducts = useMemo(() => (Array.isArray(products) ? products : []), [products]);
 
     const clientPagination = useClientPagination({
         data: safeProducts,
-        storageKey: storageKey || 'homePage',
+        storageKey: storageKey ?? 'homePage',
     });
 
     const productsToDisplay = useMemo(() => {
@@ -53,14 +50,18 @@ const ProductGrid = (props: Props) => {
                     return <ProductCard data={productData} key={productData.id} inCart={inCart} />;
                 })}
             </div>
-            {showPagination ? <ProductPagination
+            {showPagination ? (
+                <ProductPagination
                     currentPage={
-                        storageKey && clientPagination ? clientPagination.currentPage : externalCurrentPage ?? 1
+                        storageKey && clientPagination ? clientPagination.currentPage : (externalCurrentPage ?? 1)
                     }
                     // eslint-disable-next-line @typescript-eslint/no-empty-function
-                    goToPage={storageKey && clientPagination ? clientPagination.goToPage : onPageChange ?? (() => {})}
-                    totalPages={storageKey && clientPagination ? clientPagination.totalPages : externalTotalPages ?? 1}
-                /> : null}
+                    goToPage={storageKey && clientPagination ? clientPagination.goToPage : (onPageChange ?? (() => {}))}
+                    totalPages={
+                        storageKey && clientPagination ? clientPagination.totalPages : (externalTotalPages ?? 1)
+                    }
+                />
+            ) : null}
         </div>
     );
 };

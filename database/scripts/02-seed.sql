@@ -308,7 +308,21 @@ INSERT INTO reviews (product_id, author_name, rating, comment, is_approved) VALU
 
 INSERT INTO blog_posts (title, content, author_role, is_published) VALUES 
 ('Mastering the V60 Pour Over', 
- '<p>The V60 offers clarity and highlights acidity. Use a medium-fine grind and pour in concentric circles. Aim for a 2:30 to 3:00 minute total brew time.</p>', 
+ '<div class="blog-content">
+    <p class="lead">Brewing coffee is more than just a morning routine; it''s a ritual. If you want to elevate your cup, the pour-over method is the best place to start.</p>
+    
+    <h2>1. The Ratio Matters</h2>
+    <p>The golden rule for pour-over coffee is the <strong>1:16 ratio</strong>. That means for every 1 gram of coffee, you use 16 grams of water. For a standard mug, try 20g of coffee to 320g of water.</p>
+
+    <h2>2. The Bloom</h2>
+    <p>Don''t just pour all the water at once! Pour just enough water to wet the grounds (about 40g) and let it sit for 30 seconds. You will see bubbles rising—this is CO2 escaping. We call this <em>the bloom</em>, and it ensures an even extraction.</p>
+    <img src="https://www.caffeebazzar.ro/cache/img/produse/1-15000/1560/Espressor-Astoria-Loft-Home-Barista_1000x1000.jpg" alt="Roast Levels Illustration" />
+
+    <h2>3. The Pour</h2>
+    <p>Pour the remaining water in slow, concentric circles, avoiding the edges of the filter. Keep the water level consistent. The total brew time should be between 2:30 and 3:00 minutes.</p>
+    
+    <blockquote>"Good coffee is an act of patience."</blockquote>
+</div>',
  'Head Barista', TRUE),
 
 ('Why We Love the French Press', 
