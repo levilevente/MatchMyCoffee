@@ -2,14 +2,21 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
 import MainButton from '../components/common/MainButton.tsx';
-import { getBlogPosts } from '../services/main.api.ts';
-import type { BlogPostType } from '../types/BlogPostType.ts';
+import { useBlogPosts } from '../query/main.query.ts';
 import style from './BlogPostsPage.module.css';
 
 function BlogPostsPage() {
     const { t } = useTranslation();
-    const blogPosts: BlogPostType[] = getBlogPosts();
+    const { data: blogPosts, isLoading, error } = useBlogPosts();
     const navigate = useNavigate();
+
+    if (isLoading) {
+        return <div className={style.container}>Loading...</div>;
+    }
+
+    if (error) {
+        return <div className={style.container}>Error loading blog posts.</div>;
+    }
 
     const handleSeeMore = (id: number) => {
         void navigate(`/blog/${id}`);
@@ -17,7 +24,7 @@ function BlogPostsPage() {
 
     return (
         <div className={style.container}>
-            {blogPosts.map(
+            {blogPosts?.map(
                 (blogPost) =>
                     blogPost.isPublished && (
                         <div key={blogPost.id} style={{ marginBottom: '20px' }}>

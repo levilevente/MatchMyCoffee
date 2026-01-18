@@ -29,7 +29,6 @@ const StarRating: React.FC<StarRatingProps> = ({
         const stars = [];
         for (let i = 1; i <= maxStars; i++) {
             const starElement = {
-                key: i,
                 size: size,
                 onClick: () => handleStarClick(i),
                 style: { cursor: clickable ? 'pointer' : 'default' },
@@ -37,13 +36,13 @@ const StarRating: React.FC<StarRatingProps> = ({
 
             if (rating >= i) {
                 // Full Star
-                stars.push(<FullStar {...starElement} />);
+                stars.push(<FullStar key={i} {...starElement} />);
             } else if (rating >= i - 0.5) {
                 // Half Star
-                stars.push(<HalfStar {...starElement} />);
+                stars.push(<HalfStar key={i} {...starElement} />);
             } else {
                 // Empty Star
-                stars.push(<EmptyStar {...starElement} />);
+                stars.push(<EmptyStar key={i} {...starElement} />);
             }
         }
         return stars;

@@ -93,52 +93,52 @@ INSERT INTO origins (region, continent) VALUES
 -- Product 1: Ethiopian Yirgacheffe (Light Roast, Floral/Fruity)
 INSERT INTO products (name, description, price, stock, is_blend, roast_level, acidity_score, image_url) VALUES 
 ('Ethiopian Yirgacheffe', 'A bright and complex light roast with distinct floral notes and a tea-like body. Perfect for pour-over enthusiasts.', 
-75.00, 50, FALSE, 1, 5, 'images/products/ethiopia_yirg.jpg');
+75.00, 50, FALSE, 1, 5, 'https://cafeo.ro/4261-large_default/kimbo-intenso-cafea-boabe-1kg.jpg');
 
 -- Product 2: Colombian Supremo (Medium Roast, Sweet/Nutty)
 INSERT INTO products (name, description, price, stock, is_blend, roast_level, acidity_score, image_url) VALUES 
 ('Colombian Supremo', 'Classic Colombian coffee with a balanced body, notes of caramel and dried fruit. A crowd pleaser.', 
-60.00, 100, FALSE, 3, 3, 'images/products/colombia_sup.jpg');
+60.00, 100, FALSE, 3, 3, 'https://www.cafemagia.ro/images/produse/davidoff-cafe-espresso-57-1-kg-cafea-prajita-boabe-edit.jpg');
 
 -- Product 3: Sumatra Mandheling (Dark Roast, Earthy)
 INSERT INTO products (name, description, price, stock, is_blend, roast_level, acidity_score, image_url) VALUES 
 ('Sumatra Mandheling', 'Full-bodied and low acidity with rich earthy notes and a hint of spice.', 
-65.00, 40, FALSE, 5, 1, 'images/products/sumatra.jpg');
+65.00, 40, FALSE, 5, 1, 'https://lcdn.altex.ro/media/catalog/product/9/0/9000403895358_1_89b28c6f.jpg');
 
 -- Product 4: Brazil Santos (Medium-Dark, Chocolate/Nutty)
 INSERT INTO products (name, description, price, stock, is_blend, roast_level, acidity_score, image_url) VALUES 
 ('Brazil Santos', 'Low acidity with a smooth, nutty profile and heavy chocolate notes. Great for espresso.', 
-55.00, 120, FALSE, 4, 2, 'images/products/brazil.jpg');
+55.00, 120, FALSE, 4, 2, 'https://deutschermarkt.ro/wp-content/uploads/2020/07/Cafea-boabe-Jacobs-Caffe-Crema-Classico-1Kg-1.jpg');
 
 -- Product 5: Kenya AA (Light-Medium, Intense Berry)
 INSERT INTO products (name, description, price, stock, is_blend, roast_level, acidity_score, image_url) VALUES 
 ('Kenya AA', 'Renowned for its intense fruit flavors, wine-like acidity, and savory nuances.', 
-85.00, 30, FALSE, 2, 5, 'images/products/kenya.jpg');
+85.00, 30, FALSE, 2, 5, 'https://c.cdnmp.net/947378707/p/m/5/kimbo-barista-espresso-napoli-cafea-boabe-1kg~24725.jpg');
 
 -- Product 6: Morning Blend (Blend, Balanced)
 INSERT INTO products (name, description, price, stock, is_blend, roast_level, acidity_score, image_url) VALUES 
 ('Sunrise Morning Blend', 'Our signature breakfast blend. Smooth, consistent, and easy to drink.', 
-50.00, 200, TRUE, 3, 3, 'images/products/blend_morning.jpg');
+50.00, 200, TRUE, 3, 3, 'https://cdn.bestvalue.eu/media/cache/sylius_shop_product_original/borbone-cafea-cafea-boabe-espresso-intenso-1000-gr-112df136f053cec320d2ff00.jpg');
 
 -- Product 7: Espresso Crema (Blend, Strong)
 INSERT INTO products (name, description, price, stock, is_blend, roast_level, acidity_score, image_url) VALUES 
 ('Espresso Crema', 'Designed for the perfect shot. Thick crema, heavy body, and a punchy kick.', 
-58.00, 80, TRUE, 5, 2, 'images/products/blend_espresso.jpg');
+58.00, 80, TRUE, 5, 2, 'https://imgproxy-retcat.assets.schwarz/7O4_IvbfKebQfgdGhZRdypQledrNr0v-mIroUBmb8ow/sm:1/w:1278/h:959/cz/M6Ly9wcm9kLWNhd/GFsb2ctbWVkaWEvcm8vMS9FQzZENDFDQTJCQkNGMTdBMERBQjMyMEY/2NjFDQTcxOUUwODU1QjUyMTU4NTY4MEY3ODhGRTEwRDIyQjU1NUZGLmpwZw.jpg');
 
 -- Product 8: Costa Rica Tarrazu (Medium, Honey/Citrus)
 INSERT INTO products (name, description, price, stock, is_blend, roast_level, acidity_score, image_url) VALUES 
 ('Costa Rica Tarrazu', 'Exceptionally clean with honey sweetness and a bright citrus finish.', 
-70.00, 45, FALSE, 3, 4, 'images/products/costa_rica.jpg');
+70.00, 45, FALSE, 3, 4, 'https://gomagcdn.ro/domains/coffeepoint.ro/files/product/large/doncafe-espresso-intense-cafea-boabe-1-kg-439710.webp');
 
 -- Product 9: Guatemala Antigua (Medium, Smoky/Spicy)
 INSERT INTO products (name, description, price, stock, is_blend, roast_level, acidity_score, image_url) VALUES 
 ('Guatemala Antigua', 'Complex with a touch of smoke and spice (cocoa), balanced by a fine acidity.', 
-68.00, 60, FALSE, 3, 3, 'images/products/guatemala.jpg');
+68.00, 60, FALSE, 3, 3, 'https://noircoffee.ro/cdn/shop/files/noir-ethiopia-1_2048x.jpg?v=1695807890');
 
 -- Product 10: Panama Geisha (Light, Rare/Floral)
 INSERT INTO products (name, description, price, stock, is_blend, roast_level, acidity_score, image_url) VALUES 
 ('Panama Geisha Reserve', 'An award-winning varietal. Jasmine aroma, bergamot notes, and a silky mouthfeel. Very limited.', 
-250.00, 10, FALSE, 1, 4, 'images/products/panama.jpg');
+250.00, 10, FALSE, 1, 4, 'https://gomagcdn.ro/domains/cafea-premium.ro/files/product/medium/dallmayr-ethiopia-cafea-boabe-500g-copie-665376.webp');
 
 
 -- 6. LINKING PRODUCTS TO ORIGINS (product_origins)
@@ -308,7 +308,21 @@ INSERT INTO reviews (product_id, author_name, rating, comment, is_approved) VALU
 
 INSERT INTO blog_posts (title, content, author_role, is_published) VALUES 
 ('Mastering the V60 Pour Over', 
- '<p>The V60 offers clarity and highlights acidity. Use a medium-fine grind and pour in concentric circles. Aim for a 2:30 to 3:00 minute total brew time.</p>', 
+ '<div class="blog-content">
+    <p class="lead">Brewing coffee is more than just a morning routine; it''s a ritual. If you want to elevate your cup, the pour-over method is the best place to start.</p>
+    
+    <h2>1. The Ratio Matters</h2>
+    <p>The golden rule for pour-over coffee is the <strong>1:16 ratio</strong>. That means for every 1 gram of coffee, you use 16 grams of water. For a standard mug, try 20g of coffee to 320g of water.</p>
+
+    <h2>2. The Bloom</h2>
+    <p>Don''t just pour all the water at once! Pour just enough water to wet the grounds (about 40g) and let it sit for 30 seconds. You will see bubbles rising—this is CO2 escaping. We call this <em>the bloom</em>, and it ensures an even extraction.</p>
+    <img src="https://www.caffeebazzar.ro/cache/img/produse/1-15000/1560/Espressor-Astoria-Loft-Home-Barista_1000x1000.jpg" alt="Roast Levels Illustration" />
+
+    <h2>3. The Pour</h2>
+    <p>Pour the remaining water in slow, concentric circles, avoiding the edges of the filter. Keep the water level consistent. The total brew time should be between 2:30 and 3:00 minutes.</p>
+    
+    <blockquote>"Good coffee is an act of patience."</blockquote>
+</div>',
  'Head Barista', TRUE),
 
 ('Why We Love the French Press', 
