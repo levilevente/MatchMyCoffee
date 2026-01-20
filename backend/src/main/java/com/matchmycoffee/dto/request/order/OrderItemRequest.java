@@ -13,16 +13,9 @@ import lombok.ToString;
 @ToString
 public class OrderItemRequest {
     @NotNull
-    private Long orderId;
-
-    @NotNull
     private Long productId;
 
     @NotNull
     @Positive(message = "Quantity must be a positive integer")
     private Integer quantity;
-
-    @NotNull
-    @Positive(message = "Price must be a positive number")
-    private Double priceAtPurchase;
 }
