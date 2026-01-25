@@ -86,7 +86,7 @@ public interface ProductMapper {
     ProductTaste toProductTaste(Long tasteId);
 
     /**
-     *  This runs after the mapping is done to ensure the children know who their parent is.
+     * This runs after the mapping is done to ensure the children know who their parent is.
      */
     @AfterMapping
     default void linkBiDirectionalReferences(@MappingTarget Product product) {

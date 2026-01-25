@@ -28,11 +28,10 @@ public class BlogPostController {
     private BlogPostMapper blogPostMapper;
 
     @GetMapping
-    public ResponseEntity<Page<BlogPostResponse>> getAllBlogPosts(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy
-    ) throws ServiceException {
+    public ResponseEntity<Page<BlogPostResponse>> getAllBlogPosts(@RequestParam(defaultValue = "0") int page,
+                                                                  @RequestParam(defaultValue = "10") int size,
+                                                                  @RequestParam(defaultValue = "id") String sortBy)
+            throws ServiceException {
         log.info("GET /blogposts");
 
         if (size <= 0 || page < 0) {
@@ -41,16 +40,13 @@ public class BlogPostController {
         }
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        Page<BlogPostResponse> blogPostResponses =
-                blogPostService.getAllBlogPosts(pageable).map(blogPostMapper::toDto);
+        Page<BlogPostResponse> blogPostResponses = blogPostService.getAllBlogPosts(pageable).map(blogPostMapper::toDto);
 
         return ResponseEntity.ok(blogPostResponses);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BlogPostResponse> getBlogPostById(
-            @PathVariable Long id
-    ) throws BlogPostNotFoundException {
+    public ResponseEntity<BlogPostResponse> getBlogPostById(@PathVariable Long id) throws BlogPostNotFoundException {
         log.info("GET /blogposts/{}", id);
 
         BlogPost blogPost = blogPostService.getBlogPostById(id);

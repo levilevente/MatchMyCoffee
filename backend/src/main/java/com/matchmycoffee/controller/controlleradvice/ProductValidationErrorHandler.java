@@ -19,12 +19,7 @@ import java.time.Instant;
 @Slf4j
 public class ProductValidationErrorHandler {
     private ErrorResponse buildErrorResponse(HttpStatus status, String message) {
-        return new ErrorResponse(
-                Instant.now(),
-                status.value(),
-                status.getReasonPhrase(),
-                message
-        );
+        return new ErrorResponse(Instant.now(), status.value(), status.getReasonPhrase(), message);
     }
 
     @ExceptionHandler(ServiceException.class)

@@ -25,12 +25,7 @@ public class Order extends BaseEntity {
     @Column(name = "currency", length = 3, columnDefinition = "VARCHAR(3) DEFAULT 'RON'")
     private String currency;
 
-    @Column(
-            name = "status",
-            nullable = false,
-            length = 20,
-            columnDefinition = "VARCHAR(20) DEFAULT 'PENDING'"
-    )
+    @Column(name = "status", nullable = false, length = 20, columnDefinition = "VARCHAR(20) DEFAULT 'PENDING'")
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 

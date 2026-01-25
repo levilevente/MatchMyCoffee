@@ -65,6 +65,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
+    @SuppressWarnings("PMD")
     public Order createOrder(Order order, List<OrderItemRequest> items)
             throws IllegalOrderArgumentException, InsufficientStockException, ProductNotAvailableException {
         Pattern emailPattern = Pattern.compile("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
@@ -111,6 +112,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
+    @SuppressWarnings("PMD")
     public Order addItemToOrder(Long orderId, OrderItemRequest itemRequest)
             throws InsufficientStockException, IllegalOrderArgumentException, ProductNotAvailableException,
             OrderNotFoundException {
@@ -126,14 +128,14 @@ public class OrderServiceImpl implements OrderService {
             throw new InsufficientStockException("Insufficient stock!");
         }
 
-        Order savedOrder = orderRepository.findById(orderId)
-                .orElseThrow(() -> new OrderNotFoundException("Order not found!"));
+        Order savedOrder =
+                orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Order not found!"));
         if (savedOrder.getStatus() != OrderStatus.PENDING) {
             log.error("Order status is not pending: {}", savedOrder.getStatus());
             throw new IllegalOrderArgumentException("Order status is not pending!");
         }
 
-        if (product.getIsActive() == false) {
+        if (product.getIsActive()) {
             log.error("Product is not active: {}", product.getName());
             throw new IllegalOrderArgumentException("Product is not active!");
         }
@@ -157,7 +159,7 @@ public class OrderServiceImpl implements OrderService {
         savedOrder = orderRepository.save(savedOrder);
 
         try {
-            orderItemRepository.getOrderItemById((savedOrderItem.getId()));
+            orderItemRepository.getOrderItemById(savedOrderItem.getId());
         } catch (EntityNotFoundException e) {
             log.error("Error while retrieving order item with id {}", savedOrderItem.getId());
             throw new InvalidOrderStateException("Failed to retrieve order item!", e);
@@ -194,6 +196,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
+    @SuppressWarnings("PMD")
     public Order updateOrder(Long id, Order order) throws InvalidOrderStateException {
         Order existingOrder =
                 orderRepository.findById(id).orElseThrow(() -> new InvalidOrderStateException("Order not found!"));
@@ -241,7 +244,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void cancelOrder(Long id) throws OrderNotFoundException, IllegalOrderArgumentException, ProductNotAvailableException {
+    public void cancelOrder(Long id)
+            throws OrderNotFoundException, IllegalOrderArgumentException, ProductNotAvailableException {
         Order order = getOrderById(id);
 
         if (order.getStatus() != OrderStatus.PENDING) {

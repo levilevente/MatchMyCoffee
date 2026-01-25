@@ -5,5 +5,7 @@ public class InvalidOrderStateException extends RuntimeException {
         super(message);
     }
 
-    public InvalidOrderStateException(String message, Throwable cause) {super(message, cause);}
+    public InvalidOrderStateException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

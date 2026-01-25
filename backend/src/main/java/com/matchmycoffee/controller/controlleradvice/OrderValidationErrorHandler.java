@@ -21,24 +21,14 @@ import java.time.Instant;
 @Slf4j
 public class OrderValidationErrorHandler {
 
-    private ErrorResponse buildErrorResponse(
-            HttpStatus status,
-            String message
-    ) {
-        return new ErrorResponse(
-                Instant.now(),
-                status.value(),
-                status.getReasonPhrase(),
-                message
-        );
+    private ErrorResponse buildErrorResponse(HttpStatus status, String message) {
+        return new ErrorResponse(Instant.now(), status.value(), status.getReasonPhrase(), message);
     }
 
     @ExceptionHandler(OrderNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    public final ErrorResponse handleOrderNotFoundException(
-            OrderNotFoundException e
-    ) {
+    public final ErrorResponse handleOrderNotFoundException(OrderNotFoundException e) {
         log.debug("OrderNotFoundException occurred", e);
         return buildErrorResponse(HttpStatus.NOT_FOUND, e.getMessage());
     }
@@ -46,9 +36,7 @@ public class OrderValidationErrorHandler {
     @ExceptionHandler(IllegalOrderArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public final ErrorResponse handleIllegalOrderArgumentException(
-            IllegalOrderArgumentException e
-    ) {
+    public final ErrorResponse handleIllegalOrderArgumentException(IllegalOrderArgumentException e) {
         log.debug("IllegalOrderArgumentException occurred", e);
         return buildErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
     }
@@ -56,9 +44,7 @@ public class OrderValidationErrorHandler {
     @ExceptionHandler(InvalidOrderStateException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public final ErrorResponse handleInvalidOrderStateException(
-            InvalidOrderStateException e
-    ) {
+    public final ErrorResponse handleInvalidOrderStateException(InvalidOrderStateException e) {
         log.debug("InvalidOrderStateException occurred", e);
         return buildErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
     }
@@ -66,9 +52,7 @@ public class OrderValidationErrorHandler {
     @ExceptionHandler(InsufficientStockException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     @ResponseBody
-    public final ErrorResponse handleInsufficientStockException(
-            InsufficientStockException e
-    ) {
+    public final ErrorResponse handleInsufficientStockException(InsufficientStockException e) {
         log.debug("InsufficientStockException occurred", e);
         return buildErrorResponse(HttpStatus.CONFLICT, e.getMessage());
     }

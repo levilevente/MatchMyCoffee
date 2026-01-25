@@ -40,11 +40,10 @@ public class ReviewServiceImpl implements ReviewService {
     public Review getReviewById(Long id) throws ReviewNotFoundException {
         log.info("Getting review by id: {}", id);
         try {
-            return reviewRepository.findById(id)
-                    .orElseThrow(() -> {
-                        log.error("Review with id {} not found", id);
-                        return new ReviewNotFoundException("Review not found!");
-                    });
+            return reviewRepository.findById(id).orElseThrow(() -> {
+                log.error("Review with id {} not found", id);
+                return new ReviewNotFoundException("Review not found!");
+            });
         } catch (EntityNotFoundException e) {
             log.error("Error while retrieving review with id {}", id, e);
             throw new ReviewNotFoundException("Review not found!", e);
@@ -52,10 +51,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Review createReview(
-            Long productId,
-            Review review
-    ) throws IllegalReviewArgumentException, ServiceException {
+    public Review createReview(Long productId, Review review) throws IllegalReviewArgumentException, ServiceException {
         log.info("Creating review for product id: {}", productId);
         validateRating(review.getRating());
 
@@ -78,11 +74,10 @@ public class ReviewServiceImpl implements ReviewService {
         log.info("Updating review with id: {}", id);
         try {
 
-            Review existingReview = reviewRepository.findById(id)
-                    .orElseThrow(() -> {
-                        log.error("Review with id {} not found", id);
-                        return new ReviewNotFoundException("Review not found!");
-                    });
+            Review existingReview = reviewRepository.findById(id).orElseThrow(() -> {
+                log.error("Review with id {} not found", id);
+                return new ReviewNotFoundException("Review not found!");
+            });
 
             if (!Objects.equals(existingReview.getProduct().getId(), productId)) {
                 log.error("Review with id {} does not belong to the specified product", productId);
@@ -120,10 +115,9 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     private Product findProductById(Long productId) throws IllegalReviewArgumentException {
-        return productRepository.findById(productId)
-                .orElseThrow(() -> {
-                    log.error("Product with id {} not found", productId);
-                    return new IllegalReviewArgumentException("Product not found");
-                });
+        return productRepository.findById(productId).orElseThrow(() -> {
+            log.error("Product with id {} not found", productId);
+            return new IllegalReviewArgumentException("Product not found");
+        });
     }
 }

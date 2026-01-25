@@ -29,11 +29,10 @@ public class ProductServiceImpl implements ProductService {
     public Product getProductById(Long id) throws ProductNotAvailableException {
         log.info("Getting product by id: {}", id);
         try {
-            Product product = productRepository.findByIdWithDetails(id)
-                    .orElseThrow(() -> {
-                        log.error("Product with id {} not found", id);
-                        return new ProductNotAvailableException("Product not found!");
-                    });
+            Product product = productRepository.findByIdWithDetails(id).orElseThrow(() -> {
+                log.error("Product with id {} not found", id);
+                return new ProductNotAvailableException("Product not found!");
+            });
 
             List<Object[]> statsList = productRepository.findProductStats(id);
 
@@ -61,11 +60,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> getAllProducts(Pageable pageable) throws ServiceException {
-        log.info(
-                "Fetching all products with pagination: page number {}, page size {}",
-                pageable.getPageNumber(),
-                pageable.getPageSize()
-        );
+        log.info("Fetching all products with pagination: page number {}, page size {}", pageable.getPageNumber(),
+                pageable.getPageSize());
 
         Page<Object[]> productDataPage = productRepository.findAllWithReviewStats(pageable);
         return productDataPage.map(objects -> {

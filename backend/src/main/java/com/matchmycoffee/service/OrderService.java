@@ -29,5 +29,6 @@ public interface OrderService {
 
     Order updateOrder(Long id, Order order) throws InvalidOrderStateException, OrderNotFoundException;
 
-    void cancelOrder(Long id) throws OrderNotFoundException, IllegalOrderArgumentException, ProductNotAvailableException;
+    void cancelOrder(Long id)
+            throws OrderNotFoundException, IllegalOrderArgumentException, ProductNotAvailableException;
 }

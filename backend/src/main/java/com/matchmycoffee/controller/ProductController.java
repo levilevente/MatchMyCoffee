@@ -12,7 +12,10 @@ import com.matchmycoffee.service.exception.ServiceException;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,11 +34,10 @@ public class ProductController {
     private ProductMapper productMapper;
 
     @GetMapping
-    public ResponseEntity<Page<ProductSummaryResponse>> getAllProducts(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy
-    ) throws ServiceException {
+    public ResponseEntity<Page<ProductSummaryResponse>> getAllProducts(@RequestParam(defaultValue = "0") int page,
+                                                                       @RequestParam(defaultValue = "10") int size,
+                                                                       @RequestParam(defaultValue = "id") String sortBy)
+            throws ServiceException {
         log.info("GET /products");
 
         if (!"id".equals(sortBy) && !"name".equals(sortBy) && !"price".equals(sortBy)) {
@@ -58,9 +60,8 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDetailResponse> getProductById(
-            @PathVariable Long id
-    ) throws ProductNotAvailableException {
+    public ResponseEntity<ProductDetailResponse> getProductById(@PathVariable Long id)
+            throws ProductNotAvailableException {
         log.info("GET /products/{}", id);
         Product product = productService.getProductById(id);
         return ResponseEntity.ok(productMapper.toProductDetailResponse(product));
@@ -68,24 +69,20 @@ public class ProductController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<ProductDetailResponse> createProduct(
-            @RequestBody @Valid ProductCreatedRequest productDto
-    ) throws IllegalProductArgumentException, ServiceException {
+    public ResponseEntity<ProductDetailResponse> createProduct(@RequestBody @Valid ProductCreatedRequest productDto)
+            throws IllegalProductArgumentException, ServiceException {
         log.info("POST /products");
 
         Product product = productMapper.toEntity(productDto);
         Product createdProduct = productService.createProduct(product);
 
         URI createdProductUri = URI.create(String.format("/products/%s", createdProduct.getId()));
-        return ResponseEntity.created(createdProductUri)
-                .body(productMapper.toProductDetailResponse(createdProduct));
+        return ResponseEntity.created(createdProductUri).body(productMapper.toProductDetailResponse(createdProduct));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteProduct(
-            @PathVariable Long id
-    ) throws ServiceException {
+    public void deleteProduct(@PathVariable Long id) throws ServiceException {
         log.info("DELETE /products/{}", id);
         productService.deleteProduct(id);
     }

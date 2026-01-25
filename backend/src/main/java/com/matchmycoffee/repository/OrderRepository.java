@@ -16,9 +16,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Order getOrderById(Long id);
 
-    @Query("SELECT o FROM Order o "
-            + "LEFT JOIN FETCH o.orderItems oi "
-            + "LEFT JOIN FETCH oi.product "
+    @Query("SELECT o FROM Order o " + "LEFT JOIN FETCH o.orderItems oi " + "LEFT JOIN FETCH oi.product "
             + "WHERE o.id = :id")
     Optional<Order> findByIdWithItems(@Param("id") Long id);
 }
