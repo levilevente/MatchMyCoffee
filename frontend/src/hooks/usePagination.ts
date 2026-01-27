@@ -9,22 +9,34 @@ interface PaginationProps {
     storageKey: 'homePage' | 'favoritesPage' | 'cartPage';
 }
 
-export function usePagination(props: PaginationProps) {
-    const { data = [], itemsPerPage = 12, storageKey = 'homePage' } = props;
+export function useClientPagination(props: PaginationProps) {
+    const { data, itemsPerPage = 12, storageKey = 'homePage' } = props;
+    const safeData = useMemo(() => {
+        return Array.isArray(data) ? data : [];
+    }, [data]);
+
     const [currentPage, setCurrentPage] = useState(() => {
         return Number(localStorage.getItem(storageKey)) || 1;
     });
+
+    const totalPages = Math.max(1, Math.ceil(safeData.length / itemsPerPage));
+
+    useEffect(() => {
+        // reset to page 1 if current page exceeds total pages
+        if (currentPage > totalPages && safeData.length > 0) {
+            setCurrentPage(1);
+        }
+    }, [currentPage, totalPages, safeData.length]);
 
     useEffect(() => {
         localStorage.setItem(storageKey, String(currentPage));
     }, [currentPage, storageKey]);
 
-    const totalPages = Math.ceil(data.length / itemsPerPage);
-
     const paginationData = useMemo(() => {
+        if (safeData.length === 0) return [];
         const start = (currentPage - 1) * itemsPerPage;
-        return data.slice(start, start + itemsPerPage);
-    }, [data, currentPage, itemsPerPage]);
+        return safeData.slice(start, start + itemsPerPage);
+    }, [safeData, currentPage, itemsPerPage]);
 
     const goToPage = (page: number) => {
         if (page < 1) {
@@ -41,6 +53,37 @@ export function usePagination(props: PaginationProps) {
         goToPage,
         totalPages,
         paginationData,
+        itemsPerPage,
+    };
+}
+
+interface BackendPaginationProps {
+    storageKey: string;
+    itemsPerPage?: number;
+}
+
+export function usePagination(props: BackendPaginationProps) {
+    const { storageKey, itemsPerPage = 12 } = props;
+
+    const [currentPage, setCurrentPage] = useState(() => {
+        return Number(localStorage.getItem(storageKey)) || 1;
+    });
+
+    useEffect(() => {
+        localStorage.setItem(storageKey, String(currentPage));
+    }, [currentPage, storageKey]);
+
+    const goToPage = (page: number) => {
+        if (page < 1) {
+            setCurrentPage(1);
+        } else {
+            setCurrentPage(page);
+        }
+    };
+
+    return {
+        currentPage,
+        goToPage,
         itemsPerPage,
     };
 }
