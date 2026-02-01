@@ -40,6 +40,7 @@ public class ProductServiceImpl implements ProductService {
                 Object[] row = statsList.get(0); // Unwrap the first row
                 Long count = (Long) row[0];
                 Double avg = (row[1] != null) ? (Double) row[1] : 0.0;
+                avg = Math.round(avg * 100.0) / 100.0;
 
                 product.setCalculatedReviewCount(count);
                 product.setCalculatedAverageRating(avg);

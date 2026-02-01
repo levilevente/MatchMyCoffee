@@ -48,11 +48,9 @@ function ProductCard(props: ProductTypeProps) {
                     <Card.Title>
                         <h3>{data.name}</h3>
                     </Card.Title>
-                    <Card.Text>
-                        <h3>{data.price} $</h3>
-                    </Card.Text>
+                    <h3>{data.price} $</h3>
                     <div>
-                        <StarRating rating={data.averageRating} showCount={data.reviewCount} />
+                        <StarRating rating={data.averageRating} showCount={data.reviewCount} key={data.id} />
                     </div>
                 </Link>
                 {inCart ? (

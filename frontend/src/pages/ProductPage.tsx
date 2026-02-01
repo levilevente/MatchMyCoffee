@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Image, Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
@@ -7,15 +6,29 @@ import AddToCartButton from '../components/common/AddToCartButton.tsx';
 import AddToFavoritesButton from '../components/common/AddToFavoritesButton.tsx';
 import StarRating from '../components/common/StarRating.tsx';
 import AddReview from '../components/product/AddReview.tsx';
-import { getCoffeeById, getProductReviews } from '../services/main.api.ts';
+import { useProductById, useProductReviewsByProductId } from '../query/main.query.ts';
 import style from './ProductPage.module.css';
 
 function ProductPage() {
     const { productId } = useParams();
-    const product = getCoffeeById(productId ? parseInt(productId) : 0);
-    const [reviews, setReviews] = useState(getProductReviews(productId ? parseInt(productId) : 0));
+    const { data: product, isLoading, error } = useProductById(productId ? parseInt(productId, 10) : 0);
+    const { data: reviews, refetchWithInvalidation } = useProductReviewsByProductId(
+        productId ? parseInt(productId, 10) : 0,
+    );
 
     const { t } = useTranslation();
+
+    if (isLoading) {
+        return <div className={style.container}>Loading...</div>;
+    }
+
+    if (error) {
+        return <div className={style.container}>Error loading product.</div>;
+    }
+
+    if (!product) {
+        return <div className={style.container}>Loading...</div>;
+    }
 
     return (
         <div className={style.container}>
@@ -71,22 +84,38 @@ function ProductPage() {
                             <tr>
                                 <td>{t('product.origin')}</td>
                                 <td className={style.multilineTableCell}>
-                                    {product.origins.map((origin) => `${origin.region} (${origin.percentage}%)\n`)}
+                                    {Array.isArray(product.origins)
+                                        ? product.origins.map((origin, index) => (
+                                              <div key={index}>
+                                                  {origin.region} ({origin.percentage}%)
+                                              </div>
+                                          ))
+                                        : null}
                                 </td>
                             </tr>
                             <tr>
                                 <td>{t('product.tastes')}</td>
                                 <td className={style.multilineTableCell}>
-                                    {product.tastes.map((taste) => `${taste.name} ${taste.category.name}\n`)}
+                                    {Array.isArray(product.tastes)
+                                        ? product.tastes.map((taste, index) => (
+                                              <div key={index}>
+                                                  {taste.name} {taste.category.name}
+                                              </div>
+                                          ))
+                                        : null}
                                 </td>
                             </tr>
                             <tr>
                                 <td>{t('product.brewingMethods')}</td>
                                 <td>
-                                    {product.brewingMethods.map(
-                                        (method) =>
-                                            `${method.name} - ${method.description} ${method.isOptimal ? '(Optimal)' : '(Not Optimal)'}\n`,
-                                    )}
+                                    {Array.isArray(product.brewingMethods)
+                                        ? product.brewingMethods.map((method, index) => (
+                                              <div key={index}>
+                                                  {method.name} - {method.description}{' '}
+                                                  {method.isOptimal ? '(Optimal)' : '(Not Optimal)'}
+                                              </div>
+                                          ))
+                                        : null}
                                 </td>
                             </tr>
                         </tbody>
@@ -95,20 +124,18 @@ function ProductPage() {
                 <section id={'reviews'}>
                     <div className={style.reviewsSection}>
                         <h2>{t('product.reviews')}</h2>
-                        <AddReview setReviews={setReviews} productId={product.id} />
-                        {reviews.length !== 0 ? (
-                            reviews.map((review) => (
-                                <div key={review.id} className={style.reviewCard}>
-                                    <div className={style.reviewHeader}>
-                                        <p>{review.authorName}</p>
-                                        <StarRating rating={review.rating} size={20} />
-                                    </div>
-                                    <p>{review.comment}</p>
-                                </div>
-                            ))
-                        ) : (
-                            <p>No reviews available.</p>
-                        )}
+                        <AddReview refetchWithInvalidation={refetchWithInvalidation} productId={product.id} />
+                        {Array.isArray(reviews) && reviews.length !== 0
+                            ? reviews.map((review, index) => (
+                                  <div key={`${review.id}-${index}`} className={style.reviewCard}>
+                                      <div className={style.reviewHeader}>
+                                          <p>{review.authorName}</p>
+                                          <StarRating rating={review.rating} size={20} />
+                                      </div>
+                                      <p>{review.comment}</p>
+                                  </div>
+                              ))
+                            : null}
                     </div>
                 </section>
             </div>

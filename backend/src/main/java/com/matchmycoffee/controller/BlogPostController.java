@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/blogposts")
+@RequestMapping("/blog-posts")
 public class BlogPostController {
 
     @Autowired
