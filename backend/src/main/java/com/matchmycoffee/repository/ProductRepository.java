@@ -15,20 +15,12 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Product findByName(String name);
 
-    @Query("SELECT p, COUNT(r), AVG(r.rating) "
-            + "FROM Product p "
-            + "LEFT JOIN p.reviews r "
-            + "GROUP BY p")
+    @Query("SELECT p, COUNT(r), AVG(r.rating) " + "FROM Product p " + "LEFT JOIN p.reviews r " + "GROUP BY p")
     Page<Object[]> findAllWithReviewStats(Pageable pageable);
 
-    @Query("SELECT p FROM Product p "
-            + "LEFT JOIN FETCH p.productOrigins po "
-            + "LEFT JOIN FETCH po.origin "
-            + "LEFT JOIN FETCH p.productBrewingMethods pbm "
-            + "LEFT JOIN FETCH pbm.brewingMethod "
-            + "LEFT JOIN FETCH p.productTastes pt "
-            + "LEFT JOIN FETCH pt.taste t "
-            + "LEFT JOIN FETCH t.category "
+    @Query("SELECT p FROM Product p " + "LEFT JOIN FETCH p.productOrigins po " + "LEFT JOIN FETCH po.origin "
+            + "LEFT JOIN FETCH p.productBrewingMethods pbm " + "LEFT JOIN FETCH pbm.brewingMethod "
+            + "LEFT JOIN FETCH p.productTastes pt " + "LEFT JOIN FETCH pt.taste t " + "LEFT JOIN FETCH t.category "
             + "WHERE p.id = :id")
     Optional<Product> findByIdWithDetails(@Param("id") Long id);
 
