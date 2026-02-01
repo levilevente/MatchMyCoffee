@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -22,12 +25,7 @@ public class Order extends BaseEntity {
     @Column(name = "currency", length = 3, columnDefinition = "VARCHAR(3) DEFAULT 'RON'")
     private String currency;
 
-    @Column(
-            name = "status",
-            nullable = false,
-            length = 20,
-            columnDefinition = "VARCHAR(20) DEFAULT 'PENDING'"
-    )
+    @Column(name = "status", nullable = false, length = 20, columnDefinition = "VARCHAR(20) DEFAULT 'PENDING'")
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
@@ -57,4 +55,8 @@ public class Order extends BaseEntity {
 
     @Column(name = "shipping_country", nullable = false, length = 100)
     private String shippingCountry;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<OrderItem> orderItems = new ArrayList<>();
 }

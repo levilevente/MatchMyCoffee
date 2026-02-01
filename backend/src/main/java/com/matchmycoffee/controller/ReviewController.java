@@ -32,12 +32,11 @@ public class ReviewController {
     private ReviewMapper reviewMapper;
 
     @GetMapping("")
-    public ResponseEntity<Page<ReviewResponse>> getAllProductReviews(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy,
-            @PathVariable Long productId
-    ) throws ServiceException {
+    public ResponseEntity<Page<ReviewResponse>> getAllProductReviews(@RequestParam(defaultValue = "0") int page,
+                                                                     @RequestParam(defaultValue = "10") int size,
+                                                                     @RequestParam(defaultValue = "id") String sortBy,
+                                                                     @PathVariable Long productId)
+            throws ServiceException {
         log.info("GET /products/{}/reviews", productId);
 
         if (size <= 0 || page < 0) {
@@ -59,10 +58,9 @@ public class ReviewController {
     }
 
     @PostMapping
-    public ResponseEntity<ReviewResponse> createReview(
-            @PathVariable Long productId,
-            @RequestBody @Valid ReviewRequest reviewRequest
-    ) throws ServiceException, IllegalReviewArgumentException {
+    public ResponseEntity<ReviewResponse> createReview(@PathVariable Long productId,
+                                                       @RequestBody @Valid ReviewRequest reviewRequest)
+            throws ServiceException, IllegalReviewArgumentException {
         log.info("POST /products/{}/reviews", productId);
 
         Review review = reviewMapper.toEntity(reviewRequest);
@@ -73,11 +71,9 @@ public class ReviewController {
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ReviewResponse> updateReview(
-            @PathVariable Long productId,
-            @PathVariable Long id,
-            @RequestBody @Valid ReviewUpdateRequest reviewRequest
-    ) throws ReviewNotFoundException {
+    public ResponseEntity<ReviewResponse> updateReview(@PathVariable Long productId, @PathVariable Long id,
+                                                       @RequestBody @Valid ReviewUpdateRequest reviewRequest)
+            throws ReviewNotFoundException {
         log.info("PATCH /products/reviews/{}", id);
 
         Review reviewDetails = reviewMapper.toEntity(reviewRequest);

@@ -22,11 +22,10 @@ public class BlogPostServiceImpl implements BlogPostService {
     public BlogPost getBlogPostById(Long id) throws BlogPostNotFoundException {
         log.info("Getting blog post by id: {}", id);
         try {
-            return blogPostRepository.findById(id)
-                    .orElseThrow(() -> {
-                        log.error("Blog post with id {} not found", id);
-                        return new BlogPostNotFoundException("Blog post not found!");
-                    });
+            return blogPostRepository.findById(id).orElseThrow(() -> {
+                log.error("Blog post with id {} not found", id);
+                return new BlogPostNotFoundException("Blog post not found!");
+            });
         } catch (EntityNotFoundException e) {
             log.error("Error while retrieving blog post with id {}", id, e);
             throw new BlogPostNotFoundException("Blog post not found!", e);
