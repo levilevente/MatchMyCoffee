@@ -74,6 +74,7 @@ function CartCheckoutPage() {
         }
 
         setValidated(true);
+        // Send status update to backend 
     };
 
     if (showSuccessfulOrder) {

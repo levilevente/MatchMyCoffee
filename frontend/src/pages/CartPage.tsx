@@ -14,6 +14,7 @@ function CartPage() {
     const navigate = useNavigate();
 
     const handleFinalizeOrder = () => {
+        // send order data to backend
         void navigate('/cart/checkout');
     };
 
