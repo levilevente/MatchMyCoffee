@@ -7,7 +7,6 @@ import com.matchmycoffee.service.exception.BlogPostNotFoundException;
 import com.matchmycoffee.service.exception.ServiceException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,8 +14,12 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class BlogPostServiceImpl implements BlogPostService {
-    @Autowired
-    private BlogPostRepository blogPostRepository;
+
+    private final BlogPostRepository blogPostRepository;
+
+    public BlogPostServiceImpl(BlogPostRepository blogPostRepository) {
+        this.blogPostRepository = blogPostRepository;
+    }
 
     @Override
     public BlogPost getBlogPostById(Long id) throws BlogPostNotFoundException {

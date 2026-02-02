@@ -11,7 +11,6 @@ import com.matchmycoffee.service.exception.ReviewNotFoundException;
 import com.matchmycoffee.service.exception.ServiceException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,14 +20,20 @@ import java.util.Objects;
 @Slf4j
 @Service
 public class ReviewServiceImpl implements ReviewService {
-    @Autowired
-    private ReviewRepository reviewRepository;
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ReviewRepository reviewRepository;
+    private final ProductRepository productRepository;
+    private final ReviewMapper reviewMapper;
 
-    @Autowired
-    private ReviewMapper reviewMapper;
+    public ReviewServiceImpl(
+            ReviewRepository reviewRepository,
+            ProductRepository productRepository,
+            ReviewMapper reviewMapper
+    ) {
+        this.reviewRepository = reviewRepository;
+        this.productRepository = productRepository;
+        this.reviewMapper = reviewMapper;
+    }
 
     @Override
     public Page<Review> getAllReviews(Long productId, Pageable pageable) {
