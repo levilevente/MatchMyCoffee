@@ -93,27 +93,27 @@ INSERT INTO origins (region, continent) VALUES
 -- Product 1: Ethiopian Yirgacheffe (Light Roast, Floral/Fruity)
 INSERT INTO products (name, description, price, stock, is_blend, roast_level, acidity_score, image_url) VALUES 
 ('Ethiopian Yirgacheffe', 'A bright and complex light roast with distinct floral notes and a tea-like body. Perfect for pour-over enthusiasts.', 
-75.00, 50, FALSE, 1, 5, 'https://cafeo.ro/4261-large_default/kimbo-intenso-cafea-boabe-1kg.jpg');
+75.00, 50, TRUE, 1, 5, 'https://cafeo.ro/4261-large_default/kimbo-intenso-cafea-boabe-1kg.jpg');
 
 -- Product 2: Colombian Supremo (Medium Roast, Sweet/Nutty)
 INSERT INTO products (name, description, price, stock, is_blend, roast_level, acidity_score, image_url) VALUES 
 ('Colombian Supremo', 'Classic Colombian coffee with a balanced body, notes of caramel and dried fruit. A crowd pleaser.', 
-60.00, 100, FALSE, 3, 3, 'https://www.cafemagia.ro/images/produse/davidoff-cafe-espresso-57-1-kg-cafea-prajita-boabe-edit.jpg');
+60.00, 100, TRUE, 3, 3, 'https://www.cafemagia.ro/images/produse/davidoff-cafe-espresso-57-1-kg-cafea-prajita-boabe-edit.jpg');
 
 -- Product 3: Sumatra Mandheling (Dark Roast, Earthy)
 INSERT INTO products (name, description, price, stock, is_blend, roast_level, acidity_score, image_url) VALUES 
 ('Sumatra Mandheling', 'Full-bodied and low acidity with rich earthy notes and a hint of spice.', 
-65.00, 40, FALSE, 5, 1, 'https://lcdn.altex.ro/media/catalog/product/9/0/9000403895358_1_89b28c6f.jpg');
+65.00, 40, TRUE, 5, 1, 'https://lcdn.altex.ro/media/catalog/product/9/0/9000403895358_1_89b28c6f.jpg');
 
 -- Product 4: Brazil Santos (Medium-Dark, Chocolate/Nutty)
 INSERT INTO products (name, description, price, stock, is_blend, roast_level, acidity_score, image_url) VALUES 
 ('Brazil Santos', 'Low acidity with a smooth, nutty profile and heavy chocolate notes. Great for espresso.', 
-55.00, 120, FALSE, 4, 2, 'https://deutschermarkt.ro/wp-content/uploads/2020/07/Cafea-boabe-Jacobs-Caffe-Crema-Classico-1Kg-1.jpg');
+55.00, 120, TRUE, 4, 2, 'https://deutschermarkt.ro/wp-content/uploads/2020/07/Cafea-boabe-Jacobs-Caffe-Crema-Classico-1Kg-1.jpg');
 
 -- Product 5: Kenya AA (Light-Medium, Intense Berry)
 INSERT INTO products (name, description, price, stock, is_blend, roast_level, acidity_score, image_url) VALUES 
 ('Kenya AA', 'Renowned for its intense fruit flavors, wine-like acidity, and savory nuances.', 
-85.00, 30, FALSE, 2, 5, 'https://c.cdnmp.net/947378707/p/m/5/kimbo-barista-espresso-napoli-cafea-boabe-1kg~24725.jpg');
+85.00, 30, TRUE, 2, 5, 'https://c.cdnmp.net/947378707/p/m/5/kimbo-barista-espresso-napoli-cafea-boabe-1kg~24725.jpg');
 
 -- Product 6: Morning Blend (Blend, Balanced)
 INSERT INTO products (name, description, price, stock, is_blend, roast_level, acidity_score, image_url) VALUES 
@@ -128,17 +128,17 @@ INSERT INTO products (name, description, price, stock, is_blend, roast_level, ac
 -- Product 8: Costa Rica Tarrazu (Medium, Honey/Citrus)
 INSERT INTO products (name, description, price, stock, is_blend, roast_level, acidity_score, image_url) VALUES 
 ('Costa Rica Tarrazu', 'Exceptionally clean with honey sweetness and a bright citrus finish.', 
-70.00, 45, FALSE, 3, 4, 'https://gomagcdn.ro/domains/coffeepoint.ro/files/product/large/doncafe-espresso-intense-cafea-boabe-1-kg-439710.webp');
+70.00, 45, TRUE, 3, 4, 'https://gomagcdn.ro/domains/coffeepoint.ro/files/product/large/doncafe-espresso-intense-cafea-boabe-1-kg-439710.webp');
 
 -- Product 9: Guatemala Antigua (Medium, Smoky/Spicy)
 INSERT INTO products (name, description, price, stock, is_blend, roast_level, acidity_score, image_url) VALUES 
 ('Guatemala Antigua', 'Complex with a touch of smoke and spice (cocoa), balanced by a fine acidity.', 
-68.00, 60, FALSE, 3, 3, 'https://noircoffee.ro/cdn/shop/files/noir-ethiopia-1_2048x.jpg?v=1695807890');
+68.00, 60, TRUE, 3, 3, 'https://noircoffee.ro/cdn/shop/files/noir-ethiopia-1_2048x.jpg?v=1695807890');
 
 -- Product 10: Panama Geisha (Light, Rare/Floral)
 INSERT INTO products (name, description, price, stock, is_blend, roast_level, acidity_score, image_url) VALUES 
 ('Panama Geisha Reserve', 'An award-winning varietal. Jasmine aroma, bergamot notes, and a silky mouthfeel. Very limited.', 
-250.00, 10, FALSE, 1, 4, 'https://gomagcdn.ro/domains/cafea-premium.ro/files/product/medium/dallmayr-ethiopia-cafea-boabe-500g-copie-665376.webp');
+250.00, 10, TRUE, 1, 4, 'https://gomagcdn.ro/domains/cafea-premium.ro/files/product/medium/dallmayr-ethiopia-cafea-boabe-500g-copie-665376.webp');
 
 
 -- 6. LINKING PRODUCTS TO ORIGINS (product_origins)
