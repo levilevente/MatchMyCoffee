@@ -107,21 +107,17 @@ function CartCheckoutPage() {
             setModalShow(true);
         } catch (err) {
             if (axios.isAxiosError(err)) {
-                const responseData = err.response?.data as
-                    | { data: { message: string } }
-                    | { message: string }
-                    | undefined;
-
-                const backendMessage =
-                    (responseData && 'data' in responseData && responseData.data?.message) ??
-                    (responseData && 'message' in responseData && responseData.message) ??
-                    err.message;
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                const responseData = err.response?.data;
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+                const backendMessage = responseData?.data?.message ?? responseData?.message ?? err.message;
 
                 setError(
-                    backendMessage || t('checkout.orderCreationError') || 'Failed to create order. Please try again.',
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                    backendMessage ?? t('checkout.orderCreationError') ?? 'Failed to create order. Please try again.',
                 );
             } else {
-                setError(t('checkout.orderCreationError') || 'Failed to create order. Please try again.');
+                setError(t('checkout.orderCreationError') ?? 'Failed to create order. Please try again.');
             }
         } finally {
             setIsSubmitting(false);
