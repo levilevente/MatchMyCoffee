@@ -6,6 +6,8 @@ export interface ProductSummary {
     price: number;
     imageUrl: string;
     isBlend: boolean;
+    stock: number;
+    isActive: boolean;
 
     specifications: {
         roastLevel: number;
@@ -17,8 +19,6 @@ export interface ProductSummary {
 
 export interface ProductDetail extends ProductSummary {
     description: string;
-    stock: number;
-    isActive: boolean;
 
     specifications: {
         roastLevel: number;

@@ -20,4 +20,6 @@ public class ProductSummaryResponse {
     private Integer roastLevel;
     private Double averageRating;
     private Long reviewCount;
+    private Integer stock;
+    private Boolean isActive;
 }

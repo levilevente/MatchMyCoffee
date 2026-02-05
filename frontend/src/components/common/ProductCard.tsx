@@ -1,13 +1,12 @@
-import { Button, ButtonGroup, Card, Dropdown, DropdownButton } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { IoCloseSharp } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 
 import { useProductActions } from '../../hooks/useProductActions.ts';
 import type { ProductSummary } from '../../types/ProductsType.ts';
-import AddToCartButton from '../common/AddToCartButton.tsx';
-import AddToFavoritesButton from '../common/AddToFavoritesButton.tsx';
 import StarRating from '../common/StarRating.tsx';
+import CustomButtonGroup from '../product/CustomButtonGroup.tsx';
 import style from './ProductCard.module.css';
 
 interface ProductTypeProps {
@@ -53,27 +52,19 @@ function ProductCard(props: ProductTypeProps) {
                         <StarRating rating={data.averageRating} showCount={data.reviewCount} key={data.id} />
                     </div>
                 </Link>
-                {inCart ? (
-                    <>
-                        <DropdownButton
-                            as={ButtonGroup}
-                            key={'cart-count'}
-                            id={`cart-count`}
-                            variant={'none'}
-                            title={`${t('product.quantity')}: ${currentQuantity}`}
-                            onSelect={handleQuantitySelect}
-                        >
-                            {Array.from({ length: 10 }, (_, i) => i + 1).map((count) => (
-                                <Dropdown.Item key={count} eventKey={count.toString()}>
-                                    {count}
-                                </Dropdown.Item>
-                            ))}
-                        </DropdownButton>
-                    </>
+                {}
+                {data.isActive || data.stock <= 0 ? (
+                    <div className={style.buttonGroup}>
+                        <CustomButtonGroup
+                            inCart={inCart}
+                            data={data}
+                            currentQuantity={currentQuantity}
+                            handleQuantitySelect={handleQuantitySelect}
+                        />
+                    </div>
                 ) : (
-                    <AddToCartButton product={data} variant={'icon-only'} inCart={inCart} />
+                    <div className={style.outOfStockLabel}>{t('product.outOfStock')}</div>
                 )}
-                <AddToFavoritesButton product={data} variant={'icon-only'} />
             </Card.Body>
         </Card>
     );
