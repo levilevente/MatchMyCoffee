@@ -52,8 +52,7 @@ function ProductCard(props: ProductTypeProps) {
                         <StarRating rating={data.averageRating} showCount={data.reviewCount} key={data.id} />
                     </div>
                 </Link>
-                {}
-                {data.isActive || data.stock <= 0 ? (
+                {data.isActive || data.stock > 0 ? (
                     <div className={style.buttonGroup}>
                         <CustomButtonGroup
                             inCart={inCart}

@@ -18,22 +18,20 @@ function CustomButtonGroup({ inCart, data, currentQuantity, handleQuantitySelect
     return (
         <>
             {inCart ? (
-                <>
-                    <DropdownButton
-                        as={ButtonGroup}
-                        key={'cart-count'}
-                        id={`cart-count`}
-                        variant={'none'}
-                        title={`${t('product.quantity')}: ${currentQuantity}`}
-                        onSelect={handleQuantitySelect}
-                    >
-                        {Array.from({ length: 10 }, (_, i) => i + 1).map((count) => (
-                            <Dropdown.Item key={count} eventKey={count.toString()}>
-                                {count}
-                            </Dropdown.Item>
-                        ))}
-                    </DropdownButton>
-                </>
+                <DropdownButton
+                    as={ButtonGroup}
+                    key={'cart-count'}
+                    id={`cart-count`}
+                    variant={'none'}
+                    title={`${t('product.quantity')}: ${currentQuantity}`}
+                    onSelect={handleQuantitySelect}
+                >
+                    {Array.from({ length: Math.min(10, data.stock) }, (_, i) => i + 1).map((count) => (
+                        <Dropdown.Item key={count} eventKey={count.toString()}>
+                            {count}
+                        </Dropdown.Item>
+                    ))}
+                </DropdownButton>
             ) : (
                 <AddToCartButton product={data} variant={'icon-only'} inCart={inCart} />
             )}

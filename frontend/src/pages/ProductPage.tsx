@@ -51,7 +51,7 @@ function ProductPage() {
                     </div>
                     <div className={style.purchaseSection}>
                         <h3>{product.price} $</h3>
-                        {product.isActive || product.stock <= 0 ? (
+                        {product.isActive && product.stock > 0 ? (
                             <div className={style.buttonContainer}>
                                 <AddToCartButton product={product} variant={'with-text'} />
                                 <AddToFavoritesButton product={product} variant={'with-text'} />
@@ -125,7 +125,7 @@ function ProductPage() {
                         </tbody>
                     </Table>
                 </div>
-                {product.isActive || product.stock <= 0 ? (
+                {product.isActive && product.stock > 0 ? (
                     <section id={'reviews'}>
                         <div className={style.reviewsSection}>
                             <h2>{t('product.reviews')}</h2>
