@@ -6,6 +6,8 @@ import CheckoutModal from '../components/cart/CheckoutModal.tsx';
 import MainButton from '../components/common/MainButton.tsx';
 import ProductGrid from '../components/common/ProductGrid.tsx';
 import { CartContext } from '../context/CartContext.tsx';
+import { createOrder } from '../services/main.api.ts';
+import type { Order } from '../types/OrderType.ts';
 import style from './CartCheckoutPage.module.css';
 
 export interface FormValues {
@@ -27,6 +29,9 @@ function CartCheckoutPage() {
     const [paymentMethod, setPaymentMethod] = useState('cashOnDelivery');
     const [modalShow, setModalShow] = useState(false);
     const [showSuccessfulOrder, setShowSuccessfulOrder] = useState(false);
+    const [createdOrder, setCreatedOrder] = useState<Order | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const [formValues, setFormValues] = useState<FormValues>({
         email: '',
@@ -46,34 +51,66 @@ function CartCheckoutPage() {
 
     const { t } = useTranslation();
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        } else {
-            event.preventDefault();
-            const formData = new FormData(form);
+        event.preventDefault();
 
-            // 1. Extract Data
-            const updatedFormValues: FormValues = {
-                email: formData.get('formBasicEmail') as string,
-                firstName: formData.get('formBasicFirstName') as string,
-                lastName: formData.get('formBasicLastName') as string,
-                addressLine1: formData.get('formBasicAddressLine1') as string,
-                addressLine2: formData.get('formBasicAddressLine2') as string,
-                city: formData.get('formBasicCity') as string,
-                state: formData.get('formBasicState') as string,
-                zipCode: formData.get('formBasicZip') as string,
-                country: formData.get('formBasicCountry') as string,
-                paymentMethod: paymentMethod,
-                totalAmount: cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0),
-            };
-            setFormValues(updatedFormValues);
-            setModalShow(true);
+        if (form.checkValidity() === false) {
+            event.stopPropagation();
+            setValidated(true);
+            return;
         }
 
         setValidated(true);
+        setIsSubmitting(true);
+        setError(null);
+
+        const formData = new FormData(form);
+
+        // 1. Extract Data
+        const updatedFormValues: FormValues = {
+            email: formData.get('formBasicEmail') as string,
+            firstName: formData.get('formBasicFirstName') as string,
+            lastName: formData.get('formBasicLastName') as string,
+            addressLine1: formData.get('formBasicAddressLine1') as string,
+            addressLine2: formData.get('formBasicAddressLine2') as string,
+            city: formData.get('formBasicCity') as string,
+            state: formData.get('formBasicState') as string,
+            zipCode: formData.get('formBasicZip') as string,
+            country: formData.get('formBasicCountry') as string,
+            paymentMethod: paymentMethod,
+            totalAmount: cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0),
+        };
+        setFormValues(updatedFormValues);
+
+        try {
+            // 2. Create order in PENDING status
+            const orderRequest = {
+                customerEmail: updatedFormValues.email,
+                customerFirstName: updatedFormValues.firstName,
+                customerLastName: updatedFormValues.lastName,
+                shippingAddressLine1: updatedFormValues.addressLine1,
+                shippingAddressLine2: updatedFormValues.addressLine2 ?? undefined,
+                shippingCity: updatedFormValues.city,
+                shippingState: updatedFormValues.state,
+                shippingZip: updatedFormValues.zipCode,
+                shippingCountry: updatedFormValues.country,
+                items: cartItems.map((item) => ({
+                    productId: item.product.id,
+                    quantity: item.quantity,
+                })),
+            };
+
+            const order = await createOrder(orderRequest);
+            setCreatedOrder(order);
+            setModalShow(true);
+        } catch (err) {
+            console.error('Failed to create order:', err);
+            const errorMessage = (err as { response?: { data?: { error?: string } } })?.response?.data?.error;
+            setError(errorMessage ?? t('checkout.orderCreationError') ?? 'Failed to create order. Please try again.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     if (showSuccessfulOrder) {
@@ -89,7 +126,12 @@ function CartCheckoutPage() {
     return (
         <div className={style.container}>
             <div className={style.leftContainer}>
-                <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                {error ? (
+                    <Alert variant="danger" onClose={() => setError(null)} dismissible>
+                        {error}
+                    </Alert>
+                ) : null}
+                <Form noValidate validated={validated} onSubmit={(e) => void handleSubmit(e)}>
                     <h1>{t('checkout.title')}</h1>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>{t('checkout.email')}</Form.Label>
@@ -199,14 +241,26 @@ function CartCheckoutPage() {
                             <Dropdown.Item eventKey="cashOnDelivery">{t('checkout.cashOnDelivery')}</Dropdown.Item>
                         </DropdownButton>
                     </Form.Group>
-                    <MainButton text={t('checkout.reviewOrder')} type="submit" />
+                    <MainButton
+                        text={
+                            isSubmitting
+                                ? t('checkout.creatingOrder') || 'Creating order...'
+                                : t('checkout.reviewOrder')
+                        }
+                        type="submit"
+                        disabled={isSubmitting}
+                    />
                 </Form>
                 <CheckoutModal
                     show={modalShow}
-                    onHide={() => setModalShow(false)}
+                    onHide={() => {
+                        setModalShow(false);
+                        setCreatedOrder(null);
+                    }}
                     formValues={formValues}
                     clearCart={clearCart}
                     setShowSuccessfulOrder={setShowSuccessfulOrder}
+                    order={createdOrder}
                 />
             </div>
             <div className={style.rightContainer}>
