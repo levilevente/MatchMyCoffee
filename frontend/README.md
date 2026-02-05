@@ -205,10 +205,6 @@ Both contexts persist data to `localStorage` for a seamless user experience acro
 
 See `package.json` for the complete list of dependencies.
 
-## 🚧 Development Status
-
-Currently, the frontend is using **mock data** from `src/utils/DummyProducts.ts`. The API integration layer in `src/services/main.api.ts` is prepared for backend integration but returns dummy data for now.
-
 ### Next Steps
 
 - Connect to actual Spring Boot backend API
