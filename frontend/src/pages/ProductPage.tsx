@@ -51,10 +51,14 @@ function ProductPage() {
                     </div>
                     <div className={style.purchaseSection}>
                         <h3>{product.price} $</h3>
-                        <div className={style.buttonContainer}>
-                            <AddToCartButton product={product} variant={'with-text'} />
-                            <AddToFavoritesButton product={product} variant={'with-text'} />
-                        </div>
+                        {product.isActive && product.stock > 0 ? (
+                            <div className={style.buttonContainer}>
+                                <AddToCartButton product={product} variant={'with-text'} />
+                                <AddToFavoritesButton product={product} variant={'with-text'} />
+                            </div>
+                        ) : (
+                            <h2>{t('product.outOfStock')}</h2>
+                        )}
                     </div>
                 </div>
             </div>
@@ -121,23 +125,25 @@ function ProductPage() {
                         </tbody>
                     </Table>
                 </div>
-                <section id={'reviews'}>
-                    <div className={style.reviewsSection}>
-                        <h2>{t('product.reviews')}</h2>
-                        <AddReview refetchWithInvalidation={refetchWithInvalidation} productId={product.id} />
-                        {Array.isArray(reviews) && reviews.length !== 0
-                            ? reviews.map((review, index) => (
-                                  <div key={`${review.id}-${index}`} className={style.reviewCard}>
-                                      <div className={style.reviewHeader}>
-                                          <p>{review.authorName}</p>
-                                          <StarRating rating={review.rating} size={20} />
+                {product.isActive && product.stock > 0 ? (
+                    <section id={'reviews'}>
+                        <div className={style.reviewsSection}>
+                            <h2>{t('product.reviews')}</h2>
+                            <AddReview refetchWithInvalidation={refetchWithInvalidation} productId={product.id} />
+                            {Array.isArray(reviews) && reviews.length !== 0
+                                ? reviews.map((review, index) => (
+                                      <div key={`${review.id}-${index}`} className={style.reviewCard}>
+                                          <div className={style.reviewHeader}>
+                                              <p>{review.authorName}</p>
+                                              <StarRating rating={review.rating} size={20} />
+                                          </div>
+                                          <p>{review.comment}</p>
                                       </div>
-                                      <p>{review.comment}</p>
-                                  </div>
-                              ))
-                            : null}
-                    </div>
-                </section>
+                                  ))
+                                : null}
+                        </div>
+                    </section>
+                ) : null}
             </div>
         </div>
     );

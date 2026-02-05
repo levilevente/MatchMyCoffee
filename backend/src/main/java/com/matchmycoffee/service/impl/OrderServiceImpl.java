@@ -135,11 +135,6 @@ public class OrderServiceImpl implements OrderService {
             throw new IllegalOrderArgumentException("Order status is not pending!");
         }
 
-        if (!product.getIsActive()) {
-            log.error("Product is not active: {}", product.getName());
-            throw new IllegalOrderArgumentException("Product is not active!");
-        }
-
         // Create OrderItem with price from product
         OrderItem orderItem = new OrderItem();
         orderItem.setOrder(savedOrder);

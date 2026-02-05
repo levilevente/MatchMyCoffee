@@ -41,7 +41,8 @@
     "quantity": "Quantity",
     "writeReviewPlaceholder": "Write your review here...",
     "reviewerName": "Your Name",
-    "reviewerNamePlaceholder": "Enter your name"
+    "reviewerNamePlaceholder": "Enter your name",
+    "outOfStock": "Out of Stock"
   },
   "title": "Match My Coffee",
   "description": "Find your perfect coffee match based on your preferences and taste!",

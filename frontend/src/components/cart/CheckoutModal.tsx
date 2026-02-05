@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useState } from 'react';
 import { Alert, Modal, Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -25,7 +26,9 @@ function CheckoutModal(props: CheckoutModalProps) {
     const [error, setError] = useState<string | null>(null);
 
     const handleConfirm = async () => {
-        if (!order) return;
+        if (!order) {
+            return;
+        }
 
         setIsSubmitting(true);
         setError(null);
@@ -41,9 +44,21 @@ function CheckoutModal(props: CheckoutModalProps) {
             }, 5000);
             onHide();
         } catch (err) {
-            console.error('Failed to submit order:', err);
-            const errorMessage = (err as { response?: { data?: { error?: string } } })?.response?.data?.error;
-            setError(errorMessage ?? t('checkout.orderSubmitError') ?? 'Failed to submit order. Please try again.');
+            if (axios.isAxiosError(err)) {
+                const responseData = err.response?.data as
+                    | { data: { message: string } }
+                    | { message: string }
+                    | undefined;
+
+                const backendMessage =
+                    (responseData && 'data' in responseData && responseData.data?.message) ??
+                    (responseData && 'message' in responseData && responseData.message) ??
+                    err.message;
+
+                setError(backendMessage || 'An unexpected error occurred');
+            } else {
+                setError('An unexpected error occurred');
+            }
         } finally {
             setIsSubmitting(false);
         }

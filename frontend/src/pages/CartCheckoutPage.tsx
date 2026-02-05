@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useContext, useState } from 'react';
 import { Alert, Dropdown, DropdownButton, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -105,9 +106,19 @@ function CartCheckoutPage() {
             setCreatedOrder(order);
             setModalShow(true);
         } catch (err) {
-            console.error('Failed to create order:', err);
-            const errorMessage = (err as { response?: { data?: { error?: string } } })?.response?.data?.error;
-            setError(errorMessage ?? t('checkout.orderCreationError') ?? 'Failed to create order. Please try again.');
+            if (axios.isAxiosError(err)) {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                const responseData = err.response?.data;
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+                const backendMessage = responseData?.data?.message ?? responseData?.message ?? err.message;
+
+                setError(
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                    backendMessage ?? t('checkout.orderCreationError') ?? 'Failed to create order. Please try again.',
+                );
+            } else {
+                setError(t('checkout.orderCreationError') ?? 'Failed to create order. Please try again.');
+            }
         } finally {
             setIsSubmitting(false);
         }

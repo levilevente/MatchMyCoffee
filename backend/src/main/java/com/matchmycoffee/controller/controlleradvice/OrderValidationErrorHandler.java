@@ -10,10 +10,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.Instant;
 
@@ -56,6 +58,25 @@ public class OrderValidationErrorHandler {
         log.debug("InsufficientStockException occurred", e);
         return buildErrorResponse(HttpStatus.CONFLICT, e.getMessage());
     }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public final ErrorResponse handleTypeMismatch(MethodArgumentTypeMismatchException e) {
+        log.debug("MethodArgumentTypeMismatchException occurred", e);
+        String message = String.format("Invalid value '%s' for parameter '%s'.", e.getValue(), e.getName());
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, message);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public final ErrorResponse handleValidationExceptions(MethodArgumentNotValidException e) {
+        log.debug("MethodArgumentNotValidException occurred", e);
+        String message = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, message);
+    }
+
 
     @Data
     @Getter
